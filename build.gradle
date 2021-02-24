@@ -17,7 +17,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor("org.projectlombok:lombok")
+  	compileOnly("org.projectlombok:lombok")
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	compile "org.springframework.boot:spring-boot-starter-security"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
