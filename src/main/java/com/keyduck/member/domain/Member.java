@@ -19,11 +19,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.Builder;
+import lombok.Getter;
 
 
 @Entity
 @Table(name = "member")
+@Builder(builderMethodName = "MemberBuilder")
+@Getter
 public class Member implements UserDetails{
 
 	@Id
@@ -31,11 +36,11 @@ public class Member implements UserDetails{
 	@Column(updatable = false)
 	private Long mem_id;
 	
-	//비슷한 속성을 지닌 애들 혹은 여기저기서 쓸 애을 임베디드로 묶어 객체로 표현(응집성, 가독성 올라감 + 복합키로도 사용가능)
-	//만약 테이블값이 중복된다면 attrbuteoverride로 속성재설정 
-	@Embedded
-	private MemberInfo memberInfo;
-	
+	String nickname;
+	@Column(unique = true)
+	String email;
+	String password;
+
 	@Enumerated(EnumType.STRING)
 	private MemberType type;
 	
@@ -44,14 +49,9 @@ public class Member implements UserDetails{
 	
 	@Override
 	public String getUsername() {
-		return this.memberInfo.nickname;
+		return this.nickname;
 	}
 	
-	@Override
-	public String getPassword() {
-		return this.memberInfo.password;
-	}
-
 	
 	@Override
 	 public Collection<? extends GrantedAuthority> getAuthorities() {
