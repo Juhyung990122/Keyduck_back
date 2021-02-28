@@ -1,9 +1,5 @@
 package com.keyduck.member.dto;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
 import com.keyduck.member.domain.MemberType;
@@ -13,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class MemberCreateDto {
 	
@@ -24,6 +19,11 @@ public class MemberCreateDto {
 	private MemberRole role;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private MemberType type;
+	
+	public void setPassword(String encodedPassword) {
+		this.password =encodedPassword;
+		
+	}
 	
 	public Member toEntity() {
 		return Member.MemberBuilder()
