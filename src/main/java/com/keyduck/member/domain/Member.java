@@ -21,20 +21,24 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "member")
 @Builder(builderMethodName = "MemberBuilder")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable = false)
-	private Long mem_id;
+	private Long MemId;
 	
 	String nickname;
 	@Column(unique = true)
@@ -49,9 +53,12 @@ public class Member implements UserDetails{
 	
 	@Override
 	public String getUsername() {
-		return this.nickname;
+		return this.MemId.toString();
 	}
 	
+	public Long getPk() {
+		return this.MemId;
+	}
 	
 	@Override
 	 public Collection<? extends GrantedAuthority> getAuthorities() {
