@@ -5,19 +5,23 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -51,14 +55,18 @@ public class Member implements UserDetails{
 	@Enumerated(EnumType.STRING)
 	private MemberRole role;
 	
+	@Lob
+	private byte[] profile;
+	
+	public void setProfile(byte[] req){
+		this.profile = req;
+	}
+	
 	@Override
 	public String getUsername() {
 		return this.MemId.toString();
 	}
-	
-	public Long getPk() {
-		return this.MemId;
-	}
+
 	
 	@Override
 	 public Collection<? extends GrantedAuthority> getAuthorities() {

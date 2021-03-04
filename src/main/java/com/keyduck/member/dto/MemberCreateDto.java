@@ -1,4 +1,8 @@
 package com.keyduck.member.dto;
+import javax.persistence.Lob;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
@@ -19,6 +23,7 @@ public class MemberCreateDto {
 	private MemberRole role;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private MemberType type;
+
 	
 	public void setPassword(String encodedPassword) {
 		this.password =encodedPassword;
