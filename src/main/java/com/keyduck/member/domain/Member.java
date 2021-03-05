@@ -55,11 +55,10 @@ public class Member implements UserDetails{
 	@Enumerated(EnumType.STRING)
 	private MemberRole role;
 	
-	@Lob
-	private byte[] profile;
+	private String profile;
 	
-	public void setProfile(byte[] req){
-		this.profile = req;
+	public void setProfile(String profile){
+		this.profile = profile;
 	}
 	
 	@Override

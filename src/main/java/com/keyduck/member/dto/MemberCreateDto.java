@@ -1,5 +1,5 @@
 package com.keyduck.member.dto;
-import javax.persistence.Lob;
+
 
 import org.springframework.web.multipart.MultipartFile;
 
