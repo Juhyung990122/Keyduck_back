@@ -1,24 +1,26 @@
 package com.keyduck.member.service;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.Optional;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,10 +43,10 @@ import lombok.RequiredArgsConstructor;
 public class MemberService implements UserDetailsService{	
 	private final Path fileLocation;
 	private final MemberRepository memberRepository;
-	private final BCryptPasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public MemberService(FileUploadProperties prop,BCryptPasswordEncoder passwordEncoder,MemberRepository memberRepository) {
+	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
 		this.memberRepository  = memberRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.fileLocation = Paths.get(prop.getUploadDir())
@@ -75,9 +77,10 @@ public class MemberService implements UserDetailsService{
 		
 	}
 	
+
 	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) {
 		//null 예외처리 해줄 것.
-		System.out.println(memberRepository.findByEmail(loginmember.getEmail()));
+		System.out.println(jwtTokenProvider);
 		Optional<Member> member = memberRepository.findByEmail(loginmember.getEmail());
 		//if(! passwordEncoder.matches(loginmember.getPassword(),member.getPassword()){
 			//비번 불일치 예외처리 해줄 것.
@@ -90,11 +93,10 @@ public class MemberService implements UserDetailsService{
 		Member member  = memberRepository.findById(mem_id).orElse(null);
 		String filename = StringUtils.cleanPath(req.getOriginalFilename());
 		Path targetLocation = this.fileLocation.resolve(filename);
-		System.out.println();
 		Files.copy(req.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 		
 		String profile_url = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/uploads/")
+				.path("v1/uploads/")
 				.path(filename)
 				.toUriString();
 		
@@ -103,14 +105,18 @@ public class MemberService implements UserDetailsService{
 		return member;
 	}
 
-	public File downloadFile(String fileName) throws IOException {
-		try {
+	public Resource downloadFile(String fileName,HttpServletRequest request) throws IOException {
+		try{
 			Path filePath = this.fileLocation.resolve(fileName).normalize();
-            UrlResource resource = new UrlResource(filePath.toUri());
-            return resource.getFile();
+			Resource resourceUrl = new UrlResource(filePath.toUri());
+			if (resourceUrl.exists()) {
+				return resourceUrl;
+			}else {
+				throw new FileDownloadException(fileName + "파일을 찾을 수 없습니다.");
+			}
+			
 		}catch(MalformedURLException e) {
-			throw new FileDownloadException(fileName, e);
+			throw new FileDownloadException(fileName+"파일을 찾을 수 없습니다.",e);
 		}
-	}
-				
+		}
 }

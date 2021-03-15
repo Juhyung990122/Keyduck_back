@@ -12,19 +12,19 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.web.servlet.AuthorizeRequestsDsl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+
 @Configuration
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
+
 	
 	private final JwtTokenProvider jwtTokenProvider;
+	
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		 	.antMatchers("/*/signin","/*/signup").permitAll()
 		 	.antMatchers(HttpMethod.GET,"/").hasRole("USER")
 		.and()
-		// 인터셉터 설정 
+		// 인터셉터(필) 설정 
 		.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 	}
 }
