@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 
 
 @Component
-
 public class JwtTokenProvider {
 	@Value("spring.jwt.secret")
 	private String secretKey;

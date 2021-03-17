@@ -16,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MemberCreateDto {
 	
-	private String nickname;
 	private String email;
+	private String nickname;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	private MemberRole role;

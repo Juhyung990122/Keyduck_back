@@ -30,6 +30,7 @@ import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
+import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
 
 import com.keyduck.member.img.FileUploadProperties;
@@ -44,6 +45,7 @@ public class MemberService implements UserDetailsService{
 	private final Path fileLocation;
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	
 	
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -119,4 +121,10 @@ public class MemberService implements UserDetailsService{
 			throw new FileDownloadException(fileName+"파일을 찾을 수 없습니다.",e);
 		}
 		}
+
+
+	public Iterable<Member> getMembers() {
+		Iterable<Member> member = memberRepository.findAll();
+		return member;
+	}
 }

@@ -13,14 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean{
 	
 	private JwtTokenProvider jwtTokenProvider;
-	
-	public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
-		this.jwtTokenProvider = jwtTokenProvider;
-	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

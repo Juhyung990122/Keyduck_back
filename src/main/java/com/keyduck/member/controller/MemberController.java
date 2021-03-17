@@ -13,22 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.Resource;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
+import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
 
 import com.keyduck.member.service.MemberService;
 import com.keyduck.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
-
-import java.io.File;
 import java.io.IOException;
-
-
-
 import javax.servlet.http.HttpServletRequest;
 
 
@@ -45,7 +40,6 @@ public class MemberController {
 	private final MemberService memberService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody MemberCreateDto m) {
@@ -60,14 +54,21 @@ public class MemberController {
 				
 	}
 	
-	@PatchMapping("{mem_id}/editProfile")
+	@GetMapping("/members")
+	public ResponseEntity<?> getMembers(){
+		Iterable<Member> members = memberService.getMembers();
+		return new ResponseEntity<Iterable<MemberGetDto>>(HttpStatus.OK);
+		
+	}
+	
+	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
 		Member member = memberService.uploadFile(mem_id,req);
 		return new ResponseEntity<Member>(member, HttpStatus.OK);
 	}
 	
 	@GetMapping("/uploads/{fileName}")
-	public ResponseEntity<Resource> download(@PathVariable String fileName, HttpServletRequest request) throws IOException{
+	public ResponseEntity<Resource> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{
 		Resource resource = memberService.downloadFile(fileName,request);
 		String contentType = null;
 		try {
@@ -84,5 +85,6 @@ public class MemberController {
 		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
 				
 	}
+	
 }
 
