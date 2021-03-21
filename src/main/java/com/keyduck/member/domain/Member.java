@@ -29,11 +29,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
 @Table(name = "member")
 @Builder(builderMethodName = "MemberBuilder")
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,6 +61,10 @@ public class Member implements UserDetails{
 	
 	public void setProfile(String profile){
 		this.profile = profile;
+	}
+	
+	public String getEmail() {
+		return this.email;
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.keyduck.member.service;
 
 
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -13,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
+import com.keyduck.mapper.DataMapper;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberGetDto;
@@ -45,7 +46,8 @@ public class MemberService implements UserDetailsService{
 	private final Path fileLocation;
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	DataMapper dataMapper;
 	
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -53,6 +55,7 @@ public class MemberService implements UserDetailsService{
 		this.passwordEncoder = passwordEncoder;
 		this.fileLocation = Paths.get(prop.getUploadDir())
                 .toAbsolutePath().normalize();
+		
         
         try {
             Files.createDirectories(this.fileLocation);
@@ -82,7 +85,6 @@ public class MemberService implements UserDetailsService{
 
 	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) {
 		//null 예외처리 해줄 것.
-		System.out.println(jwtTokenProvider);
 		Optional<Member> member = memberRepository.findByEmail(loginmember.getEmail());
 		//if(! passwordEncoder.matches(loginmember.getPassword(),member.getPassword()){
 			//비번 불일치 예외처리 해줄 것.
@@ -126,5 +128,13 @@ public class MemberService implements UserDetailsService{
 	public Iterable<Member> getMembers() {
 		Iterable<Member> member = memberRepository.findAll();
 		return member;
+	}
+	
+	public MemberGetDto getMemberDetail() {
+		Member findmem = memberRepository.findByEmail("test5@naver.com").orElse(null);
+		MemberGetDto returndata = dataMapper.toDto(findmem);
+		System.out.println(returndata.getEmail());
+		return returndata;
+		
 	}
 }

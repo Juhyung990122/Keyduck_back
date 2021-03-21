@@ -55,9 +55,10 @@ public class MemberController {
 	}
 	
 	@GetMapping("/members")
-	public ResponseEntity<?> getMembers(){
-		Iterable<Member> members = memberService.getMembers();
-		return new ResponseEntity<Iterable<MemberGetDto>>(HttpStatus.OK);
+	public MemberGetDto getMembers(){
+		MemberGetDto members = memberService.getMemberDetail();
+		
+		return members;
 		
 	}
 	
