@@ -1,36 +1,24 @@
 package com.keyduck.member.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
-
 import com.keyduck.member.service.MemberService;
 import com.keyduck.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -53,14 +41,13 @@ public class MemberController {
 		return new ResponseEntity<String>(token, HttpStatus.OK);
 				
 	}
-	
+
 	@GetMapping("/members")
-	public ResponseEntity<?> getMembers(){
-		Iterable<Member> members = memberService.getMembers();
-		return new ResponseEntity<Iterable<MemberGetDto>>(HttpStatus.OK);
-		
+	public MemberGetDto getMembers(){
+		MemberGetDto members = memberService.getMemberDetail();
+
+		return members;
 	}
-	
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
 		Member member = memberService.uploadFile(mem_id,req);

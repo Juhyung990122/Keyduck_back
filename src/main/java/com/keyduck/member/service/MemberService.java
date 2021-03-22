@@ -1,6 +1,30 @@
 package com.keyduck.member.service;
 
 
+import com.keyduck.exception.FileDownloadException;
+import com.keyduck.exception.FileUploadException;
+import com.keyduck.member.domain.Member;
+import com.keyduck.member.dto.MemberCreateDto;
+import com.keyduck.member.dto.MemberGetDto;
+import com.keyduck.member.dto.MemberLoginDto;
+import com.keyduck.member.img.FileUploadProperties;
+import com.keyduck.member.mapper.DataMapper;
+import com.keyduck.member.repository.MemberRepository;
+import com.keyduck.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -9,43 +33,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.keyduck.exception.FileDownloadException;
-import com.keyduck.exception.FileUploadException;
-import com.keyduck.member.domain.Member;
-import com.keyduck.member.dto.MemberCreateDto;
-import com.keyduck.member.dto.MemberGetDto;
-import com.keyduck.member.dto.MemberLoginDto;
-
-import com.keyduck.member.img.FileUploadProperties;
-import com.keyduck.member.repository.MemberRepository;
-import com.keyduck.security.JwtTokenProvider;
-
-import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService{	
 	private final Path fileLocation;
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	DataMapper dataMapper;
 	
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -53,7 +48,6 @@ public class MemberService implements UserDetailsService{
 		this.passwordEncoder = passwordEncoder;
 		this.fileLocation = Paths.get(prop.getUploadDir())
                 .toAbsolutePath().normalize();
-        
         try {
             Files.createDirectories(this.fileLocation);
         }catch(Exception e) {
@@ -123,8 +117,10 @@ public class MemberService implements UserDetailsService{
 		}
 
 
-	public Iterable<Member> getMembers() {
-		Iterable<Member> member = memberRepository.findAll();
-		return member;
+	public MemberGetDto getMemberDetail() {
+		Member findmem = memberRepository.findById((long)1).orElse(null);
+		System.out.println("findmem"+findmem);
+		MemberGetDto returndata = dataMapper.toDto(findmem);
+		return returndata;
 	}
 }
