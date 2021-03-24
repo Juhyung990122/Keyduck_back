@@ -3,7 +3,7 @@ package com.keyduck.member.service;
 
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
-import com.keyduck.mapper.DataMapper;
+import com.keyduck.mapper.MemberMapper;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberGetDto;
@@ -41,7 +41,7 @@ public class MemberService implements UserDetailsService{
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	@Autowired
-	DataMapper dataMapper;
+	MemberMapper memberMapper;
 
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -118,9 +118,9 @@ public class MemberService implements UserDetailsService{
 		}
 
 
-	public MemberGetDto getMemberDetail() {
-		Member findmem = memberRepository.findById((long)1).orElse(null);
-		MemberGetDto returndata = dataMapper.toDto(findmem);
+	public MemberGetDto getMemberDetail(Long id) {
+		Member findmem = memberRepository.findById(id).orElse(null);
+		MemberGetDto returndata = memberMapper.toDto(findmem);
 		return returndata;
 	}
 

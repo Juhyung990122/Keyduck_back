@@ -42,11 +42,13 @@ public class MemberController {
 				
 	}
 
-	@GetMapping("/members")
-	public MemberGetDto getMembers(){
-		MemberGetDto members = memberService.getMemberDetail();
-
-		return members;
+	@GetMapping("/members/{mem_id}")
+	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id){
+		MemberGetDto members = memberService.getMemberDetail(mem_id);
+		if(members == null){
+			return new ResponseEntity<String>("No member",HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<MemberGetDto>(members,HttpStatus.OK);
 	}
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
