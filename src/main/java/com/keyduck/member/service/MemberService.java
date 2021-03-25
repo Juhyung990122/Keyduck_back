@@ -31,6 +31,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -117,6 +119,14 @@ public class MemberService implements UserDetailsService{
 		}
 		}
 
+	public List<MemberGetDto> getMembers(){
+		List<Member> members = memberRepository.findAll();
+		List<MemberGetDto> dto = new ArrayList<MemberGetDto>();
+		for(int i = 0; i < members.size(); i++ ){
+			dto.add(memberMapper.toDto(members.get(i)));
+		}
+		return dto;
+	}
 
 	public MemberGetDto getMemberDetail(Long id) {
 		Member findmem = memberRepository.findById(id).orElse(null);

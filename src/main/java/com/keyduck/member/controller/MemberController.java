@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -42,13 +43,19 @@ public class MemberController {
 				
 	}
 
+	@GetMapping("/members")
+	public ResponseEntity<?> getAllMembers(){
+		List<MemberGetDto> member = memberService.getMembers();
+		return new ResponseEntity<List<MemberGetDto>>(member,HttpStatus.OK);
+	}
+
 	@GetMapping("/members/{mem_id}")
 	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id){
-		MemberGetDto members = memberService.getMemberDetail(mem_id);
-		if(members == null){
+		MemberGetDto member = memberService.getMemberDetail(mem_id);
+		if(member == null){
 			return new ResponseEntity<String>("No member",HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<MemberGetDto>(members,HttpStatus.OK);
+		return new ResponseEntity<MemberGetDto>(member,HttpStatus.OK);
 	}
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
@@ -63,7 +70,7 @@ public class MemberController {
 		try {
 			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
 		}catch(IOException ex) {
-			logger.info("타입을 정의할 수 없습니다. ");
+			logger.info("타입을 정의할 수 없습니다.");
 		}
 		if (contentType == null) {
 			contentType = "application/octet-stream";
