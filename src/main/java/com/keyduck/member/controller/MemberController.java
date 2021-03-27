@@ -2,6 +2,7 @@ package com.keyduck.member.controller;
 
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
+import com.keyduck.member.dto.MemberDeleteDto;
 import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
 import com.keyduck.member.service.MemberService;
@@ -29,7 +30,8 @@ public class MemberController {
 	private final MemberService memberService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
+
+	// 회원 CRUD 로직
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
@@ -45,23 +47,36 @@ public class MemberController {
 
 	@GetMapping("/members")
 	public ResponseEntity<?> getAllMembers(){
-		List<MemberGetDto> member = memberService.getMembers();
-		return new ResponseEntity<List<MemberGetDto>>(member,HttpStatus.OK);
+		List<MemberGetDto> result = memberService.getMembers();
+		return new ResponseEntity<List<MemberGetDto>>(result,HttpStatus.OK);
 	}
 
 	@GetMapping("/members/{mem_id}")
 	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id){
-		MemberGetDto member = memberService.getMemberDetail(mem_id);
-		if(member == null){
-			return new ResponseEntity<String>("No member",HttpStatus.NOT_FOUND);
+		System.out.println(mem_id);
+		MemberGetDto result = memberService.getMemberDetail(mem_id);
+		if(result == null){
+			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<MemberGetDto>(member,HttpStatus.OK);
+		return new ResponseEntity<MemberGetDto>(result,HttpStatus.OK);
 	}
+
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
-		Member member = memberService.uploadFile(mem_id,req);
-		return new ResponseEntity<Member>(member, HttpStatus.OK);
+		Member result = memberService.uploadFile(mem_id,req);
+		return new ResponseEntity<Member>(result, HttpStatus.OK);
 	}
+
+	@DeleteMapping("members/leave")
+	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m){
+		String result = memberService.getLeaveMember(m.getMem_id());
+		if(result == null){
+			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(result, HttpStatus.OK);
+	}
+
+	// 이미지 처리 관련 로직
 	
 	@GetMapping("/uploads/{fileName}")
 	public ResponseEntity<Resource> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{

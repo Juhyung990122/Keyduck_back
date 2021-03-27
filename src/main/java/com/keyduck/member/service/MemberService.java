@@ -121,17 +121,29 @@ public class MemberService implements UserDetailsService{
 
 	public List<MemberGetDto> getMembers(){
 		List<Member> members = memberRepository.findAll();
-		List<MemberGetDto> dto = new ArrayList<MemberGetDto>();
+		List<MemberGetDto> memList_dto = new ArrayList<MemberGetDto>();
 		for(int i = 0; i < members.size(); i++ ){
-			dto.add(memberMapper.toDto(members.get(i)));
+			memList_dto.add(memberMapper.toDto(members.get(i)));
 		}
-		return dto;
+		return memList_dto;
 	}
 
 	public MemberGetDto getMemberDetail(Long id) {
-		Member findmem = memberRepository.findById(id).orElse(null);
-		MemberGetDto returndata = memberMapper.toDto(findmem);
-		return returndata;
+		Member findMem = memberRepository.findById(id).orElse(null);
+		if(findMem == null){
+			return null;
+		}
+		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
+		return findMem_dto;
+	}
+
+	public String getLeaveMember(Long id){
+		Member findMem = memberRepository.findById(id).orElse(null);
+		if(findMem == null){
+			return null;
+		}
+		memberRepository.delete(findMem);
+		return "성공적으로 탈퇴되었습니다";
 	}
 
 }
