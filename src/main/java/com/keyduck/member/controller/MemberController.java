@@ -1,11 +1,11 @@
 package com.keyduck.member.controller;
 
-import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberDeleteDto;
 import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
 import com.keyduck.member.service.MemberService;
+import com.keyduck.result.ResponseService;
 import com.keyduck.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -31,62 +31,62 @@ public class MemberController {
 	private final MemberService memberService;
 	private final JwtTokenProvider jwtTokenProvider;
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	private final ResponseService responseService;
 
 	// 회원 CRUD 로직
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
 		if(newMember == null){
-			return new ResponseEntity<String>("이미 가입된 회원입니다.",HttpStatus.CONFLICT);
+			return new ResponseEntity<>(responseService.getFailResult("이미 가입된 회원입니다."),HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<MemberCreateDto>(newMember, HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getSingleResult(newMember),HttpStatus.OK);
 	}
 	
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) throws Exception {
 		String token = memberService.signin(m,jwtTokenProvider);
 		if(token == null){
-			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseService.getFailResult("가입하지 않은 회원입니다."), HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(token, HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getSingleResult(token), HttpStatus.OK);
 				
 	}
 
 	@GetMapping("/members")
 	public ResponseEntity<?> getAllMembers(){
 		List<MemberGetDto> result = memberService.getMembers();
-		return new ResponseEntity<List<MemberGetDto>>(result,HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
 	}
 
 	@GetMapping("/members/{mem_id}")
 	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id){
-		System.out.println(mem_id);
 		MemberGetDto result = memberService.getMemberDetail(mem_id);
 		if(result == null){
-			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseService.getFailResult("해당 회원을 찾을 수 없습니다."),HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<MemberGetDto>(result,HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
 	}
 
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
-		Member result = memberService.uploadFile(mem_id,req);
-		return new ResponseEntity<Member>(result, HttpStatus.OK);
+		MemberGetDto result = memberService.uploadFile(mem_id,req);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	// 지금은 JSON으로 mem_id에 아이디값 담아서 보내는 형식 - 링크에 포함시키는게 더 편한지 물어볼 것.
 	@DeleteMapping("members/leave")
 	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m){
 		String result = memberService.getLeaveMember(m.getMem_id());
 		if(result == null){
-			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(responseService.getFailResult("해당 회원을 찾을 수 없습니다."),HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(result, HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
 	}
 
 	// 이미지 처리 관련 로직
-	
 	@GetMapping("/uploads/{fileName}")
-	public ResponseEntity<Resource> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{
+	public ResponseEntity<?> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{
 		Resource resource = memberService.downloadFile(fileName,request);
 		String contentType = null;
 		try {
@@ -100,7 +100,7 @@ public class MemberController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType(contentType));
-		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+		return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
 				
 	}
 	

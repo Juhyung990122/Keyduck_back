@@ -15,4 +15,5 @@ public class MemberGetDto {
 	private String nickname;
 	private MemberRole role;
 	private MemberType type;
+	private String profile;
 }

@@ -91,7 +91,7 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public Member uploadFile(Long mem_id, MultipartFile req) throws IOException {
+	public MemberGetDto uploadFile(Long mem_id, MultipartFile req) throws IOException {
 		Member member  = memberRepository.findById(mem_id).orElse(null);
 		String filename = StringUtils.cleanPath(req.getOriginalFilename());
 		Path targetLocation = this.fileLocation.resolve(filename);
@@ -104,7 +104,8 @@ public class MemberService implements UserDetailsService{
 
 		member.setProfile(profile_url);
 		memberRepository.save(member);
-		return member;
+		MemberGetDto mem_dto = memberMapper.toDto(member);
+		return mem_dto;
 	}
 
 	public Resource downloadFile(String fileName,HttpServletRequest request) throws IOException {
