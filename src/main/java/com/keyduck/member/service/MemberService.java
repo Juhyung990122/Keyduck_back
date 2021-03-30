@@ -33,7 +33,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -68,23 +67,27 @@ public class MemberService implements UserDetailsService{
 
 
 	public MemberCreateDto signup(MemberCreateDto newmember) {
+		if(memberRepository.findByEmail(newmember.getEmail()).orElse(null) != null){
+			return null;
+		}
 		String rawPassword = newmember.getPassword();
-		String encodedPassword = passwordEncoder.encode((CharSequence)rawPassword);
+		String encodedPassword = passwordEncoder.encode("{noop}"+(CharSequence)rawPassword);
 		newmember.setPassword(encodedPassword);
 		memberRepository.save(newmember.toEntity());
-
 		return newmember;
 
 	}
 
 
-	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) {
-		//null 예외처리 해줄 것.
-		Optional<Member> member = memberRepository.findByEmail(loginmember.getEmail());
-		//if(! passwordEncoder.matches(loginmember.getPassword(),member.getPassword()){
-			//비번 불일치 예외처리 해줄 것.
-		//}
-		return jwtTokenProvider.createToken(member.get().getUsername(), member.get().getRole());
+	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) throws Exception{
+		Member member = memberRepository.findByEmail(loginmember.getEmail()).orElse(null);
+		if(member == null){
+			return null;
+		}
+		if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
+			return "올바른 비밀번호가 아닙니다.";
+		}
+		return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
 	}
 
 

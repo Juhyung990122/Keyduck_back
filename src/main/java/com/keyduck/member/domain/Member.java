@@ -24,7 +24,7 @@ public class Member implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable = false)
 	private Long MemId;
-	
+
 	String nickname;
 	@Column(unique = true)
 	String email;

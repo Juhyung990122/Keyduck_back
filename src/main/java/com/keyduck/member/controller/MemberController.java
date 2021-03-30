@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,14 +34,20 @@ public class MemberController {
 
 	// 회원 CRUD 로직
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(@RequestBody MemberCreateDto m) {
+	public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
+		if(newMember == null){
+			return new ResponseEntity<String>("이미 가입된 회원입니다.",HttpStatus.CONFLICT);
+		}
 		return new ResponseEntity<MemberCreateDto>(newMember, HttpStatus.OK);
 	}
 	
 	@PostMapping("/signin")
-	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) {
+	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) throws Exception {
 		String token = memberService.signin(m,jwtTokenProvider);
+		if(token == null){
+			return new ResponseEntity<String>("해당 멤버를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<String>(token, HttpStatus.OK);
 				
 	}
