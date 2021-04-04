@@ -80,10 +80,7 @@ public class MemberService implements UserDetailsService{
 
 
 	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) throws Exception{
-		Member member = memberRepository.findByEmail(loginmember.getEmail()).orElse(null);
-		if(member == null){
-			return null;
-		}
+		Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(Exception::new);
 		if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
 			return "올바른 비밀번호가 아닙니다.";
 		}
@@ -91,8 +88,8 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public MemberGetDto uploadFile(Long mem_id, MultipartFile req) throws IOException {
-		Member member  = memberRepository.findById(mem_id).orElse(null);
+	public MemberGetDto uploadFile(Long mem_id, MultipartFile req) throws Exception {
+		Member member  = memberRepository.findById(mem_id).orElseThrow(Exception::new);
 		String filename = StringUtils.cleanPath(req.getOriginalFilename());
 		Path targetLocation = this.fileLocation.resolve(filename);
 		Files.copy(req.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
@@ -132,20 +129,14 @@ public class MemberService implements UserDetailsService{
 		return memList_dto;
 	}
 
-	public MemberGetDto getMemberDetail(Long id) {
-		Member findMem = memberRepository.findById(id).orElse(null);
-		if(findMem == null){
-			return null;
-		}
+	public MemberGetDto getMemberDetail(Long id) throws Exception {
+		Member findMem = memberRepository.findById(id).orElseThrow(Exception::new);
 		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
 		return findMem_dto;
 	}
 
-	public String getLeaveMember(Long id){
-		Member findMem = memberRepository.findById(id).orElse(null);
-		if(findMem == null){
-			return null;
-		}
+	public String getLeaveMember(Long id) throws Exception {
+		Member findMem = memberRepository.findById(id).orElseThrow(Exception::new);
 		memberRepository.delete(findMem);
 		return "성공적으로 탈퇴되었습니다";
 	}

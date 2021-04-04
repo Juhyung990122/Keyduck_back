@@ -37,18 +37,12 @@ public class MemberController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
-		if(newMember == null){
-			return new ResponseEntity<>(responseService.getFailResult("이미 가입된 회원입니다."),HttpStatus.CONFLICT);
-		}
 		return new ResponseEntity<>(responseService.getSingleResult(newMember),HttpStatus.OK);
 	}
 	
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) throws Exception {
 		String token = memberService.signin(m,jwtTokenProvider);
-		if(token == null){
-			return new ResponseEntity<>(responseService.getFailResult("가입하지 않은 회원입니다."), HttpStatus.NOT_FOUND);
-		}
 		return new ResponseEntity<>(responseService.getSingleResult(token), HttpStatus.OK);
 				
 	}
@@ -60,33 +54,26 @@ public class MemberController {
 	}
 
 	@GetMapping("/members/{mem_id}")
-	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id){
-		MemberGetDto result = memberService.getMemberDetail(mem_id);
-		if(result == null){
-			return new ResponseEntity<>(responseService.getFailResult("해당 회원을 찾을 수 없습니다."),HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
+	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id) throws Exception {
+		return new ResponseEntity<>(responseService.getSingleResult(memberService.getMemberDetail(mem_id)),HttpStatus.OK);
 	}
 
 	@PatchMapping("members/{mem_id}/editProfile")
-	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws IOException{
+	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws Exception {
 		MemberGetDto result = memberService.uploadFile(mem_id,req);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	// 지금은 JSON으로 mem_id에 아이디값 담아서 보내는 형식 - 링크에 포함시키는게 더 편한지 물어볼 것.
 	@DeleteMapping("members/leave")
-	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m){
+	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m) throws Exception {
 		String result = memberService.getLeaveMember(m.getMem_id());
-		if(result == null){
-			return new ResponseEntity<>(responseService.getFailResult("해당 회원을 찾을 수 없습니다."),HttpStatus.NOT_FOUND);
-		}
 		return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
 	}
 
 	// 이미지 처리 관련 로직
 	@GetMapping("/uploads/{fileName}")
-	public ResponseEntity<?> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{
+	public ResponseEntity<Resource> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{
 		Resource resource = memberService.downloadFile(fileName,request);
 		String contentType = null;
 		try {
@@ -100,7 +87,7 @@ public class MemberController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType(contentType));
-		return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
+		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
 				
 	}
 	
