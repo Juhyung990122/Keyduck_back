@@ -1,6 +1,7 @@
 package com.keyduck.member.service;
 
 
+import com.keyduck.exception.CustomException;
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
 import com.keyduck.mapper.MemberMapper;
@@ -33,6 +34,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -62,29 +64,47 @@ public class MemberService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String MemId) throws UsernameNotFoundException {
 		return memberRepository.findById(Long.valueOf(MemId))
-				.orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+				.orElseThrow(() -> new UsernameNotFoundException("해당 회원을 찾을 수 없습니다."));
 	}
 
 
 	public MemberCreateDto signup(MemberCreateDto newmember) {
-		if(memberRepository.findByEmail(newmember.getEmail()).orElse(null) != null){
-			return null;
-		}
+		memberRepository.findByEmail(newmember.getEmail()).orElseThrow(()->new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 		String rawPassword = newmember.getPassword();
 		String encodedPassword = passwordEncoder.encode("{noop}"+(CharSequence)rawPassword);
 		newmember.setPassword(encodedPassword);
 		memberRepository.save(newmember.toEntity());
 		return newmember;
-
 	}
 
 
-	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider) throws Exception{
-		Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(Exception::new);
-		if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
-			return "올바른 비밀번호가 아닙니다.";
+	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider){
+			Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+			if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
+				throw new CustomException("올바른 패스워드가 아닙니다.");
+			}
+			return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+	}
+
+	public List<MemberGetDto> getMembers(){
+		List<Member> members = memberRepository.findAll();
+		List<MemberGetDto> memList_dto = new ArrayList<MemberGetDto>();
+		for(int i = 0; i < members.size(); i++ ){
+			memList_dto.add(memberMapper.toDto(members.get(i)));
 		}
-		return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+		return memList_dto;
+	}
+
+	public MemberGetDto getMemberDetail(Long id) {
+		Member findMem = memberRepository.findById(id).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
+		return findMem_dto;
+	}
+
+	public String getLeaveMember(Long id) throws Exception {
+		Member findMem = memberRepository.findById(id).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		memberRepository.delete(findMem);
+		return "성공적으로 탈퇴되었습니다";
 	}
 
 
@@ -118,27 +138,5 @@ public class MemberService implements UserDetailsService{
 		}catch(MalformedURLException e) {
 			throw new FileDownloadException(fileName+"파일을 찾을 수 없습니다.",e);
 		}
-		}
-
-	public List<MemberGetDto> getMembers(){
-		List<Member> members = memberRepository.findAll();
-		List<MemberGetDto> memList_dto = new ArrayList<MemberGetDto>();
-		for(int i = 0; i < members.size(); i++ ){
-			memList_dto.add(memberMapper.toDto(members.get(i)));
-		}
-		return memList_dto;
 	}
-
-	public MemberGetDto getMemberDetail(Long id) throws Exception {
-		Member findMem = memberRepository.findById(id).orElseThrow(Exception::new);
-		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
-		return findMem_dto;
-	}
-
-	public String getLeaveMember(Long id) throws Exception {
-		Member findMem = memberRepository.findById(id).orElseThrow(Exception::new);
-		memberRepository.delete(findMem);
-		return "성공적으로 탈퇴되었습니다";
-	}
-
 }

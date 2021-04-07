@@ -54,11 +54,11 @@ public class ResponseService {
         return result;
     }
     //데이터없이 결과만 처리(실패시)
-    public CommonResult getFailResult(){
+    public CommonResult getFailResult(int code,String msg){
         CommonResult result = new CommonResult();
         result.setSuccess(false);
-        result.setCode(CommonResponse.FAIL.getCode());
-        result.setMsg(CommonResponse.FAIL.getMsg());
+        result.setCode(code);
+        result.setMsg(msg);
         return result;
     }
 
