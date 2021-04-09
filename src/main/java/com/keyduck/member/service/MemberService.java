@@ -69,7 +69,7 @@ public class MemberService implements UserDetailsService{
 
 
 	public MemberCreateDto signup(MemberCreateDto newmember) {
-		memberRepository.findByEmail(newmember.getEmail()).orElseThrow(()->new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		memberRepository.findByEmail(newmember.getEmail()).ifPresent(e -> { throw new CustomException("이미 가입한 회원입니다.");});
 		String rawPassword = newmember.getPassword();
 		String encodedPassword = passwordEncoder.encode("{noop}"+(CharSequence)rawPassword);
 		newmember.setPassword(encodedPassword);
@@ -101,8 +101,8 @@ public class MemberService implements UserDetailsService{
 		return findMem_dto;
 	}
 
-	public String getLeaveMember(Long id) throws Exception {
-		Member findMem = memberRepository.findById(id).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+	public String getLeaveMember(String email) throws Exception {
+		Member findMem = memberRepository.findByEmail(email).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 		memberRepository.delete(findMem);
 		return "성공적으로 탈퇴되었습니다";
 	}

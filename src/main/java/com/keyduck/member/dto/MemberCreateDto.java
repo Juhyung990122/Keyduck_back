@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
 import com.keyduck.member.domain.MemberType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberCreateDto {
 
 	@NotEmpty

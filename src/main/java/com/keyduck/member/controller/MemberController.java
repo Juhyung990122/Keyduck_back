@@ -67,7 +67,7 @@ public class MemberController {
 	// 지금은 JSON으로 mem_id에 아이디값 담아서 보내는 형식 - 링크에 포함시키는게 더 편한지 물어볼 것.
 	@DeleteMapping("members/leave")
 	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m) throws Exception {
-		String result = memberService.getLeaveMember(m.getMem_id());
+		String result = memberService.getLeaveMember(m.getEmail());
 		return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
 	}
 
