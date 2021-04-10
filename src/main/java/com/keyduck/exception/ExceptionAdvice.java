@@ -1,6 +1,5 @@
-package com.keyduck.advice;
+package com.keyduck.exception;
 
-import com.keyduck.exception.CustomException;
 import com.keyduck.result.CommonResult;
 import com.keyduck.result.ResponseService;
 import lombok.RequiredArgsConstructor;

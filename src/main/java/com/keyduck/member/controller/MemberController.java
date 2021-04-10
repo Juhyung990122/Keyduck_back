@@ -7,6 +7,8 @@ import com.keyduck.member.dto.MemberLoginDto;
 import com.keyduck.member.service.MemberService;
 import com.keyduck.result.ResponseService;
 import com.keyduck.security.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1")
 @RequiredArgsConstructor
+@Api(tags = "Member", value = "KeyduckController v1")
 public class MemberController {
 	
 	private final MemberService memberService;
@@ -34,37 +37,40 @@ public class MemberController {
 	private final ResponseService responseService;
 
 	// 회원 CRUD 로직
+	@ApiOperation(value = "회원 가입", notes = "신규 회원일 경우 가입을 진행합니다.")
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
 		return new ResponseEntity<>(responseService.getSingleResult(newMember),HttpStatus.OK);
 	}
-	
+
+	@ApiOperation(value = "로그인", notes = "회원이라면 로그인합니다.")
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) throws Exception {
 		String token = memberService.signin(m,jwtTokenProvider);
 		return new ResponseEntity<>(responseService.getSingleResult(token), HttpStatus.OK);
 				
 	}
-
+	@ApiOperation(value = "전체 멤버 조회", notes = "전체 멤버를 조회합니다.")
 	@GetMapping("/members")
 	public ResponseEntity<?> getAllMembers(){
 		List<MemberGetDto> result = memberService.getMembers();
 		return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
 	}
-
+	@ApiOperation(value = "특정 멤버 조회", notes = "특정멤버를 조회합니다.")
 	@GetMapping("/members/{mem_id}")
 	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id) throws Exception {
 		return new ResponseEntity<>(responseService.getSingleResult(memberService.getMemberDetail(mem_id)),HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "프로필 사진 변경", notes = "프로필 사진을 변경합니다.")
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws Exception {
 		MemberGetDto result = memberService.uploadFile(mem_id,req);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	// 지금은 JSON으로 mem_id에 아이디값 담아서 보내는 형식 - 링크에 포함시키는게 더 편한지 물어볼 것.
+	@ApiOperation(value = "멤버 탈퇴", notes = "멤버를 삭제합니다.")
 	@DeleteMapping("members/leave")
 	public ResponseEntity<?> leaveMember(@RequestBody MemberDeleteDto m) throws Exception {
 		String result = memberService.getLeaveMember(m.getEmail());
