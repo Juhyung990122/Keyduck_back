@@ -106,6 +106,7 @@ public class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"signintest@naver.com\",\"password\":\"1212\"}"))
                 .andExpect(status().isOk());
+        memberRepository.delete(member);
     }
     @Test
     public void leave() throws Exception{
