@@ -1,7 +1,6 @@
 package com.keyduck.member.service;
 
 
-import com.keyduck.exception.CustomException;
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
 import com.keyduck.mapper.MemberMapper;
@@ -69,7 +68,7 @@ public class MemberService implements UserDetailsService{
 
 
 	public MemberCreateDto signup(MemberCreateDto newmember) {
-		memberRepository.findByEmail(newmember.getEmail()).ifPresent(e -> { throw new CustomException("이미 가입한 회원입니다.");});
+		memberRepository.findByEmail(newmember.getEmail()).ifPresent(e -> { throw new RuntimeException("이미 가입한 회원입니다.");});
 		String rawPassword = newmember.getPassword();
 		String encodedPassword = passwordEncoder.encode("{noop}"+(CharSequence)rawPassword);
 		newmember.setPassword(encodedPassword);
@@ -81,7 +80,7 @@ public class MemberService implements UserDetailsService{
 	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
-				throw new CustomException("올바른 패스워드가 아닙니다.");
+				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}
 			return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
 	}
