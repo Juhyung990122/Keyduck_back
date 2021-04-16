@@ -1,21 +1,13 @@
 package com.keyduck.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.web.servlet.AuthorizeRequestsDsl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AnyRequestMatcher;
-
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 
 @Configuration
@@ -42,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		// 접근 설정 
 		.authorizeRequests()
 		 	.antMatchers("/*/signin","/*/signup").permitAll()
-		 	.antMatchers(HttpMethod.GET,"/").hasRole("USER")
+		 	.antMatchers("/*").hasRole("USER")
 		.and()
 		// 인터셉터(필) 설정 
 		.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

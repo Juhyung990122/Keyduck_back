@@ -23,6 +23,12 @@ public class ExceptionAdvice {
       return responseService.getFailResult(400,"올바르지 않은 형식입니다.");
    }
 
+   @ExceptionHandler(RuntimeException.class)
+   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+   protected CommonResult RuntimeException(HttpServletRequest request, RuntimeException e){
+      return responseService.getFailResult(500,e.getMessage());
+   }
+
    // 메세지에 변화를 줄 예외
    @ExceptionHandler(NoSuchElementException.class)
    @ResponseStatus(HttpStatus.NOT_FOUND)

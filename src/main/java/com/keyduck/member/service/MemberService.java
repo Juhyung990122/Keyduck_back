@@ -68,7 +68,10 @@ public class MemberService implements UserDetailsService{
 
 
 	public MemberCreateDto signup(MemberCreateDto newmember) {
-		memberRepository.findByEmail(newmember.getEmail()).ifPresent(e -> { throw new RuntimeException("이미 가입한 회원입니다.");});
+		memberRepository.findByEmail(newmember.getEmail()).ifPresent(e ->
+		{
+			throw new RuntimeException("이미 가입한 회원입니다.");
+		});
 		String rawPassword = newmember.getPassword();
 		String encodedPassword = passwordEncoder.encode("{noop}"+(CharSequence)rawPassword);
 		newmember.setPassword(encodedPassword);
