@@ -37,6 +37,7 @@ public class Member implements UserDetails{
 	private MemberRole role;
 	
 	private String profile;
+	private String likes;
 	
 	public void setProfile(String profile){
 		this.profile = profile;

@@ -23,7 +23,6 @@ public class Keyboard {
     private Connection connect;
     private boolean hotswap;
     private Integer price;
-    private Frame frame;
     private boolean led;
     private Integer arrangement;
     private Integer weight;
@@ -36,5 +35,6 @@ public class Keyboard {
     private String keycap;
     private String keycapImprint;
     private String keycapProfile;
+    private String keyword;
 
 }
