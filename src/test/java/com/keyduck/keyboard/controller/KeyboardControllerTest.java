@@ -23,7 +23,7 @@ public class KeyboardControllerTest {
     }
 
     @Test
-    public void searchKeyboard() {
+    public void Keyboard_추가() {
 
     }
 }
