@@ -1,25 +1,11 @@
-package com.keyduck.keyboard.domain;
+package com.keyduck.keyboard.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "keyboard")
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Keyboard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false)
-    private Long keyId;
-    //키보드
-    @Column(unique = true)
+@RequiredArgsConstructor
+public class KeyboardCreateDto {
     private String model;
     private String brand;
     private String connect;
