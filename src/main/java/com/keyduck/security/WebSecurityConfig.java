@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
 		// 접근 설정 
 		.authorizeRequests()
-		 	.antMatchers("/*/signin","/*/signup").permitAll()
+		 	.antMatchers("/*/signin","/*/signup","/v1/swagger-ui.html", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 		 	.antMatchers("/*").hasRole("USER")
 		.and()
 		// 인터셉터(필) 설정 
