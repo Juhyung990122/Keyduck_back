@@ -60,7 +60,8 @@ public class MemberController {
 	@ApiOperation(value = "특정 멤버 조회", notes = "특정멤버를 조회합니다.")
 	@GetMapping("/members/{mem_id}")
 	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id) throws Exception {
-		return new ResponseEntity<>(responseService.getSingleResult(memberService.getMemberDetail(mem_id)),HttpStatus.OK);
+		MemberGetDto result = memberService.getMemberDetail(mem_id);
+		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "프로필 사진 변경", notes = "프로필 사진을 변경합니다.")

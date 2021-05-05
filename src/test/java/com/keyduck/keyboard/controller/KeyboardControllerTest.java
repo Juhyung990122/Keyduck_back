@@ -42,7 +42,7 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_전체조회() throws Exception{
-        mvc.perform(get("v1/keyboards/")
+        mvc.perform(get("/v1/keyboards/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -50,7 +50,7 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_디테일조회() throws Exception{
-        mvc.perform(get("v1/keyboards/테스트키보드")
+        mvc.perform(get("/v1/keyboards/테스트키보드/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -64,6 +64,7 @@ public class KeyboardControllerTest {
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
+
     }
 
     @Test
