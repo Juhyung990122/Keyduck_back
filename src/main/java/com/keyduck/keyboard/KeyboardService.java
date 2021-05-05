@@ -2,6 +2,7 @@ package com.keyduck.keyboard;
 
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
+import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,11 @@ public class KeyboardService {
     @Autowired
     KeyboardMapper keyboardMapper;
 
-    public Keyboard addKeyboards(KeyboardCreateDto keyboard){
-        Keyboard keyboardInfo = keyboardMapper.toEntity(keyboard);
-        return keyboardRepository.save(keyboardInfo);
+    public KeyboardGetDto addKeyboards(KeyboardCreateDto keyboard){
+        Keyboard keyboardInfo = keyboard.toEntity();
+        keyboardRepository.save(keyboardInfo);
+        return keyboardMapper.toDto(keyboardInfo);
     }
+
 
 }

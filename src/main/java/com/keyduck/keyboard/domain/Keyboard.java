@@ -1,14 +1,12 @@
 package com.keyduck.keyboard.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "keyboard")
+@Builder(builderMethodName = "KeyboardBuilder")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -1,5 +1,6 @@
 package com.keyduck.keyboard.dto;
 
+import com.keyduck.keyboard.domain.Keyboard;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -24,5 +25,26 @@ public class KeyboardCreateDto {
     private String keycapImprint;
     private String keycapProfile;
     private String keyword;
+
+    public Keyboard toEntity() {
+        return Keyboard.KeyboardBuilder()
+                .model(model)
+                .brand(brand)
+                .connect(connect)
+                .hotswap(hotswap)
+                .price(price)
+                .led(led)
+                .arrangement(arrangement)
+                .weight(weight)
+                .cable(cable)
+                .switchBrand(switchBrand)
+                .switchColor(switchColor)
+                .photo(photo)
+                .keycap(keycap)
+                .keycapImprint(keycapImprint)
+                .keycapProfile(keycapProfile)
+                .keyword(keyword)
+                .build();
+    }
 
 }
