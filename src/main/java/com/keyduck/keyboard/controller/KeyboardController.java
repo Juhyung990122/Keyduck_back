@@ -27,9 +27,9 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }
 
-    @GetMapping("/keyboards/{model}")
-    public ResponseEntity<?> getKeyboardDetail(@PathVariable String model){
-        KeyboardGetDto result =  keyboardService.getKeyboardDetail(model);
+    @GetMapping("/keyboards/{keyId}")
+    public ResponseEntity<?> getKeyboardDetail(@PathVariable String keyId){
+        KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyId);
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
@@ -39,9 +39,9 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
-    @DeleteMapping("/keyboards/{model}")
-    public ResponseEntity<?> deleteKeyboard(@PathVariable String model){
-        String result = keyboardService.deleteKeyboard(model);
+    @DeleteMapping("/keyboards/{keyId}")
+    public ResponseEntity<?> deleteKeyboard(@PathVariable String keyId){
+        String result = keyboardService.deleteKeyboard(keyId);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
