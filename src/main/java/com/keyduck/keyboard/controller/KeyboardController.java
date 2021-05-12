@@ -1,8 +1,10 @@
 package com.keyduck.keyboard.controller;
 
-import com.keyduck.keyboard.KeyboardService;
+import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
+import com.keyduck.keyboard.dto.KeyboardSearchDto;
+import com.keyduck.keyboard.service.KeyboardService;
 import com.keyduck.result.ResponseService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,11 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
+    @PostMapping("/keyboards")
+    public ResponseEntity<?> searchKeyboard(@RequestBody KeyboardSearchDto searchKeywords){
+        List<Keyboard> result = keyboardService.searchKeyboard(searchKeywords);
+        return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
+    }
 
 
 }

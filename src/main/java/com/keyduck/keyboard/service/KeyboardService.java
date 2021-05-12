@@ -1,12 +1,15 @@
-package com.keyduck.keyboard;
+package com.keyduck.keyboard.service;
 
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
+import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.keyboard.repository.KeyboardSpecification;
 import com.keyduck.mapper.KeyboardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,9 +38,6 @@ public class KeyboardService {
 
     public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard){
         Keyboard keyboardInfo = keyboard.toEntity();
-        System.out.println(
-                keyboardInfo.getBrand()
-        );
         keyboardRepository.save(keyboardInfo);
         return keyboard;
     }
@@ -47,7 +47,10 @@ public class KeyboardService {
         return "success";
     }
 
-
-
+    public List<Keyboard> searchKeyboard(KeyboardSearchDto searchKeywords){
+        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeywords));
+        List<Keyboard> keyboards = keyboardRepository.findAll(spec);
+        return keyboards;
+    }
 
 }
