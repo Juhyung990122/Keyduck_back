@@ -11,7 +11,7 @@ public class KeyboardGetDto {
     private String model;
     private String brand;
     private String connect;
-    private boolean hotswap;
+    private Integer hotswap;
     private Integer price;
     private String led;
     private Integer arrangement;

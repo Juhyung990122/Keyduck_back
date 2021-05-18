@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Keyboard {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
@@ -21,7 +22,7 @@ public class Keyboard {
     private String model;
     private String brand;
     private String connect;
-    private boolean hotswap;
+    private String hotswap;
     private Integer price;
     private String led;
     private Integer arrangement;
