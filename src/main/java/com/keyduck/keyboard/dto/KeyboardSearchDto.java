@@ -10,8 +10,9 @@ public class KeyboardSearchDto {
     private String brand;
     private String connect;
     private String hotswap;
-    private String price;
-    private String arrangement;
+    private int startPrice;
+    private int endPrice;
+    private int arrangement;
     private String keycapProfile;
     private String switchBrand;
 }

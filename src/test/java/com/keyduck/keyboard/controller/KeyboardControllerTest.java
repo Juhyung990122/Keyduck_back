@@ -50,8 +50,10 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_디테일조회() throws Exception{
-        mvc.perform(get("/v1/keyboards/테스트키보드/")
-                .contentType(MediaType.APPLICATION_JSON))
+        String successData = "테스트키보드";
+        mvc.perform(get("/v1/keyboards/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -61,7 +63,7 @@ public class KeyboardControllerTest {
         ///{"model": "테스트키보드", "brand": "ABKO", "connect": "유선", "switchBrand":"오테뮤", "switchColor":"청축", "hotswap": 0, "price": 12000, "keycap": "이중사출 키캡", "keycapImprint": "한글 정각", "keycapProfile": "default", "led": "레인보우 백라이트", "arrangement": 104,"weight": 1050, "cable": "찰탁식", "photo": "default","keyword":"default"}
 
 
-        String successData = "{\"model\": \"테스트키보드\", \"brand\": \"ABKO\", \"connect\": \"유선\", \"switchBrand\": \"오테뮤\", \"switchColor\": \"청축\", \"hotswap\": 0, \"price\": 12000, \"keycap\": \"이중사출 키캡\", \"keycapImprint\": \"한글 정각\", \"keycapProfile\": \"default\", \"led\": \"레인보우 백라이트\", \"arrangement\": 104, \"weight\": 1050, \"cable\": \"찰탁식\", \"photo\": \"default\",\"keyword\":\"default\"}";
+        String successData = "{\"model\": \"테스트키보드2\", \"brand\": \"ABKKO\", \"connect\": \"유선\", \"switchBrand\": \"오테뮤\", \"switchColor\": \"청축\", \"hotswap\": 0, \"price\": 12000, \"keycap\": \"이중사출 키캡\", \"keycapImprint\": \"한글 정각\", \"keycapProfile\": \"default\", \"led\": \"레인보우 백라이트\", \"arrangement\": 104, \"weight\": 1050, \"cable\": \"찰탁식\", \"photo\": \"default\",\"keyword\":\"default\"}";
         mvc.perform(post("/v1/keyboards/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
@@ -72,7 +74,7 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_삭제() throws Exception{
-        String successData = "{\"model\":\"테스트키보드\"}";
+        String successData = "테스트키보드";
         mvc.perform(delete("/v1/keyboards/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
@@ -84,8 +86,8 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_검색() throws Exception{
-        String successDataKeyword = "{\"keyword\" : [\"brand\":\"로지텍\"] }";
-        String  successDataKeywords = "{\"keyword\" : [\"brand\",\"로지텍\",\"connect\":\"유선\"]}";
+        String successDataKeyword = "{\"brand\":\"ABKO\"}";
+        String  successDataKeywords = "{\"brand\": \"ABKO\", \"connect\": \"유선\"}";
 
         mvc.perform(post("/v1/keyboards/")
                 .contentType(MediaType.APPLICATION_JSON)

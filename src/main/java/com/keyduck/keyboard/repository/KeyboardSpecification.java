@@ -43,12 +43,12 @@ public class KeyboardSpecification {
             predicate.add(builder.like(root.get("keycapProfile"), "%"+(String)params.getKeycapProfile()+"%"));
         }
 
-        if (params.getArrangement() != null && !params.getArrangement().equals("")) {
-            predicate.add(builder.like(root.get("arrangement"), "%"+params.getArrangement()+"%"));
+        if (params.getArrangement() != 0) {
+            predicate.add(builder.equal(root.get("arrangement"), Integer.valueOf(params.getArrangement())));
         }
 
-        if (params.getPrice() != null && !params.getPrice().equals("")) {
-            predicate.add(builder.between(root.get("price"),root.get("startPrice"),root.get("endPrice")));
+        if (params.getStartPrice() != 0 && params.getEndPrice() != 0) {
+            predicate.add(builder.between(root.get("price"),Integer.valueOf(params.getStartPrice()),Integer.valueOf(params.getEndPrice())));
         }
 
         return predicate;

@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +30,9 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }
 
-    @GetMapping("/keyboards/{keyId}")
-    public ResponseEntity<?> getKeyboardDetail(@PathVariable String keyId){
-        KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyId);
+    @GetMapping("/keyboards/detail")
+    public ResponseEntity<?> getKeyboardDetail(@RequestBody String model){
+        KeyboardGetDto result =  keyboardService.getKeyboardDetail(model);
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
@@ -41,9 +42,9 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
-    @DeleteMapping("/keyboards/{keyId}")
-    public ResponseEntity<?> deleteKeyboard(@PathVariable String keyId){
-        String result = keyboardService.deleteKeyboard(keyId);
+    @DeleteMapping("/keyboards/{model}")
+    public ResponseEntity<?> deleteKeyboard( @RequestBody String model){
+        String result = keyboardService.deleteKeyboard(model);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
