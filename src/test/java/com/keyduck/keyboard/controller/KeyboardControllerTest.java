@@ -50,7 +50,7 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_디테일조회() throws Exception{
-        String successData = "테스트키보드";
+        String successData = "테스트키보드1";
         mvc.perform(get("/v1/keyboards/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
