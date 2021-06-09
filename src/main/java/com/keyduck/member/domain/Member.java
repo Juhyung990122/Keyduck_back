@@ -23,7 +23,7 @@ public class Member implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable = false)
-	private Long MemId;
+	private Long memberId;
 
 	String nickname;
 	@Column(unique = true)
@@ -37,7 +37,6 @@ public class Member implements UserDetails{
 	private MemberRole role;
 	
 	private String profile;
-	private String likes;
 	
 	public void setProfile(String profile){
 		this.profile = profile;
@@ -45,7 +44,7 @@ public class Member implements UserDetails{
 	
 	@Override
 	public String getUsername() {
-		return this.MemId.toString();
+		return this.memberId.toString();
 	}
 
 	

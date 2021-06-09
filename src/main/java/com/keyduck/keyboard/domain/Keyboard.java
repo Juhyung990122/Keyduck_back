@@ -16,7 +16,7 @@ public class Keyboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    private Long keyId;
+    private Long keyboardId;
     //키보드
     @Column(unique = true)
     private String model;

@@ -61,8 +61,8 @@ public class MemberService implements UserDetailsService{
 
 
 	@Override
-	public UserDetails loadUserByUsername(String MemId) throws UsernameNotFoundException {
-		return memberRepository.findById(Long.valueOf(MemId))
+	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
+		return memberRepository.findById(Long.valueOf(memberId))
 				.orElseThrow(() -> new UsernameNotFoundException("해당 회원을 찾을 수 없습니다."));
 	}
 
@@ -99,8 +99,8 @@ public class MemberService implements UserDetailsService{
 		return memList_dto;
 	}
 
-	public MemberGetDto getMemberDetail(Long id) {
-		Member findMem = memberRepository.findById(id).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+	public MemberGetDto getMemberDetail(Long memberId) {
+		Member findMem = memberRepository.findById(memberId).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
 		return findMem_dto;
 	}
@@ -112,8 +112,8 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public MemberGetDto uploadFile(Long mem_id, MultipartFile req) throws Exception {
-		Member member  = memberRepository.findById(mem_id).orElseThrow(Exception::new);
+	public MemberGetDto uploadFile(Long memberId, MultipartFile req) throws Exception {
+		Member member  = memberRepository.findById(memberId).orElseThrow(Exception::new);
 		String filename = StringUtils.cleanPath(req.getOriginalFilename());
 		Path targetLocation = this.fileLocation.resolve(filename);
 		Files.copy(req.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
