@@ -47,8 +47,8 @@ public class MemberController {
 	@ApiOperation(value = "로그인", notes = "회원이라면 로그인합니다.")
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(@RequestBody MemberLoginDto m) throws Exception {
-		String token = memberService.signin(m,jwtTokenProvider);
-		return new ResponseEntity<>(responseService.getSingleResult(token), HttpStatus.OK);
+		MemberGetDto result = memberService.signin(m,jwtTokenProvider);
+		return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
 				
 	}
 	@ApiOperation(value = "전체 멤버 조회", notes = "전체 멤버를 조회합니다.")

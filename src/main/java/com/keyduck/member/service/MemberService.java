@@ -80,12 +80,14 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public String signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider){
+	public MemberGetDto signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
 				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}
-			return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+			String token = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+			MemberGetDto loginedMemInfo_dto = memberMapper.toDto(member,token);
+			return loginedMemInfo_dto;
 	}
 
 	public List<MemberGetDto> getMembers(){

@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper extends GenericMapper<MemberGetDto,Member> {
-
+    MemberGetDto toDto(Member member, String token);
 }

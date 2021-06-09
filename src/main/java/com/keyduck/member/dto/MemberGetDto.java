@@ -16,4 +16,5 @@ public class MemberGetDto {
 	private MemberRole role;
 	private MemberType type;
 	private String profile;
+	private String token;
 }
