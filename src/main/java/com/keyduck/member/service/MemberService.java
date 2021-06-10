@@ -81,7 +81,8 @@ public class MemberService implements UserDetailsService{
 
 
 	public MemberGetDto signin(MemberLoginDto loginmember,JwtTokenProvider jwtTokenProvider){
-			Member member = memberRepository.findByEmail(loginmember.getEmail()).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+			Member member = memberRepository.findByEmail(loginmember.getEmail())
+					.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginmember.getPassword(), member.getPassword())) {
 				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}
@@ -100,13 +101,15 @@ public class MemberService implements UserDetailsService{
 	}
 
 	public MemberGetDto getMemberDetail(Long memberId) {
-		Member findMem = memberRepository.findById(memberId).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		Member findMem = memberRepository.findById(memberId)
+				.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 		MemberGetDto findMem_dto = memberMapper.toDto(findMem);
 		return findMem_dto;
 	}
 
 	public String getLeaveMember(String email) throws Exception {
-		Member findMem = memberRepository.findByEmail(email).orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		Member findMem = memberRepository.findByEmail(email)
+				.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 		memberRepository.delete(findMem);
 		return "성공적으로 탈퇴되었습니다";
 	}

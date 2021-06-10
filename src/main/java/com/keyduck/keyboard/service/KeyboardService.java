@@ -32,7 +32,8 @@ public class KeyboardService {
     }
 
     public KeyboardGetDto getKeyboardDetail(String model){
-        Keyboard keyboard = keyboardRepository.findByModel(model).orElseThrow(()->new NullPointerException("모델을 찾을 수 없습니다."));
+        Keyboard keyboard = keyboardRepository.findByModel(model)
+                .orElseThrow(()->new NullPointerException("해당 모델을 찾을 수 없습니다."));
         return keyboardMapper.toDto(keyboard);
     }
 
@@ -43,7 +44,8 @@ public class KeyboardService {
     }
 
     public String deleteKeyboard(String model){
-        keyboardRepository.delete(keyboardRepository.findByModel(model).orElseThrow(()->new NullPointerException()));
+        keyboardRepository.delete(keyboardRepository.findByModel(model)
+                .orElseThrow(()->new NullPointerException("해당 모델을 찾을 수 없습니다.")));
         return "success";
     }
 

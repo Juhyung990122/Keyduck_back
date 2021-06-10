@@ -1,5 +1,6 @@
 package com.keyduck.member.domain;
 
+import com.keyduck.keyboard.domain.Keyboard;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,9 +38,21 @@ public class Member implements UserDetails{
 	private MemberRole role;
 	
 	private String profile;
+	@OneToMany
+	private List<Keyboard> likes;
 	
 	public void setProfile(String profile){
 		this.profile = profile;
+	}
+
+	public void updateLikes(Keyboard model,String type){
+		switch (type){
+			case "add":
+				this.likes.add(model);
+			case "remove":
+				this.likes.remove(model);
+		}
+
 	}
 	
 	@Override
