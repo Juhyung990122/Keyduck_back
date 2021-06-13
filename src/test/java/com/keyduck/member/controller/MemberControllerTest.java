@@ -45,6 +45,7 @@ public class MemberControllerTest {
             chain.doFilter(request, response);
         })).build();
     }
+
     @Test
     public void getAllMembers() throws Exception {
         mvc.perform(get("/v1/members")
