@@ -91,6 +91,7 @@ public class MemberService implements UserDetailsService{
 			return loginedMemInfo_dto;
 	}
 
+
 	public List<MemberGetDto> getMembers(){
 		List<Member> members = memberRepository.findAll();
 		List<MemberGetDto> memList_dto = new ArrayList<MemberGetDto>();

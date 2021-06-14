@@ -45,7 +45,7 @@ class reviewControllerTest {
         String successData = "{\n" +
                 "\"star\":3.5,\n" +
                 "\"author\":\"test1@naver.com\",\n" +
-                "\"content\":\"테스트리뷰입니다.\"\n" +
+                "\"content\":\"테스트리뷰 성공케이스입니다.\"\n" +
                 "}";
         mvc.perform(post("/v1/review/add")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -59,8 +59,8 @@ class reviewControllerTest {
     public void 리뷰작성_실패() throws Exception {
         String failData = "{\n" +
                 "\"star\":3.5,\n" +
-                "\"author\":\"test1@naver.com\",\n" +
-                "\"content\":\"테스트리뷰입니다.\"\n" +
+                "\"author\":\"anonymous@naver.com\",\n" +
+                "\"content\":\"테스트리뷰 실패케이스입니다.(등록 회원 아님)\"\n" +
                 "}";
         mvc.perform(post("/v1/review/add")
                 .contentType(MediaType.APPLICATION_JSON)
