@@ -42,7 +42,7 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
-    @DeleteMapping("/keyboards/{model}")
+    @DeleteMapping("/keyboards/delete")
     public ResponseEntity<?> deleteKeyboard( @RequestBody String model){
         String result = keyboardService.deleteKeyboard(model);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);

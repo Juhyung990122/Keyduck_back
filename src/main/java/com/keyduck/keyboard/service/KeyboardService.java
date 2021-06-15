@@ -24,11 +24,11 @@ public class KeyboardService {
 
     public List<KeyboardGetDto> getAllKeyboards(){
         List<Keyboard> keyboards = keyboardRepository.findAll();
-        List<KeyboardGetDto> keyboards_dto = new ArrayList<KeyboardGetDto>();
+        List<KeyboardGetDto> keyboardsDto = new ArrayList<KeyboardGetDto>();
         for(int i = 0; i < keyboards.size(); i++){
-            keyboards_dto.add(keyboardMapper.toDto(keyboards.get(i)));
+            keyboardsDto.add(keyboardMapper.toDto(keyboards.get(i)));
         }
-        return keyboards_dto;
+        return keyboardsDto;
     }
 
     public KeyboardGetDto getKeyboardDetail(String model){

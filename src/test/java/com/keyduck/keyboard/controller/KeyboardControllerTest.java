@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -59,11 +60,10 @@ public class KeyboardControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
     public void Keyboard_추가() throws Exception {
         ///{"model": "테스트키보드", "brand": "ABKO", "connect": "유선", "switchBrand":"오테뮤", "switchColor":"청축", "hotswap": 0, "price": 12000, "keycap": "이중사출 키캡", "keycapImprint": "한글 정각", "keycapProfile": "default", "led": "레인보우 백라이트", "arrangement": 104,"weight": 1050, "cable": "찰탁식", "photo": "default","keyword":"default"}
-
-
-        String successData = "{\"model\": \"테스트키보드2\", \"brand\": \"ABKKO\", \"connect\": \"유선\", \"switchBrand\": \"오테뮤\", \"switchColor\": \"청축\", \"hotswap\": 0, \"price\": 12000, \"keycap\": \"이중사출 키캡\", \"keycapImprint\": \"한글 정각\", \"keycapProfile\": \"default\", \"led\": \"레인보우 백라이트\", \"arrangement\": 104, \"weight\": 1050, \"cable\": \"찰탁식\", \"photo\": \"default\",\"keyword\":\"default\"}";
+        String successData = "{\"model\": \"테스트키보드\", \"brand\": \"ABKKO\", \"connect\": \"유선\", \"switchBrand\": \"오테뮤\", \"switchColor\": \"청축\", \"hotswap\": 0, \"price\": 12000, \"keycap\": \"이중사출 키캡\", \"keycapImprint\": \"한글 정각\", \"keycapProfile\": \"default\", \"led\": \"레인보우 백라이트\", \"arrangement\": 104, \"weight\": 1050, \"cable\": \"찰탁식\", \"photo\": \"default\",\"keyword\":\"default\"}";
         mvc.perform(post("/v1/keyboards/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
@@ -73,6 +73,7 @@ public class KeyboardControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
     public void Keyboard_삭제() throws Exception{
         String successData = "테스트키보드";
         mvc.perform(delete("/v1/keyboards/delete")
@@ -80,7 +81,6 @@ public class KeyboardControllerTest {
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
-
 
     }
 

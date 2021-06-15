@@ -1,5 +1,7 @@
 package com.keyduck.review.controller;
 
+import com.keyduck.review.domain.Review;
+import com.keyduck.review.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +31,8 @@ class reviewControllerTest {
     MockMvc mvc;
     @Autowired
     private WebApplicationContext ctx;
-
+    @Autowired
+    private ReviewRepository reviewRepository;
     @Before
     public void setup(){
         mvc = MockMvcBuilders.webAppContextSetup(ctx)
@@ -37,6 +40,15 @@ class reviewControllerTest {
                     response.setCharacterEncoding("UTF-8");
                     chain.doFilter(request, response);
                 })).build();
+
+
+        //GET 테스트용 리뷰
+        reviewRepository.save(
+                Review.ReviewBuilder()
+                .model("테스트키보드")
+                .author("일반유저")
+                .star(3F)
+                .content("테스트리뷰").build());
     }
 
     @Test
@@ -56,7 +68,7 @@ class reviewControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void 리뷰작성_실패() throws Exception {
+    public void 리뷰작성() throws Exception {
         String failData = "{\n" +
                 "\"star\":3.5,\n" +
                 "\"author\":\"anonymous@naver.com\",\n" +
@@ -65,6 +77,15 @@ class reviewControllerTest {
         mvc.perform(post("/v1/review/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(failData))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockUser(username = "일반유저",roles = "USER")
+    public void 모델별리뷰() throws Exception{
+        mvc.perform(post("/v1/review/테스트키보드")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andDo(print());
     }
