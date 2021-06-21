@@ -6,7 +6,7 @@ import com.keyduck.member.domain.MemberType;
 import com.keyduck.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 @Slf4j
@@ -61,6 +62,7 @@ public class MemberControllerTest {
     @WithMockUser(username="admin", roles = "ADMIN")
     public void getMemberDetail() throws Exception{
         Member member = Member.MemberBuilder()
+                .memberId(1000000L)
                 .nickname("test")
                 .email("signintest@naver.com")
                 .password(passwordEncoder.encode("{noop}"+(CharSequence)"1212"))
@@ -68,19 +70,13 @@ public class MemberControllerTest {
                 .type(MemberType.Keyduck)
                 .build();
         memberRepository.save(member);
-
-        //이름으로 찾는걸로 바꿀까?
-
-        //성공
-//        mvc.perform(get("/v1/members/1")
-//            .contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk())
-//            .andDo(print());
-//        //실패
-//        mvc.perform(get("/v1/members/3")
-//                .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isNotFound())
-//                .andDo(print());
+        String successData = "{\"id\":1000000}";
+        mvc.perform(get("/v1/keyboards/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(successData))
+                .andExpect(status().isOk())
+                .andDo(print());
+        memberRepository.delete(member);
 
     }
 

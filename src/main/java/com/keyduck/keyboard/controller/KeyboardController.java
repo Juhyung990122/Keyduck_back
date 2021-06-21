@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,8 @@ public class KeyboardController {
     }
 
     @GetMapping("/keyboards/detail")
-    public ResponseEntity<?> getKeyboardDetail(@RequestBody String model){
-        KeyboardGetDto result =  keyboardService.getKeyboardDetail(model);
+    public ResponseEntity<?> getKeyboardDetail(@RequestBody HashMap<String,Long> keyboard){
+        KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyboard.get("id"));
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 

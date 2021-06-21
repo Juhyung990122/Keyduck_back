@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -60,8 +61,8 @@ public class MemberController {
 	}
 	@ApiOperation(value = "특정 멤버 조회", notes = "특정멤버를 조회합니다.")
 	@GetMapping("/members/{mem_id}")
-	public ResponseEntity<?> getMemberDetail(@PathVariable Long mem_id) throws Exception {
-		MemberGetDto result = memberService.getMemberDetail(mem_id);
+	public ResponseEntity<?> getMemberDetail(@RequestBody HashMap<String,Long> member) throws Exception {
+		MemberGetDto result = memberService.getMemberDetail(member.get("id"));
 		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
 	}
 

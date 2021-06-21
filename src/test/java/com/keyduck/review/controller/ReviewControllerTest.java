@@ -6,7 +6,8 @@ import com.keyduck.review.domain.Review;
 import com.keyduck.review.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @SpringBootTest
 @Slf4j
-class ReviewControllerTest {
+public class ReviewControllerTest {
 
     @Autowired
     MockMvc mvc;
@@ -82,7 +83,7 @@ class ReviewControllerTest {
                 .andDo(print());
     }
 
-    @Test
+    @Test()
     public void 모델별review조회_성공() throws Exception{
         Keyboard testKeyboard = Keyboard.KeyboardBuilder()
                 .model("테스트키보드")
