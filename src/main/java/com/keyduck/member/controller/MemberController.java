@@ -60,7 +60,7 @@ public class MemberController {
 		return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
 	}
 	@ApiOperation(value = "특정 멤버 조회", notes = "특정멤버를 조회합니다.")
-	@GetMapping("/members/{mem_id}")
+	@GetMapping("/members/info")
 	public ResponseEntity<?> getMemberDetail(@RequestBody HashMap<String,Long> member) throws Exception {
 		MemberGetDto result = memberService.getMemberDetail(member.get("id"));
 		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);

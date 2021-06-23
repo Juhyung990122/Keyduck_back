@@ -1,5 +1,6 @@
 package com.keyduck.keyboard.controller;
 
+import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -51,12 +52,15 @@ public class KeyboardControllerTest {
 
     @Test
     public void Keyboard_디테일조회() throws Exception{
-        String successData = "{\"id\":1}";
+        final Keyboard detailKeyboard = Keyboard.KeyboardBuilder().build();
+        keyboardRepository.save(detailKeyboard);
+        String successData = "{\"id\":"+detailKeyboard.getKeyboardId().toString()+"}";
         mvc.perform(get("/v1/keyboards/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
+        keyboardRepository.delete(detailKeyboard);
     }
 
     @Test

@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,22 +63,15 @@ public class MemberControllerTest {
     @Test
     @WithMockUser(username="admin", roles = "ADMIN")
     public void getMemberDetail() throws Exception{
-        Member member = Member.MemberBuilder()
-                .memberId(1000000L)
-                .nickname("test")
-                .email("signintest@naver.com")
-                .password(passwordEncoder.encode("{noop}"+(CharSequence)"1212"))
-                .role(MemberRole.ADMIN)
-                .type(MemberType.Keyduck)
-                .build();
-        memberRepository.save(member);
-        String successData = "{\"id\":1000000}";
-        mvc.perform(get("/v1/keyboards/")
+        final Member detailMember = Member.MemberBuilder().build();
+        memberRepository.save(detailMember);
+        String successData = "{\"id\":"+detailMember.getMemberId().toString()+"}";
+        mvc.perform(get("/v1/members/info")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
-        memberRepository.delete(member);
+        memberRepository.delete(detailMember);
 
     }
 
