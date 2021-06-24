@@ -31,9 +31,9 @@ public class KeyboardController {
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }
 
-    @GetMapping("/keyboards/detail")
-    public ResponseEntity<?> getKeyboardDetail(@RequestBody HashMap<String,Long> keyboard){
-        KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyboard.get("id"));
+    @GetMapping("/keyboards/{keyboardId}")
+    public ResponseEntity<?> getKeyboardDetail(@RequestParam Long keyboardId){
+        KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyboardId);
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 

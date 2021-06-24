@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
@@ -26,6 +27,7 @@ public class Review {
     private Float star;
     @Email
     private String author;
+    @NotNull
     private String content;
 
 }

@@ -68,20 +68,6 @@ public class ReviewControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    @WithAnonymousUser
-    public void review생성_실패_미회원유저() throws Exception {
-        String failData = "{\n" +
-                "\"star\":3.5,\n" +
-                "\"author\":\"anonymous@naver.com\",\n" +
-                "\"content\":\"테스트리뷰 실패케이스입니다.(등록 회원 아님)\"\n" +
-                "}";
-        mvc.perform(post("/v1/review/add")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(failData))
-                .andExpect(status().isForbidden())
-                .andDo(print());
-    }
 
     @Test()
     public void 모델별review조회_성공() throws Exception{
