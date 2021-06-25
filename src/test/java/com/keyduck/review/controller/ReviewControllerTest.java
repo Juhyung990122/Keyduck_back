@@ -69,20 +69,44 @@ public class ReviewControllerTest {
     }
 
 
-    @Test()
+    @Test
     public void 모델별review조회_성공() throws Exception{
         Keyboard testKeyboard = Keyboard.KeyboardBuilder()
                 .model("테스트키보드")
                 .build();
         keyboardRepository.save(testKeyboard);
-        String model = "{ \"model\" : \"테스트키보드\"}";
+        String successData = "{ \"model\" : \"테스트키보드\"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(model))
+                .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
         keyboardRepository.delete(testKeyboard);
     }
 
+    @Test
+    public void review디테일_성공() throws Exception{
+        Keyboard testKeyboard = Keyboard.KeyboardBuilder()
+                .model("테스트키보드")
+                .build();
+        keyboardRepository.save(testKeyboard);
+        mvc.perform(get("/v1/review/"+testKeyboard.getKeyboardId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+        keyboardRepository.delete(testKeyboard);
+    }
+
+    @Test
+    public void  review삭제_성공() throws  Exception{
+        Keyboard testKeyboard = Keyboard.KeyboardBuilder()
+                .model("테스트키보드")
+                .build();
+        keyboardRepository.save(testKeyboard);
+        mvc.perform(post("/v1/review/delete/"+testKeyboard.getKeyboardId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
 }

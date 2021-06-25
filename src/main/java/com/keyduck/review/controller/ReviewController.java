@@ -34,7 +34,7 @@ public class ReviewController {
 
     //후기 디테일
     @GetMapping("/review/{reviewId}")
-    public ResponseEntity<?> getReviewDetail(@RequestParam Long reviewId){
+    public ResponseEntity<?> getReviewDetail(@PathVariable Long reviewId){
         ReviewGetDto result = reviewService.getReviewDetail(reviewId);
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
@@ -47,6 +47,7 @@ public class ReviewController {
     }
 
     // 후기 삭제(관리자)
+
 
 
 

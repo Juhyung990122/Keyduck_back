@@ -65,10 +65,8 @@ public class MemberControllerTest {
     public void getMemberDetail() throws Exception{
         final Member detailMember = Member.MemberBuilder().build();
         memberRepository.save(detailMember);
-        String successData = "{\"id\":"+detailMember.getMemberId().toString()+"}";
-        mvc.perform(get("/v1/members/info")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(successData))
+        mvc.perform(get("/v1/members/"+detailMember.getMemberId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
         memberRepository.delete(detailMember);

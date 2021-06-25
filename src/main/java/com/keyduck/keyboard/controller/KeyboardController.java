@@ -32,7 +32,7 @@ public class KeyboardController {
     }
 
     @GetMapping("/keyboards/{keyboardId}")
-    public ResponseEntity<?> getKeyboardDetail(@RequestParam Long keyboardId){
+    public ResponseEntity<?> getKeyboardDetail(@PathVariable Long keyboardId){
         KeyboardGetDto result =  keyboardService.getKeyboardDetail(keyboardId);
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }

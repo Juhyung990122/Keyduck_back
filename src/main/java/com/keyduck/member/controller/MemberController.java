@@ -61,8 +61,8 @@ public class MemberController {
 	}
 	@ApiOperation(value = "특정 멤버 조회", notes = "특정멤버를 조회합니다.")
 	@GetMapping("/members/{memberId}")
-	public ResponseEntity<?> getMemberDetail(@RequestBody Long memberId) throws Exception {
-		MemberGetDto result = memberService.getMemberDetail(memberId);
+	public ResponseEntity<?> getMemberDetail(@PathVariable Long memberId) throws Exception {
+		MemberGetDto result = memberService.getMemberDetail(Long.valueOf(memberId));
 		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
 	}
 

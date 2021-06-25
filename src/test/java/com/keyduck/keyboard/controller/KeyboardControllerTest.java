@@ -54,10 +54,9 @@ public class KeyboardControllerTest {
     public void Keyboard_디테일조회() throws Exception{
         final Keyboard detailKeyboard = Keyboard.KeyboardBuilder().build();
         keyboardRepository.save(detailKeyboard);
-        String successData = "{\"id\":"+detailKeyboard.getKeyboardId().toString()+"}";
-        mvc.perform(get("/v1/keyboards/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(successData))
+        System.out.println("/v1/keyboards/"+detailKeyboard.getKeyboardId().toString()+"/");
+        mvc.perform(get("/v1/keyboards/"+detailKeyboard.getKeyboardId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
         keyboardRepository.delete(detailKeyboard);
