@@ -19,7 +19,9 @@ public class Keyboard {
     private Long keyboardId;
     //키보드
     @Column(unique = true)
-    private String model;
+    private String thumbnailImg;
+    private String descriptionImg;
+    private String name;
     private String brand;
     private String connect;
     private String hotswap;
@@ -31,7 +33,6 @@ public class Keyboard {
     //스위치
     private String switchBrand;
     private String switchColor;
-    private String photo;
     //키캡
     private String keycap;
     private String keycapImprint;

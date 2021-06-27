@@ -11,7 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/v1")
@@ -24,13 +27,25 @@ public class ReviewController {
         this.responseService = responseService;
     }
 
-    // 모델별 후기
     @GetMapping("/review")
-    public ResponseEntity<?> getModelReview(@RequestBody String model){
-        List<ReviewGetDto> result = reviewService.getModelReviews(model);
-        return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
+    public ResponseEntity<?> getModelReview(@RequestBody HashMap<String,Long> request) {
+        String key = request.keySet().iterator().next();
+        switch (key) {
+            case "keyboardId":
+                Long keyboardId = request.get("keyboardId");
+                List<ReviewGetDto> modelResult = reviewService.getReviewsByModel(keyboardId);
+                return new ResponseEntity<>(responseService.getListResult(modelResult), HttpStatus.OK);
+
+            case "memberId":
+                Long memberId = request.get("memberId");
+                List<ReviewGetDto> memberResult = reviewService.getReviewsByAuthor(memberId);
+                return new ResponseEntity<>(responseService.getListResult(memberResult), HttpStatus.OK);
+
+            default:
+                System.out.println("실패");
+        }
+        return new ResponseEntity<>("실패임", HttpStatus.BAD_REQUEST);
     }
-    // 사용자별 후기
 
     //후기 디테일
     @GetMapping("/review/{reviewId}")

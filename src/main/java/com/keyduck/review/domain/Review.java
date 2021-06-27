@@ -1,19 +1,20 @@
 package com.keyduck.review.domain;
 
 
+import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Getter
+@Table(name = "review")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "ReviewBuilder")
@@ -23,10 +24,11 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-    private String model;
+    @ManyToOne(targetEntity = Keyboard.class)
+    private Keyboard name;
     private Float star;
-    @Email
-    private String author;
+    @ManyToOne(targetEntity = Member.class)
+    private Member author;
     @NotNull
     private String content;
 

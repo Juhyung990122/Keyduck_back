@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class KeyboardSearchDto {
-    private String model;
+    private String name;
     private String brand;
     private String connect;
     private String hotswap;

@@ -18,11 +18,11 @@ public class LikesController {
         this.responseService = responseService;
     }
 
-    @PatchMapping("/update_likes")
-    public ResponseEntity<?> saveLikes(@RequestBody LikesCreateInfo likeInfo){
-        String result = likesService.saveLikes(likeInfo);
-        return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
-    }
+//    @PatchMapping("/update_likes")
+//    public ResponseEntity<?> saveLikes(@RequestBody LikesCreateInfo likeInfo){
+//        //String result = likesService.saveLikes(likeInfo);
+//        return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
+//    }
 
 }
 

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class KeyboardGetDto {
-    private String model;
+    private String name;
     private String brand;
     private String connect;
     private Integer hotswap;
@@ -20,7 +20,8 @@ public class KeyboardGetDto {
     //스위치
     private String switchBrand;
     private String switchColor;
-    private String photo;
+    private String thumbnailImg;
+    private String descruptionImg;
     //키캡
     private String keycap;
     private String keycapImprint;

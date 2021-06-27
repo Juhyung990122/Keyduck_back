@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class KeyboardCreateDto {
-    private String model;
+    private String name;
     private String brand;
     private String connect;
     private String hotswap;
@@ -19,7 +19,8 @@ public class KeyboardCreateDto {
     //스위치
     private String switchBrand;
     private String switchColor;
-    private String photo;
+    private String thumbnailImg;
+    private String descruptionImg;
     //키캡
     private String keycap;
     private String keycapImprint;
@@ -28,7 +29,7 @@ public class KeyboardCreateDto {
 
     public Keyboard toEntity() {
         return Keyboard.KeyboardBuilder()
-                .model(model)
+                .name(name)
                 .brand(brand)
                 .connect(connect)
                 .hotswap(hotswap)
@@ -39,7 +40,8 @@ public class KeyboardCreateDto {
                 .cable(cable)
                 .switchBrand(switchBrand)
                 .switchColor(switchColor)
-                .photo(photo)
+                .thumbnailImg(thumbnailImg)
+                .descriptionImg(descruptionImg)
                 .keycap(keycap)
                 .keycapImprint(keycapImprint)
                 .keycapProfile(keycapProfile)

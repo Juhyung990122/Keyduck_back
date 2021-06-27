@@ -1,5 +1,7 @@
 package com.keyduck.review.dto;
 
+import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.member.domain.Member;
 import com.keyduck.review.domain.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,17 +11,16 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @Getter
 public class ReviewCreateDto {
-    private String model;
+    private Long name;
     private Float star;
-    @Email
-    private String author;
+    private Long author;
     private String content;
 
-    public Review toEntity(){
+    public Review toEntity(Keyboard keyboard, Member member){
         return Review.ReviewBuilder()
-                .model(model)
+                .name(keyboard)
+                .author(member)
                 .star(star)
-                .author(author)
                 .content(content)
                 .build();
 

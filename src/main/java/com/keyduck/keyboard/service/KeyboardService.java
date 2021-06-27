@@ -43,8 +43,8 @@ public class KeyboardService {
         return keyboard;
     }
 
-    public String deleteKeyboard(String model){
-        keyboardRepository.delete(keyboardRepository.findByModel(model)
+    public String deleteKeyboard(Long keyboardId){
+        keyboardRepository.delete(keyboardRepository.findById(keyboardId)
                 .orElseThrow(()->new NullPointerException("해당 모델을 찾을 수 없습니다.")));
         return "success";
     }

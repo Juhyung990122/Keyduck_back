@@ -10,6 +10,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface KeyboardRepository extends JpaRepository<Keyboard, Long>, JpaSpecificationExecutor<Keyboard> {
-    Optional<Keyboard> findByModel(String model);
     List<Keyboard> findAll(@Nullable Specification<Keyboard> spec);
 }
