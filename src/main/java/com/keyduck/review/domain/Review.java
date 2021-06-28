@@ -29,7 +29,6 @@ public class Review {
     private Float star;
     @ManyToOne(targetEntity = Member.class)
     private Member author;
-    @NotNull
     private String content;
 
 }

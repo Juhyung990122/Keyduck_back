@@ -28,7 +28,6 @@ public class Member implements UserDetails{
 	private Long memberId;
 
 	String nickname;
-	@Column(unique = true)
 	@Email
 	String email;
 	String password;
