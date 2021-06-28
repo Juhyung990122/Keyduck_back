@@ -1,10 +1,12 @@
 package com.keyduck.review.controller;
 
 import com.keyduck.result.ResponseService;
+import com.keyduck.review.domain.Review;
 import com.keyduck.review.dto.ReviewCreateDto;
 import com.keyduck.review.dto.ReviewGetDto;
 import com.keyduck.review.repository.ReviewRepository;
 import com.keyduck.review.service.ReviewService;
+import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,22 +31,8 @@ public class ReviewController {
 
     @GetMapping("/review")
     public ResponseEntity<?> getModelReview(@RequestBody HashMap<String,Long> request) {
-        String key = request.keySet().iterator().next();
-        switch (key) {
-            case "keyboardId":
-                Long keyboardId = request.get("keyboardId");
-                List<ReviewGetDto> modelResult = reviewService.getReviewsByModel(keyboardId);
-                return new ResponseEntity<>(responseService.getListResult(modelResult), HttpStatus.OK);
-
-            case "memberId":
-                Long memberId = request.get("memberId");
-                List<ReviewGetDto> memberResult = reviewService.getReviewsByAuthor(memberId);
-                return new ResponseEntity<>(responseService.getListResult(memberResult), HttpStatus.OK);
-
-            default:
-                System.out.println("실패");
-        }
-        return new ResponseEntity<>("실패임", HttpStatus.BAD_REQUEST);
+        List<ReviewGetDto> result = reviewService.getReviews(request);
+        return new ResponseEntity<>(responseService.getListResult(result), HttpStatus.OK);
     }
 
     //후기 디테일

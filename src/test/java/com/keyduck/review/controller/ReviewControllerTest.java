@@ -101,7 +101,7 @@ public class ReviewControllerTest {
 
     @Test
     public void review디테일_성공() throws Exception{
-        Keyboard testKeyboard = Keyboard.KeyboardBuilder()
+        Review testKeyboard = Keyboard.KeyboardBuilder()
                 .name("테스트키보드")
                 .build();
         keyboardRepository.save(testKeyboard);

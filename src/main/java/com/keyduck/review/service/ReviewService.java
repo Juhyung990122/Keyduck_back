@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -31,17 +32,6 @@ public class ReviewService {
     }
 
 
-    public List<ReviewGetDto> getReviewsByModel(Long id) {
-        Keyboard keyboard = keyboardRepository.getOne(id);
-        List<Review> reviewList = reviewRepository.findAllByName(keyboard);
-        List<ReviewGetDto> reviewListDto = new ArrayList<ReviewGetDto>();
-
-        for(int i = 0; i < reviewList.size(); i++){
-            Review review = reviewList.get(i);
-            reviewListDto.add(reviewMapper.toDto(review));
-        }
-        return reviewListDto;
-    }
 
     public List<ReviewGetDto> getReviewsByAuthor(Long id) {
         Member member = memberRepository.getOne(id);
@@ -73,4 +63,37 @@ public class ReviewService {
     }
 
 
+    public List<ReviewGetDto> getReviews(HashMap<String,Long> request) {
+        String key = request.keySet().iterator().next();
+        switch (key) {
+            case "keyboardId":
+                Long keyboardId = request.get("keyboardId");
+                Keyboard keyboard = keyboardRepository.getOne(keyboardId);
+                List<Review> modelReviews = reviewRepository.findAllByName(keyboard);
+                List<ReviewGetDto> keyboardReviewsDto = new ArrayList<ReviewGetDto>();
+
+                for (int i = 0; i < modelReviews.size(); i++) {
+                    Review review = modelReviews.get(i);
+                    keyboardReviewsDto.add(reviewMapper.toDto(review));
+                }
+                return keyboardReviewsDto;
+
+            case "memberId":
+                Long memberId = request.get("memberId");
+                Member member = memberRepository.getOne(memberId);
+                List<Review> memberReviews = reviewRepository.findAllByAuthor(member);
+                List<ReviewGetDto> memberReviewsDto = new ArrayList<ReviewGetDto>();
+
+                for (int i = 0; i < memberReviews.size(); i++) {
+                    Review review = memberReviews.get(i);
+                    memberReviewsDto.add(reviewMapper.toDto(review));
+                }
+
+                return memberReviewsDto;
+
+            default:
+                //예외처리할 것
+                throw new RuntimeException("실패");
+        }
+    }
 }
