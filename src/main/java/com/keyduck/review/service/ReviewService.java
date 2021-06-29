@@ -96,4 +96,10 @@ public class ReviewService {
                 throw new RuntimeException("실패");
         }
     }
+
+    public String deleteReview(Long reviewId) {
+        Review deleteReview = reviewRepository.getOne(reviewId);
+        reviewRepository.delete(deleteReview);
+        return "성공적으로 삭제했습니다.";
+    }
 }

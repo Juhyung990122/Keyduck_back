@@ -50,6 +50,11 @@ public class ReviewController {
     }
 
     // 후기 삭제(관리자)
+    @DeleteMapping("/review/delete/{reviewId}")
+    public ResponseEntity<?> deleteReviewDetail(@PathVariable Long reviewId){
+        String result = reviewService.deleteReview(reviewId);
+        return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
+    }
 
 
 

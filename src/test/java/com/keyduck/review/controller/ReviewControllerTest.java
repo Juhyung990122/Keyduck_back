@@ -23,8 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,9 +74,7 @@ public class ReviewControllerTest {
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
-
     }
-
 
     @Test
     public void 모델별review조회_성공() throws Exception{
@@ -96,7 +93,6 @@ public class ReviewControllerTest {
                 .andDo(print());
         reviewRepository.delete(testReview);
         keyboardRepository.delete(testKeyboard);
-
     }
 
     @Test
@@ -132,7 +128,6 @@ public class ReviewControllerTest {
     }
 
     @Test
-    //수정예정
     public void  review삭제_성공() throws  Exception{
         Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
         Member testMember = Member.MemberBuilder().build();
@@ -144,7 +139,7 @@ public class ReviewControllerTest {
                 .content("테스트리뷰")
                 .build();
         reviewRepository.save(testReview);
-        mvc.perform(post("/v1/review/delete/"+testReview.getReviewId().toString())
+        mvc.perform(delete("/v1/review/delete/"+testReview.getReviewId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
