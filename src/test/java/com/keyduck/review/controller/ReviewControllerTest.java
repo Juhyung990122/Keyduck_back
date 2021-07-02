@@ -10,10 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.*;
 
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -48,9 +44,8 @@ public class ReviewControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    Keyboard testKeyboard = mock(Keyboard.class);
-    Member testMember = mock(Member.class);
-    Review testReview = mock(Review.class);
+    Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
+    Member testMember = Member.MemberBuilder().build();
 
     @Before
     public void setup(){
@@ -60,6 +55,8 @@ public class ReviewControllerTest {
                     chain.doFilter(request, response);
                 })).build();
 
+        keyboardRepository.save(testKeyboard);
+        memberRepository.save(testMember);
     }
 
     @Test
@@ -77,43 +74,68 @@ public class ReviewControllerTest {
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
+
     }
 
     @Test
     public void 모델별review조회_성공() throws Exception{
+        Review testReview = Review.ReviewBuilder()
+                .name(testKeyboard)
+                .content("테스트리뷰")
+                .build();
+        reviewRepository.save(testReview);
         String successData = "{ \"keyboardId\" :"+ testKeyboard.getKeyboardId() +"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
+        reviewRepository.delete(testReview);
     }
 
     @Test
     public void 멤버별review조회_성공() throws Exception{
+        Review testReview = Review.ReviewBuilder()
+                .author(testMember)
+                .content("테스트리뷰")
+                .build();
+        reviewRepository.save(testReview);
         String successData = "{ \"memberId\" :"+testMember.getMemberId()+"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
+        reviewRepository.delete(testReview);
     }
 
     @Test
     public void review디테일_성공() throws Exception{
+        Review testReview = Review.ReviewBuilder()
+                .content("테스트리뷰")
+                .build();
+        reviewRepository.save(testReview);
         mvc.perform(get("/v1/review/"+testReview.getReviewId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+        reviewRepository.delete(testReview);
     }
 
     @Test
     public void  review삭제_성공() throws  Exception{
+        Review testReview = mock(Review.class);
         mvc.perform(delete("/v1/review/delete/"+testReview.getReviewId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
 
+    }
+
+    @After
+    public void after(){
+        keyboardRepository.delete(testKeyboard);
+        memberRepository.delete(testMember);
     }
 
 
