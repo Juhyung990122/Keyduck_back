@@ -7,10 +7,13 @@ import com.keyduck.member.repository.MemberRepository;
 import com.keyduck.review.domain.Review;
 import com.keyduck.review.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,6 +48,9 @@ public class ReviewControllerTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    Keyboard testKeyboard = mock(Keyboard.class);
+    Member testMember = mock(Member.class);
+    Review testReview = mock(Review.class);
 
     @Before
     public void setup(){
@@ -59,10 +66,6 @@ public class ReviewControllerTest {
     //수정예정
     @WithMockUser(username = "일반유저", roles = "USER")
     public void review생성_성공() throws Exception {
-        Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
-        Member testMember = Member.MemberBuilder().build();
-        keyboardRepository.save(testKeyboard);
-        memberRepository.save(testMember);
         String successData = "{\n" +
                 "\"name\":"+testKeyboard.getKeyboardId()+",\n"+
                 "\"star\":3.5,\n" +
@@ -78,73 +81,40 @@ public class ReviewControllerTest {
 
     @Test
     public void 모델별review조회_성공() throws Exception{
-        Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
-        Review testReview = Review.ReviewBuilder()
-                .name(testKeyboard)
-                .content("테스트리뷰")
-                .build();
-        keyboardRepository.save(testKeyboard);
-        reviewRepository.save(testReview);
         String successData = "{ \"keyboardId\" :"+ testKeyboard.getKeyboardId() +"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
-        reviewRepository.delete(testReview);
-        keyboardRepository.delete(testKeyboard);
     }
 
     @Test
     public void 멤버별review조회_성공() throws Exception{
-        Member testMember = Member.MemberBuilder().build();
-        Review testReview = Review.ReviewBuilder()
-                .author(testMember)
-                .content("테스트리뷰")
-                .build();
-        memberRepository.save(testMember);
-        reviewRepository.save(testReview);
         String successData = "{ \"memberId\" :"+testMember.getMemberId()+"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
                 .andDo(print());
-        reviewRepository.delete(testReview);
-        memberRepository.delete(testMember);
     }
 
     @Test
     public void review디테일_성공() throws Exception{
-        Review testReview = Review.ReviewBuilder()
-                .content("테스트리뷰")
-                .build();
-        reviewRepository.save(testReview);
         mvc.perform(get("/v1/review/"+testReview.getReviewId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-        reviewRepository.delete(testReview);
     }
 
     @Test
     public void  review삭제_성공() throws  Exception{
-        Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
-        Member testMember = Member.MemberBuilder().build();
-        keyboardRepository.save(testKeyboard);
-        memberRepository.save(testMember);
-        Review testReview = Review.ReviewBuilder()
-                .name(testKeyboard)
-                .author(testMember)
-                .content("테스트리뷰")
-                .build();
-        reviewRepository.save(testReview);
         mvc.perform(delete("/v1/review/delete/"+testReview.getReviewId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-        keyboardRepository.delete(testKeyboard);
-        memberRepository.delete(testMember);
+
     }
+
 
 }
