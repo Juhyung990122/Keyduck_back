@@ -19,8 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -47,6 +51,7 @@ public class ReviewControllerTest {
     Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
     Member testMember = Member.MemberBuilder().build();
 
+
     @Before
     public void setup(){
         mvc = MockMvcBuilders.webAppContextSetup(ctx)
@@ -69,12 +74,16 @@ public class ReviewControllerTest {
                 "\"author\":"+testMember.getMemberId()+",\n" +
                 "\"content\":\"테스트리뷰입니다.\"\n" +
                 "}";
-        mvc.perform(post("/v1/review/add")
+        MvcResult reviewResult = mvc.perform(post("/v1/review/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andDo(print())
+                .andReturn();
 
+        String result = reviewResult.getResponse().getContentAsString();
+        System.out.println(result.trim());
+        //reviewRepository.findReviewByAuthorAndName();
     }
 
     @Test
@@ -134,8 +143,8 @@ public class ReviewControllerTest {
 
     @After
     public void after(){
-        keyboardRepository.delete(testKeyboard);
-        memberRepository.delete(testMember);
+//        keyboardRepository.delete(testKeyboard);
+//        memberRepository.delete(testMember);
     }
 
 

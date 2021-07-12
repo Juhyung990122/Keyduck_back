@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -49,10 +50,15 @@ public class KeyboardService {
         return "success";
     }
 
-    public List<Keyboard> searchKeyboard(KeyboardSearchDto searchKeywords){
-        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeywords));
+    public List<Keyboard> searchKeyboard(KeyboardSearchDto searchKeyboards){
+        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeyboards));
         List<Keyboard> keyboards = keyboardRepository.findAll(spec);
         return keyboards;
     }
 
+    public List<Keyboard> filterByCategoryKeyboard(HashMap<String,String> keywords){
+        String keyword = keywords.get("keyword");
+        List<Keyboard> keyboards = keyboardRepository.findAllByKeyword(keyword);
+        return keyboards;
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,10 +51,15 @@ public class KeyboardController {
     }
 
     @PostMapping("/keyboards")
-    public ResponseEntity<?> searchKeyboard(@RequestBody KeyboardSearchDto searchKeywords){
-        List<Keyboard> result = keyboardService.searchKeyboard(searchKeywords);
+    public ResponseEntity<?> searchKeyboard(@RequestBody KeyboardSearchDto searchKeyboards){
+        List<Keyboard> result = keyboardService.searchKeyboard(searchKeyboards);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
+    @PostMapping("/keyboards/filter")
+    public ResponseEntity<?> filterKeyboard(@RequestBody HashMap<String,String> keywords){
+        List<Keyboard> result = keyboardService.filterByCategoryKeyboard(keywords);
+        return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
+    }
 
 }
