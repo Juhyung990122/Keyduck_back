@@ -42,6 +42,7 @@ public class ReviewController {
         return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
     }
 
+
     // 후기 작성(회원)
     @PostMapping("/review/add")
     public ResponseEntity<?> addReviewDetail(@RequestBody ReviewCreateDto reviewInfo){
