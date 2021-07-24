@@ -66,7 +66,7 @@ public class MemberController {
 		return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
 	}
 
-	@ApiOperation(value = "프로필 사진 변경", notes = "프로필 사진을 변경합니다.")
+	@ApiOperation(value = "프로필 사진 변경", notes = " 유저의 프로필 사진을 변경합니다.")
 	@PatchMapping("members/{mem_id}/editProfile")
 	public ResponseEntity<?> editProfile(@PathVariable("mem_id") Long mem_id,@RequestParam("profile") MultipartFile req) throws Exception {
 		MemberGetDto result = memberService.uploadFile(mem_id,req);

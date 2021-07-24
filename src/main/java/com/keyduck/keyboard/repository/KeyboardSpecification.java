@@ -31,6 +31,7 @@ public class KeyboardSpecification {
             predicate.add(builder.like(root.get("connect"), "%"+(String)params.getConnect()+"%"));
         }
 
+
         if (params.getSwitchBrand() != null && !params.getSwitchBrand().equals("")) {
             predicate.add(builder.like(root.get("switchBrand"), "%"+(String)params.getSwitchBrand()+"%"));
         }
