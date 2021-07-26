@@ -50,9 +50,10 @@ public class KeyboardService {
         return "success";
     }
 
-    public List<Keyboard> searchKeyboard(KeyboardSearchDto searchKeyboards){
+    public  List<List<Keyboard>> searchKeyboard(KeyboardSearchDto searchKeyboards){
+        List<List<Keyboard>> keyboards = new ArrayList<>();
         Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeyboards));
-        List<Keyboard> keyboards = keyboardRepository.findAll(spec);
+        keyboards.add(keyboardRepository.findAll(spec));
         return keyboards;
     }
 

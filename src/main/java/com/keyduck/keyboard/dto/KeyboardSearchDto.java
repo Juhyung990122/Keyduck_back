@@ -3,6 +3,8 @@ package com.keyduck.keyboard.dto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 @Getter
 @RequiredArgsConstructor
 public class KeyboardSearchDto {
@@ -15,4 +17,6 @@ public class KeyboardSearchDto {
     private int arrangement;
     private String keycapProfile;
     private String switchBrand;
+    private String[] switchColor;
+
 }

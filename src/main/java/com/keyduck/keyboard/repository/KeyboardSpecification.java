@@ -8,15 +8,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class KeyboardSpecification {
     public static Specification<Keyboard> equalKey(KeyboardSearchDto params) {
-        return (Specification<Keyboard>) ((root, query, builder) -> {
+        return (Specification<Keyboard>) (root, query, builder) -> {
             List<Predicate> predicate = getPredicateWithKeywords(params,root,builder);
             return builder.and(predicate.toArray(new Predicate[0]));
-        });
+        };
     }
 
 
@@ -34,6 +35,22 @@ public class KeyboardSpecification {
 
         if (params.getSwitchBrand() != null && !params.getSwitchBrand().equals("")) {
             predicate.add(builder.like(root.get("switchBrand"), "%"+(String)params.getSwitchBrand()+"%"));
+        }
+
+        if (params.getSwitchColor() != null && !params.getSwitchColor().equals("")) {
+            Predicate switchColorPredicate = builder.conjunction();
+            String[] switchColorList = params.getSwitchColor();
+
+            if(switchColorList.length < 2){
+               predicate.add(builder.and(builder.like(root.get("switchColor"),"%"+(String)switchColorList[0]+"%")));
+            }
+
+            else{
+            switchColorPredicate = builder.and(builder.like(root.get("switchColor"),"%"+(String)switchColorList[0]+"%"));
+            for(int i = 1; i< switchColorList.length; i++ ){
+                predicate.add(builder.or(builder.like(root.get("switchColor"), "%"+(String)switchColorList[i]+"%"),switchColorPredicate));
+                }
+            }
         }
 
         if (params.getHotswap() != null && !params.getHotswap().equals("")) {

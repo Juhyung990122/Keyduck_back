@@ -58,7 +58,7 @@ public class KeyboardController {
     @ApiOperation(value = "키보드 검색", notes = "전달된 조건을 통해 키보드를 검색합니다")
     @PostMapping("/keyboards")
     public ResponseEntity<?> searchKeyboard(@RequestBody KeyboardSearchDto searchKeyboards){
-        List<Keyboard> result = keyboardService.searchKeyboard(searchKeyboards);
+        List<List<Keyboard>> result = keyboardService.searchKeyboard(searchKeyboards);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
