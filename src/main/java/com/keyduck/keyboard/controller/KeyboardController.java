@@ -11,12 +11,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -66,6 +64,19 @@ public class KeyboardController {
     @PostMapping("/keyboards/filter")
     public ResponseEntity<?> filterKeyboard(@RequestBody HashMap<String,String> keywords){
         List<Keyboard> result = keyboardService.filterByCategoryKeyboard(keywords);
+        return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "키보드 필터", notes = "키워드(#달린것들) 통해 키보드를 필터링합니다.")
+    @PostMapping("/keyboards/filter")
+    public ResponseEntity<?> searchKeyboardWhileResult(@RequestBody KeyboardSearchDto keywords){
+
+       List<Keyboard> result = null;
+        while(result != null) {
+            result = keyboardService.filterByCategoryKeyboard(keywords);
+            //keyword에서 맨뒤에거 하나 빼기 코드 추가
+        }
+
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }
 }
