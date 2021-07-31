@@ -69,13 +69,12 @@ public class KeyboardController {
 
     @ApiOperation(value = "키보드 필터", notes = "키워드(#달린것들) 통해 키보드를 필터링합니다.")
     @PostMapping("/keyboards/filter")
-    public ResponseEntity<?> searchKeyboardWhileResult(@RequestBody KeyboardSearchDto keywords){
+    public ResponseEntity<?> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
 
-       List<Keyboard> result = null;
-        while(result != null) {
-            result = keyboardService.filterByCategoryKeyboard(keywords);
-            //keyword에서 맨뒤에거 하나 빼기 코드 추가
-        }
+        // 퀴즈 질문에 따라서 필드 생성 달라질 에정.
+        KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
+                .build();
+        List<List<Keyboard>> result = keyboardService.searchKeyboard(search);
 
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }
