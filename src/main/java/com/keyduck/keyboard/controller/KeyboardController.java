@@ -12,9 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -56,7 +55,7 @@ public class KeyboardController {
     @ApiOperation(value = "키보드 검색", notes = "전달된 조건을 통해 키보드를 검색합니다")
     @PostMapping("/keyboards")
     public ResponseEntity<?> searchKeyboard(@RequestBody KeyboardSearchDto searchKeyboards){
-        List<List<Keyboard>> result = keyboardService.searchKeyboard(searchKeyboards);
+        List<KeyboardGetDto> result = keyboardService.searchKeyboard(searchKeyboards);
         return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
     }
 
@@ -68,13 +67,22 @@ public class KeyboardController {
     }
 
     @ApiOperation(value = "키보드 필터", notes = "키워드(#달린것들) 통해 키보드를 필터링합니다.")
-    @PostMapping("/keyboards/filter")
+    @PostMapping("/keyboards/filter/23")
     public ResponseEntity<?> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
+        List<List<KeyboardGetDto>> result = null;
+        String[] priority = {"arrangement","price","switchColor","brand"};
+        List<String> priorityList =  Arrays.asList(priority);
 
-        // 퀴즈 질문에 따라서 필드 생성 달라질 에정.
-        KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
-                .build();
-        List<List<Keyboard>> result = keyboardService.searchKeyboard(search);
+        while(result == null || priorityList.size() > 0){
+            // 하나라도 비면 안됨. 숫자는 0 문자는  null 로 바꿔줘야함.
+            KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
+                    .arrangement(Integer.parseInt(searchKeywords.get("arrangement")))
+                    .startPrice(Integer.parseInt(searchKeywords.get("startPrice")))
+                    .endPrice(Integer.parseInt(searchKeywords.get("endPrice")))
+                    .switchColor(new String[]{searchKeywords.get("switchColor")})
+                    .brand(searchKeywords.get("brand"))
+                    .build();
+        }
 
         return new ResponseEntity<>(responseService.getListResult(result),HttpStatus.OK);
     }

@@ -1,12 +1,12 @@
 package com.keyduck.keyboard.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Setter
 @Builder(builderMethodName = "KeyboardSearchDtoBuilder")
 public class KeyboardSearchDto {
     private String name;
