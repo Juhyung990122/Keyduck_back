@@ -1,0 +1,29 @@
+server:
+  port: 80
+  servlet:
+    session:
+      tracking-modes: COOKIE
+spring:
+  profile : dev
+  datasource:
+    database-name: heroku_374f0e52486df8f
+    url : mysql://b244668ac649c6:b8e1492f@us-cdbr-east-04.cleardb.com/heroku_374f0e52486df8f?reconnect=true
+    host-name : us-cdbr-east-04.cleardb.com
+    username: b244668ac649c6
+    password: b8e1492f
+
+  jackson:
+    serialization:
+      fail-on-empty-beans : false
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    database : mysql
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+file :
+  upload-dir : ./uploads
+
+
