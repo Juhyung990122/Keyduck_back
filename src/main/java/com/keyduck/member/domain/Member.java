@@ -39,6 +39,7 @@ public class Member implements UserDetails{
 	private MemberRole role;
 	
 	private String profile;
+
 	@OneToMany
 	private List<Keyboard> likes;
 	

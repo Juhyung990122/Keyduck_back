@@ -1,15 +1,15 @@
 server:
-  port: 8020
+  port: 8080
   servlet:
     session:
       tracking-modes: COOKIE
 spring:
   datasource:
-    database-name: heroku_cdbf458e3f408e0
-    url : jdbc:mysql://b838e559b88477:65b3016d@us-cdbr-east-04.cleardb.com/heroku_cdbf458e3f408e0?reconnect=true
+    database-name: heroku_62a3453fd580d8a
+    url : jdbc:mysql://b7c287d6c3ef56:d15ece33@us-cdbr-east-04.cleardb.com/heroku_62a3453fd580d8a?reconnect=true
     host-name : us-cdbr-east-04.cleardb.com
-    username: b838e559b88477
-    password: 65b3016d
+    username: b7c287d6c3ef56
+    password: d15ece33
 
   jackson:
     serialization:

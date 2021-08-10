@@ -9,6 +9,8 @@ import com.keyduck.result.ResponseService;
 import com.keyduck.security.JwtTokenProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class MemberController {
 
 	// 회원 CRUD 로직
 	@ApiOperation(value = "회원 가입", notes = "신규 회원일 경우 가입을 진행합니다.")
+	@ApiResponses(value =
+		@ApiResponse(code = 200, message = "회원가입 성공")
+	)
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@Valid @RequestBody MemberCreateDto m) {
 		MemberCreateDto newMember = memberService.signup(m);
