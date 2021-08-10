@@ -8,7 +8,7 @@ class KeyduckBackApplicationTests {
 
 	@Test
 	void contextLoads() {
-		
+
 	}
 	
 }

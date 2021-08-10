@@ -34,8 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		// 접근 설정 
 		.authorizeRequests()
 		 	.antMatchers("/*/signin","/*/signup","/v1/swagger-ui.html", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
-		 	.antMatchers("/v1/members/**","/v1/keyboards/add/**","\"/v1/keyboards/delete/**").hasRole("ADMIN")
-			.anyRequest().permitAll()
+		 	.antMatchers("/v1/keyboards/add/**","/v1/keyboards/delete/**").hasRole("ADMIN")
+
 		.and()
 		// 인터셉터(필) 설정 
 		.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
