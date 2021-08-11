@@ -4,6 +4,7 @@ server:
     session:
       tracking-modes: COOKIE
 spring:
+  profiles: dev
   datasource:
     database-name: heroku_62a3453fd580d8a
     url : jdbc:mysql://b7c287d6c3ef56:d15ece33@us-cdbr-east-04.cleardb.com/heroku_62a3453fd580d8a?reconnect=true
