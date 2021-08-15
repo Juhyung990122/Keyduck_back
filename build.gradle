@@ -5,13 +5,9 @@ plugins {
 	id 'net.ltgt.apt' version '0.15'
 }
 apply plugin: "net.ltgt.apt"
-apply plugin: "java"
-apply plugin: "org.springframework.boot"
-apply plugin: "io.spring.dependency-management"
-
 
 jar {
-	baseName = 'keyduck_back'
+	baseName = 'keyduck'
 	version = '0.1.0'
 }
 
@@ -55,24 +51,10 @@ test {
 	useJUnitPlatform()
 }
 
-
-task stage(type: Copy, dependsOn: [clean, build]) {
-
-	from jar.archivePath
-
-	into project.rootDir
-
-	rename {
-
-		'app.jar'
-
-	}
-
+wrapper {
+	gradleVersion = '6.8'
 }
 
-stage.mustRunAfter(clean)
+task stage(dependsOn: ['build', 'clean'])
 
-
-
-
-
+build.mustRunAfter clean
