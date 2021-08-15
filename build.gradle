@@ -2,13 +2,18 @@ plugins {
 	id 'org.springframework.boot' version '2.4.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id 'war'
 	id 'net.ltgt.apt' version '0.15'
 }
 apply plugin: "net.ltgt.apt"
-group = 'com.keyduck'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+apply plugin: "java"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+
+jar {
+	baseName = 'keyduck_back'
+	version = '0.1.0'
+}
 
 repositories {
 	mavenCentral()
@@ -35,7 +40,7 @@ dependencies {
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
 
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	compile "org.springframework.boot:spring-boot-starter-security"
 	compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.5.0')
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -50,19 +55,7 @@ test {
 	useJUnitPlatform()
 }
 
-task stage(type: Copy, dependsOn: [clean, build]) {
 
-	from jar.archivePath
+task stage(dependsOn: ['clean', 'build'])
 
-	into project.rootDir
-
-	rename {
-
-		'app.jar'
-
-	}
-
-}
-
-stage.mustRunAfter(clean)
 
