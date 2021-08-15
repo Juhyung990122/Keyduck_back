@@ -1,6 +1,8 @@
 package com.keyduck.review.controller;
 
+import com.keyduck.result.ListResult;
 import com.keyduck.result.ResponseService;
+import com.keyduck.result.SingleResult;
 import com.keyduck.review.dto.ReviewCreateDto;
 import com.keyduck.review.dto.ReviewGetDto;
 import com.keyduck.review.repository.ReviewRepository;
@@ -29,34 +31,42 @@ public class ReviewController {
 
     @ApiOperation(value = "모델별 리뷰 조회", notes = "모델별로 달린 리뷰를 조회합니다.")
     @GetMapping("/review")
-    public ResponseEntity<?> getReviews(@RequestBody HashMap<String,Long> request) {
+    public ResponseEntity<ListResult<ReviewGetDto>> getReviews(@RequestBody HashMap<String,Long> request) {
         List<ReviewGetDto> result = reviewService.getReviews(request);
-        return new ResponseEntity<>(responseService.getListResult(result), HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(responseService.getListResult(result));
     }
 
 
     //후기 디테일
     @ApiOperation(value = "리뷰 디테일 조회", notes = "선택한 리뷰의 상세정보를 조회합니다.")
     @GetMapping("/review/{reviewId}")
-    public ResponseEntity<?> getReviewDetail(@PathVariable Long reviewId){
+    public ResponseEntity<SingleResult<ReviewGetDto>> getReviewDetail(@PathVariable Long reviewId){
         ReviewGetDto result = reviewService.getReviewDetail(reviewId);
-        return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(responseService.getSingleResult(result));
     }
 
 
     // 후기 작성(회원)
     @ApiOperation(value = "리뷰 작성", notes = "리뷰를 작성합니다.")
     @PostMapping("/review/add")
-    public ResponseEntity<?> addReviewDetail(@RequestBody ReviewCreateDto reviewInfo){
+    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestBody ReviewCreateDto reviewInfo){
         ReviewCreateDto result = reviewService.addReview(reviewInfo);
-        return new ResponseEntity<>(responseService.getSingleResult(result), HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(responseService.getSingleResult(result));
     }
 
     @ApiOperation(value = "리뷰 삭제", notes = "리뷰를 삭제합니다.")
     @DeleteMapping("/review/delete/{reviewId}")
-    public ResponseEntity<?> deleteReviewDetail(@PathVariable Long reviewId){
+    public ResponseEntity<SingleResult<String>> deleteReviewDetail(@PathVariable Long reviewId){
         String result = reviewService.deleteReview(reviewId);
-        return new ResponseEntity<>(responseService.getSingleResult(result),HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(responseService.getSingleResult(result));
     }
 
 

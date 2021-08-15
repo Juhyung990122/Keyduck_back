@@ -1,5 +1,7 @@
 package com.keyduck.keyboard.dto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

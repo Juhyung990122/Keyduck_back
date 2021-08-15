@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class LikesCreateInfo {
+public class LikesCreateDto {
     private String memberEmail;
     private List<String> keyboardModel;
 }
