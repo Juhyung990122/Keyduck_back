@@ -3,6 +3,7 @@ package com.keyduck.member.service;
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.mapper.GenericMapper;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.repository.MemberRepository;
@@ -16,12 +17,12 @@ import java.util.List;
 public class LikesService {
     private final KeyboardRepository keyboardRepository;
     private final MemberRepository memberRepository;
-    private final KeyboardMapper keyboardMapper;
+    private final GenericMapper genericMapper;
 
-    public LikesService(KeyboardRepository keyboardRepository, MemberRepository memberRepository, KeyboardMapper keyboardMapper) {
+    public LikesService(KeyboardRepository keyboardRepository, MemberRepository memberRepository, KeyboardMapper genericMapper) {
         this.keyboardRepository = keyboardRepository;
         this.memberRepository = memberRepository;
-        this.keyboardMapper = keyboardMapper;
+        this.genericMapper = genericMapper;
     }
 
 
@@ -30,7 +31,8 @@ public class LikesService {
         List<Keyboard> likeList = member.getLikes();
         List<SimpleKeyboardDto> result = new ArrayList<>();
         for(int i = 0; i < likeList.size(); i++){
-            //result.add(keyboardMapper.toDto(likeList.get(i)));
+            result.add((SimpleKeyboardDto) genericMapper.toDto(likeList.get(i)));
+            System.out.println(result.get(0));
         }
         return result;
     }

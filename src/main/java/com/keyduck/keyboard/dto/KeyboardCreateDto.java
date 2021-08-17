@@ -20,7 +20,7 @@ public class KeyboardCreateDto {
     private String switchBrand;
     private String switchColor;
     private String thumbnailImg;
-    private String descruptionImg;
+    private String descriptionImg;
     //키캡
     private String keycap;
     private String keycapImprint;
@@ -41,7 +41,7 @@ public class KeyboardCreateDto {
                 .switchBrand(switchBrand)
                 .switchColor(switchColor)
                 .thumbnailImg(thumbnailImg)
-                .descriptionImg(descruptionImg)
+                .descriptionImg(descriptionImg)
                 .keycap(keycap)
                 .keycapImprint(keycapImprint)
                 .keycapProfile(keycapProfile)

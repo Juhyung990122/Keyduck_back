@@ -27,7 +27,8 @@ public class Keyboard {
     private String name;
     private String brand;
     private String connect;
-    private String hotswap;
+    //boolean
+    private boolean hotswap;
     private Integer price;
     private String led;
     private Integer arrangement;

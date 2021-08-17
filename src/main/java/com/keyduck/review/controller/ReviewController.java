@@ -29,7 +29,7 @@ public class ReviewController {
         this.responseService = responseService;
     }
 
-    @ApiOperation(value = "모델별 리뷰 조회", notes = "모델별로 달린 리뷰를 조회합니다.")
+    @ApiOperation(value = "모델별,멤버별 리뷰 조회", notes = "모델별,멤버별로 달린 리뷰를 조회합니다.")
     @GetMapping("/review")
     public ResponseEntity<ListResult<ReviewGetDto>> getReviews(@RequestBody HashMap<String,Long> request) {
         List<ReviewGetDto> result = reviewService.getReviews(request);
