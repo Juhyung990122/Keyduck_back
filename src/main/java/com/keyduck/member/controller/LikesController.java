@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,24 @@ public class LikesController {
     }
 
     @GetMapping("/{memId}/likes")
-    public ResponseEntity<SingleResult<List<SimpleKeyboardDto>>> getLikeKeboards(@PathVariable Long memId){
+    public ResponseEntity<SingleResult<List<SimpleKeyboardDto>>> getLikeKeyboards(@PathVariable Long memId){
         List<SimpleKeyboardDto> result = likesService.getLikes(memId);
+        return ResponseEntity
+                .ok()
+                .body(responseService.getSingleResult(result));
+    }
+
+    @PostMapping("/{memId}/likes")
+    public ResponseEntity<SingleResult<String>> addLikeKeyboards(@PathVariable Long memId, @RequestBody HashMap<String,Long> keyboardId){
+        String result = likesService.addLikes(memId,keyboardId.get("keyboardId"));
+        return ResponseEntity
+                .ok()
+                .body(responseService.getSingleResult(result));
+    }
+
+    @DeleteMapping("/{memId}/likes")
+    public ResponseEntity<SingleResult<String>> deleteLikeKeyboards(@PathVariable Long memId, @RequestBody HashMap<String,Long> keyboardId){
+        String result = likesService.deleteLikes(memId,keyboardId.get("keyboardId"));
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));

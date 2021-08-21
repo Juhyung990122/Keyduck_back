@@ -53,7 +53,7 @@ public class KeyboardSpecification {
             }
         }
 
-        if (params.getHotswap() != null && !params.getHotswap().equals("")) {
+        if (params.getHotswap()!= null && !params.getHotswap().equals("")) {
             predicate.add(builder.like(root.get("hotswap"), "%"+(String)params.getHotswap()+"%"));
         }
 

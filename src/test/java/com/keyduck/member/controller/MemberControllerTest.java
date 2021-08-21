@@ -1,15 +1,18 @@
 package com.keyduck.member.controller;
 
 import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
 import com.keyduck.member.domain.MemberType;
 import com.keyduck.member.repository.MemberRepository;
+import com.keyduck.member.service.LikesService;
 import lombok.With;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +28,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -34,9 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@AutoConfigureMockMvc
 @SpringBootTest
 @Slf4j
+@AutoConfigureMockMvc
 public class MemberControllerTest {
     @Autowired
     MockMvc mvc;
@@ -45,7 +50,11 @@ public class MemberControllerTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private KeyboardRepository keyboardRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LikesService likesService;
 
 
     @Before
@@ -136,24 +145,5 @@ public class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":"+"\""+member.getEmail()+"\"}"))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser
-    public void getLikes_좋아요한_키보드_불러오기_성공() throws Exception {
-        Member member = Member.MemberBuilder()
-                .nickname("test")
-                .email("liketest@naver.com")
-                .password("1212")
-                .role(MemberRole.ADMIN)
-                .type(MemberType.Keyduck)
-                .likes(new ArrayList<Keyboard>(1))
-                .build();
-        memberRepository.save(member);
-        mvc.perform(get("/v1/"+member.getMemberId()+"/likes"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":[keyboard객체]}"))
-                .andDo(print());
-        memberRepository.delete(member);
     }
 }

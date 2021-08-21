@@ -10,10 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class KeyboardGetDto {
+    private Long keyboardId;
     private String name;
     private String brand;
     private String connect;
-    private Integer hotswap;
+    private String hotswap;
     private Integer price;
     private String led;
     private Integer arrangement;
@@ -23,7 +24,7 @@ public class KeyboardGetDto {
     private String switchBrand;
     private String switchColor;
     private String thumbnailImg;
-    private String descruptionImg;
+    private String descriptionImg;
     //키캡
     private String keycap;
     private String keycapImprint;

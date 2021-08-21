@@ -19,6 +19,7 @@ public class Keyboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
+    @JoinColumn
     private Long keyboardId;
     //키보드
     @Column(unique = true)
@@ -28,7 +29,7 @@ public class Keyboard {
     private String brand;
     private String connect;
     //boolean
-    private boolean hotswap;
+    private String hotswap;
     private Integer price;
     private String led;
     private Integer arrangement;

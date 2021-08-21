@@ -40,7 +40,7 @@ public class Member implements UserDetails{
 	
 	private String profile;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Keyboard> likes;
 	
 	public void setProfile(String profile){
