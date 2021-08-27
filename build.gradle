@@ -30,6 +30,7 @@ dependencies {
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.9.0'
 	implementation 'org.elasticsearch:elasticsearch:7.9.0'
+	runtimeOnly 'com.h2database:h2'
 
 	annotationProcessor("org.projectlombok:lombok")
   	compileOnly("org.projectlombok:lombok")
