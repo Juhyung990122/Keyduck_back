@@ -98,12 +98,13 @@ public class LikeControllerTest {
                 .type(MemberType.Keyduck)
                 .likes(new ArrayList<Keyboard>())
                 .build();
+        memberRepository.save(member);
 
         mvc.perform(post("/v1/"+member.getMemberId()+"/likes")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"keyboardId\""+keyboard.getKeyboardId()+"}"))
+        .content("{\"keyboardId\":"+keyboard.getKeyboardId()+"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 추가 성공했습니다\"}"))
+                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 추가 성공했습니다.\"}"))
                 .andDo(print());
 
         likesService.deleteLikes(member.getMemberId(), keyboard.getKeyboardId());
@@ -124,12 +125,13 @@ public class LikeControllerTest {
                 .type(MemberType.Keyduck)
                 .likes(new ArrayList<Keyboard>())
                 .build();
+        memberRepository.save(member);
 
         mvc.perform(delete("/v1/"+member.getMemberId()+"/likes")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"keyboardId\""+keyboard.getKeyboardId()+"}"))
+                .content("{\"keyboardId\":"+keyboard.getKeyboardId()+"}"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 취소 성공했습니다\"}"))
+                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 취소 성공했습니다.\"}"))
                .andDo(print());
 
         likesService.deleteLikes(member.getMemberId(), keyboard.getKeyboardId());
