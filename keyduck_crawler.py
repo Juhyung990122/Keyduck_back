@@ -7,6 +7,8 @@ import re
 def refine(data):
     refine_data = re.sub("(<([^>]+)>)","",str(data))
     data = re.sub(r"[^a-zA-Z0-9가-힣○ ]","",refine_data)
+    if data == "○":
+        data = True
     return data
 
 def is_key_exist(dict, key):
@@ -26,7 +28,7 @@ time.sleep(2)
 
 # 페이지 범위 배포전에 수정하기
 # 테스트데이터는 2페이지(60개)까지만
-for i in range(1,2):
+for i in range(1,3):
     time.sleep(2)
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
@@ -43,7 +45,20 @@ for i in range(1,2):
         model = soup.select(
             '.blog_wrap > #danawa_container >.blog_content > .summary_info > .top_summary > h3'
         )
+        price = soup.select(
+            '#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_top > div > span.lwst_prc > a > em'
+        )
+        
+        if len(price) == 0:
+            price = 0
+        else:
+            price = price[0]
 
+        # photo = soup.select(
+        #     '#blog_content > div.summary_info > div.detail_summary > div.summary_left > #thumbArea > div.photo_w > a > img'
+        # )
+        # print(photo)
+        
         option = soup.select(
         '.blog_wrap > #danawa_container > .blog_content > .product_detail .detail_info > #productDescriptionArea > .detail_cont > .prod_spec > .spec_tbl > tbody > tr > th.tit'
         )
@@ -55,13 +70,10 @@ for i in range(1,2):
         for d in range(len(option)):
             if option[d] == '':
                 continue
-            # refine_data = re.sub("(<([^>]+)>)","",str(option[d]))
-            # option[d] = re.sub(r"[^a-zA-Z0-9가-힣○ ]","",refine_data)
             option[d] = refine(option[d])
             data[d] = refine(data[d])
             
             option_dict[option[d]] = data[d]
-        print(option_dict)
 
 
         request = {
@@ -71,7 +83,7 @@ for i in range(1,2):
                 "switchBrand" : is_key_exist(option_dict ,"스위치"),
                 "switchColor" : is_key_exist(option_dict ,"키 스위치"),
                 "hotswap" : is_key_exist(option_dict ,"스위치 교체 가능"),
-                "price" : None,
+                "price" : int(refine(price)),
                 "keycap" : is_key_exist(option_dict ,"키캡 재질"),
                 "keycapImprint" : is_key_exist(option_dict ,"키캡 각인"),
                 "keycapProfile" : is_key_exist(option_dict ,"스텝스컬쳐2"),
@@ -82,9 +94,9 @@ for i in range(1,2):
                 "photo" :None
             }
         print(request)
-    # driver.get('http://prod.danawa.com/list/?cate=1131635&15main_11_03')
-    # next_p = driver.execute_script('movePage('+str(i+1)+')')
-    # driver.implicitly_wait(5)
+    driver.get('http://prod.danawa.com/list/?cate=1131635&15main_11_03')
+    next_p = driver.execute_script('movePage('+str(i+1)+')')
+    driver.implicitly_wait(5)
 
 driver.quit()
 
