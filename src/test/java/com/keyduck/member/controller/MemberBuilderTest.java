@@ -1,4 +1,4 @@
-package com.keyduck;
+package com.keyduck.member.controller;
 
 import org.junit.jupiter.api.Test;
 import com.keyduck.member.domain.Member;

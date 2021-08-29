@@ -78,6 +78,8 @@ public class KeyboardControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     public void Keyboard_삭제() throws Exception{
+        Keyboard_추가();
+
         String successData = "테스트키보드";
         mvc.perform(delete("/v1/keyboards/delete")
                 .contentType(MediaType.APPLICATION_JSON)
