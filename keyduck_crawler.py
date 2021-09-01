@@ -94,8 +94,8 @@ for i in range(1,3):
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
                 "photo" :None
             }
-        requests.post("https://keyduck.herokuapp.com/",request_form)
-
+        requests.post("https://keyduck.herokuapp.com/v1/keyboards/add",request_form)
+        print("done!")
     driver.get('http://prod.danawa.com/list/?cate=1131635&15main_11_03')
     next_p = driver.execute_script('movePage('+str(i+1)+')')
     driver.implicitly_wait(5)

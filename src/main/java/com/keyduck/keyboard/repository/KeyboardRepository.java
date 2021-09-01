@@ -11,7 +11,7 @@ import java.security.Key;
 import java.util.List;
 import java.util.Optional;
 
-public interface KeyboardRepository extends JpaRepository<Keyboard, Long>, JpaSpecificationExecutor<Keyboard> {
+public interface KeyboardRepository extends JpaRepository<Keyboard, Long>, JpaSpecificationExecutor<Keyboard>{
     List<Keyboard> findAll(@Nullable Specification<Keyboard> spec);
     List<KeyboardGetDto> findAllByKeyword(String keyword);
 }

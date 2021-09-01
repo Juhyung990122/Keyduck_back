@@ -17,11 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class KeyboardService {
     private final KeyboardRepository keyboardRepository;
-    @Autowired
-    KeyboardMapper keyboardMapper;
+    private final KeyboardMapper keyboardMapper;
+
+    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper){
+        this.keyboardRepository = keyboardRepository;
+        this.keyboardMapper = keyboardMapper;
+    }
 
     public List<KeyboardGetDto> getAllKeyboards(){
         List<Keyboard> keyboards = keyboardRepository.findAll();
