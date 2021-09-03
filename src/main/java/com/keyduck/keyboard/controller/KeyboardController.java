@@ -3,6 +3,7 @@ package com.keyduck.keyboard.controller;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.KeyboardSearchDto;
+import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.service.KeyboardService;
 import com.keyduck.result.ListResult;
 import com.keyduck.result.ResponseService;
@@ -26,8 +27,8 @@ public class KeyboardController {
 
     @ApiOperation(value = "키보드 전체 조회", notes = "현재 있는 키보드 전체를 조회합니다.")
     @GetMapping("/keyboards")
-    public ResponseEntity<ListResult<KeyboardGetDto>> getAllKeyboards(){
-        List<KeyboardGetDto> result = keyboardService.getAllKeyboards();
+    public ResponseEntity<ListResult<SimpleKeyboardDto>> getAllKeyboards(){
+        List<SimpleKeyboardDto> result = keyboardService.getAllKeyboards();
         return ResponseEntity
                 .ok()
                 .body(responseService.getListResult(result));

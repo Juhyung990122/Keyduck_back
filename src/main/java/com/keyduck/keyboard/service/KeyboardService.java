@@ -4,9 +4,11 @@ import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.KeyboardSearchDto;
+import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.keyboard.repository.KeyboardSpecification;
 import com.keyduck.mapper.KeyboardMapper;
+import com.keyduck.mapper.SimpleKeyboardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,17 +22,19 @@ import java.util.List;
 public class KeyboardService {
     private final KeyboardRepository keyboardRepository;
     private final KeyboardMapper keyboardMapper;
+    private final SimpleKeyboardMapper simpleKeyboardMapper;
 
-    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper){
+    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper){
         this.keyboardRepository = keyboardRepository;
         this.keyboardMapper = keyboardMapper;
+        this.simpleKeyboardMapper = simpleKeyboardMapper;
     }
 
-    public List<KeyboardGetDto> getAllKeyboards(){
+    public List<SimpleKeyboardDto> getAllKeyboards(){
         List<Keyboard> keyboards = keyboardRepository.findAll();
-        List<KeyboardGetDto> keyboardsDto = new ArrayList<KeyboardGetDto>();
+        List<SimpleKeyboardDto> keyboardsDto = new ArrayList<SimpleKeyboardDto>();
         for(int i = 0; i < keyboards.size(); i++){
-            keyboardsDto.add(keyboardMapper.toDto(keyboards.get(i)));
+            keyboardsDto.add(simpleKeyboardMapper.toDto(keyboards.get(i)));
         }
         return keyboardsDto;
     }
