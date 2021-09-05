@@ -2,6 +2,7 @@ package com.keyduck.keyboard.service;
 
 
 import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.verification.VerificationMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -26,7 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyboardServiceTest {
@@ -84,6 +86,15 @@ public class KeyboardServiceTest {
 
     @Test
     public void addKeyboard() {
+        //given
+        KeyboardCreateDto keyboardCreateDto = new KeyboardCreateDto();
+        Keyboard keyboard = Keyboard.KeyboardBuilder().build();
+
+        //when
+        keyboardService.addKeyboard(keyboardCreateDto);
+
+        //then
+        verify(keyboardRepository).save(any());
     }
 
     @Test
