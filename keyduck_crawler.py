@@ -2,17 +2,23 @@ import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
-import requests
+import requests,json
 
 
 def refine(data):
     refine_data = re.sub("(<([^>]+)>)","",str(data))
     data = re.sub(r"[^a-zA-Z0-9가-힣○ ]","",refine_data)
+    if "제조사 웹사이트 바로가기" in data:
+        data = data[:-13]
+        print(data)
+
     if data == "○":
         data = True
+
     return data
 
 def is_key_exist(dict, key):
+    print(key)
     if key in dict:
         return dict[key]
     else:
@@ -76,10 +82,12 @@ for i in range(1,3):
             
             option_dict[option[d]] = data[d]
 
-
+        headers = {
+          "Content-type":"application/json"  
+        }
         request_form = {
-                "model" : refine(model),
-                "brand" : is_key_exist( option_dict ,"제조회사"),
+                "name" : refine(model),
+                "brand" : is_key_exist(option_dict ,"제조회사"),
                 "connect" :is_key_exist(option_dict ,"연결 방식"),
                 "switchBrand" : is_key_exist(option_dict ,"스위치"),
                 "switchColor" : is_key_exist(option_dict ,"키 스위치"),
@@ -89,12 +97,14 @@ for i in range(1,3):
                 "keycapImprint" : is_key_exist(option_dict ,"키캡 각인"),
                 "keycapProfile" : is_key_exist(option_dict ,"스텝스컬쳐2"),
                 "led" : is_key_exist(option_dict ,"LED 백라이트"),
-                "arrangement" : is_key_exist(option_dict ,"키 배열"),
-                "weight" : is_key_exist(option_dict ,"무게"),
+                "arrangement" : int(is_key_exist(option_dict ,"키 배열")[:-1]),
+                "weight" : int(is_key_exist(option_dict ,"무게")[:-1]),
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
                 "photo" :None
             }
-        requests.post("https://keyduck.herokuapp.com/v1/keyboards/add",request_form)
+        req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form),headers=headers)
+        print(req.status_code)
+        print(req.content)
         print("done!")
     driver.get('http://prod.danawa.com/list/?cate=1131635&15main_11_03')
     next_p = driver.execute_script('movePage('+str(i+1)+')')

@@ -4,6 +4,7 @@ package com.keyduck.keyboard.service;
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
+import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.mapper.KeyboardMapper;
@@ -62,8 +63,8 @@ public class KeyboardServiceTest {
         List<SimpleKeyboardDto> request = keyboardService.getAllKeyboards();
         //then
         assertThat(request.size(),is(2));
-        assertThat(request.get(0).getId(),is(keyboard1.getKeyboardId()));
-        assertThat(request.get(1).getId(),is(keyboard2.getKeyboardId()));
+        assertThat(request.get(0).getKeyboardId(),is(keyboard1.getKeyboardId()));
+        assertThat(request.get(1).getKeyboardId(),is(keyboard2.getKeyboardId()));
     }
 
     @Test
@@ -88,7 +89,6 @@ public class KeyboardServiceTest {
     public void addKeyboard() {
         //given
         KeyboardCreateDto keyboardCreateDto = new KeyboardCreateDto();
-        Keyboard keyboard = Keyboard.KeyboardBuilder().build();
 
         //when
         keyboardService.addKeyboard(keyboardCreateDto);
@@ -102,7 +102,8 @@ public class KeyboardServiceTest {
     }
 
     @Test
-    public void searchKeyboard() {
+    public void searchKeyboard(){
+
     }
 
     @Test

@@ -57,12 +57,12 @@ public class KeyboardService {
         return "success";
     }
 
-    public List<KeyboardGetDto> searchKeyboard(KeyboardSearchDto searchKeyboards){
-        List<KeyboardGetDto> keyboards = new ArrayList<>();
+    public List<SimpleKeyboardDto> searchKeyboard(KeyboardSearchDto searchKeyboards){
+        List<SimpleKeyboardDto> keyboards = new ArrayList<>();
         Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeyboards));
         List<Keyboard> keyboardList = keyboardRepository.findAll(spec);
         for(int i = 0; i < keyboardList.size();i++){
-            keyboards.add(keyboardMapper.toDto(keyboardList.get(i)));
+            keyboards.add(simpleKeyboardMapper.toDto(keyboardList.get(i)));
         }
         return keyboards;
     }

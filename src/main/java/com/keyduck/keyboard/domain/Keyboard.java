@@ -22,7 +22,6 @@ public class Keyboard {
     @JoinColumn
     private Long keyboardId;
     //키보드
-    @Column(unique = true)
     private String thumbnailImg;
     private String descriptionImg;
     private String name;

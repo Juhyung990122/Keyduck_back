@@ -46,6 +46,7 @@ public class KeyboardController {
     @ApiOperation(value = "키보드 추가", notes = "새로운 키보드를 추가합니다.")
     @PostMapping("/keyboards/add")
     public ResponseEntity<SingleResult<KeyboardCreateDto>> addKeyboard(@RequestBody KeyboardCreateDto keyboard){
+        System.out.println("post request");
         KeyboardCreateDto result = keyboardService.addKeyboard(keyboard);
         return ResponseEntity
                 .ok()
@@ -63,8 +64,8 @@ public class KeyboardController {
 
     @ApiOperation(value = "키보드 검색", notes = "전달된 조건을 통해 키보드를 검색합니다")
     @PostMapping("/keyboards")
-    public ResponseEntity<SingleResult<List<KeyboardGetDto>>> searchKeyboard(@RequestBody KeyboardSearchDto searchKeyboards){
-        List<KeyboardGetDto> result = keyboardService.searchKeyboard(searchKeyboards);
+    public ResponseEntity<SingleResult<List<SimpleKeyboardDto>>> searchKeyboard(@RequestBody KeyboardSearchDto searchKeyboards){
+        List<SimpleKeyboardDto> result = keyboardService.searchKeyboard(searchKeyboards);
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));
