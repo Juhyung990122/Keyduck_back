@@ -1,4 +1,5 @@
 import time
+from bs4.element import SoupStrainer
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
@@ -10,7 +11,6 @@ def refine(data):
     data = re.sub(r"[^a-zA-Z0-9가-힣○ ]","",refine_data)
     if "제조사 웹사이트 바로가기" in data:
         data = data[:-13]
-        print(data)
 
     if data == "○":
         data = True
@@ -18,7 +18,6 @@ def refine(data):
     return data
 
 def is_key_exist(dict, key):
-    print(key)
     if key in dict:
         return dict[key]
     else:
@@ -35,7 +34,7 @@ time.sleep(2)
 
 # 페이지 범위 배포전에 수정하기
 # 테스트데이터는 2페이지(60개)까지만
-for i in range(1,3):
+for i in range(1,2):
     time.sleep(2)
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
@@ -52,6 +51,12 @@ for i in range(1,3):
         model = soup.select(
             '.blog_wrap > #danawa_container >.blog_content > .summary_info > .top_summary > h3'
         )
+        thumbnail = soup.select(
+            '#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.thumb_area > div.photo_w > #imgExtensionAnchorLayer > img'
+        )
+        thumbnail = str(thumbnail[0]).split("\"")[-2]
+        # thumbnail = soup.find('div', {'class': 'ly_cont'}).find('div', {"class": "big_area big_img"}).find('img', {'class': 'va_top'})['src']
+
         price = soup.select(
             '#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_top > div > span.lwst_prc > a > em'
         )
@@ -61,10 +66,6 @@ for i in range(1,3):
         else:
             price = price[0]
 
-        # photo = soup.select(
-        #     '#blog_content > div.summary_info > div.detail_summary > div.summary_left > #thumbArea > div.photo_w > a > img'
-        # )
-        # print(photo)
         
         option = soup.select(
         '.blog_wrap > #danawa_container > .blog_content > .product_detail .detail_info > #productDescriptionArea > .detail_cont > .prod_spec > .spec_tbl > tbody > tr > th.tit'
@@ -82,11 +83,14 @@ for i in range(1,3):
             
             option_dict[option[d]] = data[d]
 
+            
+
         headers = {
           "Content-type":"application/json"  
         }
         request_form = {
                 "name" : refine(model),
+                "thumbnailImg": str(thumbnail),
                 "brand" : is_key_exist(option_dict ,"제조회사"),
                 "connect" :is_key_exist(option_dict ,"연결 방식"),
                 "switchBrand" : is_key_exist(option_dict ,"스위치"),
@@ -97,8 +101,8 @@ for i in range(1,3):
                 "keycapImprint" : is_key_exist(option_dict ,"키캡 각인"),
                 "keycapProfile" : is_key_exist(option_dict ,"스텝스컬쳐2"),
                 "led" : is_key_exist(option_dict ,"LED 백라이트"),
-                "arrangement" : int(is_key_exist(option_dict ,"키 배열")[:-1]),
-                "weight" : int(is_key_exist(option_dict ,"무게")[:-1]),
+                "arrangement" : int(is_key_exist(option_dict ,"키 배열")[:-1]) if is_key_exist(option_dict, "키 배열") else '',
+                "weight" : int(is_key_exist(option_dict ,"무게")[:-1]) if is_key_exist(option_dict, "무게") else '',
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
                 "photo" :None
             }
