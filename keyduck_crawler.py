@@ -66,6 +66,10 @@ for i in range(1,2):
         else:
             price = price[0]
 
+        # photo = soup.select(
+        #     '#blog_content > div.summary_info > div.detail_summary > div.summary_left > #thumbArea > div.photo_w > a > img'
+        # )
+        # print(photo)
         
         option = soup.select(
         '.blog_wrap > #danawa_container > .blog_content > .product_detail .detail_info > #productDescriptionArea > .detail_cont > .prod_spec > .spec_tbl > tbody > tr > th.tit'
@@ -98,7 +102,7 @@ for i in range(1,2):
                 "hotswap" : is_key_exist(option_dict ,"스위치 교체 가능"),
                 "price" : int(refine(price)),
                 "keycap" : is_key_exist(option_dict ,"키캡 재질"),
-                "keycapImprint" : is_key_exist(option_dict ,"키캡 각인"),
+                "keycapImprint" : is_key_exist(option_dict ,"키캡 각인방식"),
                 "keycapProfile" : is_key_exist(option_dict ,"스텝스컬쳐2"),
                 "led" : is_key_exist(option_dict ,"LED 백라이트"),
                 "arrangement" : int(is_key_exist(option_dict ,"키 배열")[:-1]) if is_key_exist(option_dict, "키 배열") else '',
