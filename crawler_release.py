@@ -1,5 +1,5 @@
 import time
-from bs4.element import SoupStrainer
+import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
@@ -28,7 +28,7 @@ def is_key_exist(dict, key):
 options = webdriver.ChromeOptions()
 options.add_argument("headless")
 options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH", options = options)
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options = options)
 
 driver.get('http://prod.danawa.com/list/?cate=1131635&15main_11_03')
 time.sleep(2)
