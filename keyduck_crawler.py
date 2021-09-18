@@ -3,6 +3,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import re
 import requests,json
+from urllib.parse import urlencode
 
 
 def refine(data):
@@ -109,7 +110,7 @@ for i in range(1,2):
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
                 "photo" :None
             }
-        req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form),headers=headers)
+        req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         print(req.status_code)
         print(req.content)
         print("done!")
