@@ -6,11 +6,11 @@ server:
 spring:
   profiles: dev
   datasource:
-    database-name: heroku_62a3453fd580d8a
-    url : jdbc:mysql://b7c287d6c3ef56:d15ece33@us-cdbr-east-04.cleardb.com/heroku_62a3453fd580d8a?reconnect=true&useUnicode=true&characterEncoding=utf8
-    host-name : us-cdbr-east-04.cleardb.com
-    username: b7c287d6c3ef56
-    password: d15ece33
+    database-name: 	jlbf7hrr7t7gi1z2
+    url : jdbc:mysql://hrozq4bvhus41rwn:tlxafdboic3tur77@nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/xjn1rdt6baurl64d?reconnect=true&useUnicode=true&characterEncoding=utf8
+    host-name : nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
+    username: hrozq4bvhus41rwn
+    password: tlxafdboic3tur77
 
   jackson:
     serialization:
@@ -20,7 +20,7 @@ spring:
     generate-ddl: true
     database : mysql
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 file :
