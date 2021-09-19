@@ -1,11 +1,18 @@
 server:
   port: 8070
 spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/keyduck?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: root
+#    password: Jh2021^^
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/keyduck?serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: Jh2021^^
+    database-name: jlbf7hrr7t7gi1z2
+    url: jdbc:mysql://hrozq4bvhus41rwn:tlxafdboic3tur77@nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/xjn1rdt6baurl64d?reconnect=true&useUnicode=true&characterEncoding=utf8
+    host-name: nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
+    username: hrozq4bvhus41rwn
+    password: tlxafdboic3tur77
+
   jackson:
     serialization:
       fail-on-empty-beans : false
