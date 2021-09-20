@@ -41,6 +41,6 @@ public class Keyboard {
     private String keycap;
     private String keycapImprint;
     private String keycapProfile;
-    private String keyword;
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "tag")
+    private List<Tag> tag;
 }

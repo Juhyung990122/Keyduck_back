@@ -71,14 +71,6 @@ public class KeyboardController {
                 .body(responseService.getSingleResult(result));
     }
 
-    @ApiOperation(value = "키보드 필터", notes = "만드는 중")
-    @PostMapping("/keyboards/keyword")
-    public ResponseEntity<ListResult<KeyboardGetDto>> filterKeyboard(@RequestBody HashMap<String,String> keywords){
-        List<KeyboardGetDto> result = keyboardService.filterByCategoryKeyboard(keywords);
-        return ResponseEntity
-                .ok()
-                .body(responseService.getListResult(result));
-    }
 
     @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "만드는 중")
     @PostMapping("/keyboards/filter")

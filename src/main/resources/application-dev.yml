@@ -1,16 +1,15 @@
 server:
-  port: 8080
+  port: 30000
   servlet:
     session:
       tracking-modes: COOKIE
 spring:
   profiles: dev
   datasource:
-    database-name: 	jlbf7hrr7t7gi1z2
-    url : jdbc:mysql://o93x5an9ii7fl044:o9odhxvnxxekv0k8@nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/l6cliyeqenfdryjl?reconnect=true&useUnicode=true&characterEncoding=utf8
-    host-name : nnsgluut5mye50or.cbetxkdyhwsb.us-east-1.rds.amazonaws.com
-    username: o93x5an9ii7fl044
-    password: o9odhxvnxxekv0k8
+    database-name: keyduck
+    url : jdbc:mysql://49.50.173.210:3306/keyduck?reconnect=true&useUnicode=true&characterEncoding=utf8
+    username: summer
+    password: Jh2021^^
 
   jackson:
     serialization:

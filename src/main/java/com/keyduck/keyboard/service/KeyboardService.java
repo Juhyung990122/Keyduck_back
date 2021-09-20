@@ -67,10 +67,5 @@ public class KeyboardService {
         return keyboards;
     }
 
-    public List<KeyboardGetDto> filterByCategoryKeyboard(HashMap<String,String> keywords){
-        String keyword = keywords.get("keyword");
-        List<KeyboardGetDto> keyboards = keyboardRepository.findAllByKeyword(keyword);
-        return keyboards;
-    }
 
 }
