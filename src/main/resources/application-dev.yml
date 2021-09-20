@@ -7,7 +7,7 @@ spring:
   profiles: dev
   datasource:
     database-name: keyduck
-    url : jdbc:mysql://49.50.173.210:3306/keyduck?reconnect=true&useUnicode=true&characterEncoding=utf8
+    url : jdbc:mysql://101.101.210.98:3306/keyduck?reconnect=true&useUnicode=true&characterEncoding=utf8
     username: summer
     password: Jh2021^^
 
