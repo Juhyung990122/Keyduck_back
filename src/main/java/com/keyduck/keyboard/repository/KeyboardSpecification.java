@@ -20,9 +20,7 @@ public class KeyboardSpecification {
         };
     }
 
-
-
-    public static List<Predicate> getPredicateWithKeywords(KeyboardSearchDto params, Root<Keyboard> root, CriteriaBuilder builder ){
+    private static List<Predicate> getPredicateWithKeywords(KeyboardSearchDto params, Root<Keyboard> root, CriteriaBuilder builder ){
         List<Predicate> predicate = new ArrayList<>();
         if (params.getBrand() != null && !params.getBrand().equals("")) {
             predicate.add(builder.like(root.get("brand"), "%"+(String)params.getBrand()+"%"));
@@ -52,6 +50,7 @@ public class KeyboardSpecification {
                 }
             }
         }
+        
 
         if (params.getHotswap()!= null && !params.getHotswap().equals("")) {
             predicate.add(builder.like(root.get("hotswap"), "%"+(String)params.getHotswap()+"%"));
@@ -68,6 +67,7 @@ public class KeyboardSpecification {
         if (params.getStartPrice() != 0 && params.getEndPrice() != 0) {
             predicate.add(builder.between(root.get("price"),Integer.valueOf(params.getStartPrice()),Integer.valueOf(params.getEndPrice())));
         }
+
 
         return predicate;
     }

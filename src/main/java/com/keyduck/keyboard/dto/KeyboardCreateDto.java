@@ -45,7 +45,6 @@ public class KeyboardCreateDto {
                 .keycap(keycap)
                 .keycapImprint(keycapImprint)
                 .keycapProfile(keycapProfile)
-                .tag(null)
                 .build();
     }
 

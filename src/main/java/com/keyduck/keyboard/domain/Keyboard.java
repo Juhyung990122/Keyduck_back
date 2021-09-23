@@ -19,7 +19,7 @@ public class Keyboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    @JoinColumn
+    @JoinColumn(name = "keyboardId")
     private Long keyboardId;
     //키보드
     private String thumbnailImg;
@@ -41,6 +41,6 @@ public class Keyboard {
     private String keycap;
     private String keycapImprint;
     private String keycapProfile;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "tag")
-    private List<Tag> tag;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags;
 }

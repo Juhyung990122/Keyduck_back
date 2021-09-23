@@ -19,5 +19,6 @@ public class KeyboardSearchDto {
     private String keycapProfile;
     private String switchBrand;
     private String[] switchColor;
+    private String[] tag;
 
 }

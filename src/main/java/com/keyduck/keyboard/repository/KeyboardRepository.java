@@ -13,5 +13,5 @@ import java.util.Optional;
 
 public interface KeyboardRepository extends JpaRepository<Keyboard, Long>, JpaSpecificationExecutor<Keyboard>{
     List<Keyboard> findAll(@Nullable Specification<Keyboard> spec);
-    List<Keyboard> findKeyboardsByTag(String tag);
+
 }
