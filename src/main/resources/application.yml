@@ -22,3 +22,11 @@ spring:
 
 file :
   upload-dir : ./uploads
+
+sns:
+  kakao:
+    url : https://kauth.kakao.com/oauth/authorize
+    client_id : d5c1915fd9a1a45bc3a8fa76291045b8
+    redirect_uri: http://localhost:8070/v1/kakao_login
+    response_type : code
+

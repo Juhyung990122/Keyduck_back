@@ -49,7 +49,7 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "로그인", notes = "회원이라면 로그인합니다.")
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<SingleResult<MemberGetDto>> signin(@RequestBody MemberLoginDto m) throws Exception {
 		MemberGetDto result = memberService.signin(m,jwtTokenProvider);
 		return ResponseEntity
@@ -57,6 +57,13 @@ public class MemberController {
 				.body(responseService.getSingleResult(result));
 				
 	}
+
+	@RequestMapping("/kakao_login")
+	public String login(@RequestParam("code") String code){
+		System.out.println(code);
+		return "index";
+	}
+
 	@ApiOperation(value = "전체 멤버 조회", notes = "전체 멤버를 조회합니다.")
 	@GetMapping("/members")
 	public ResponseEntity<ListResult<MemberGetDto>> getAllMembers(){
