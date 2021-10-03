@@ -2,9 +2,10 @@ package com.keyduck.member.socialLogin.service;
 
 import com.keyduck.member.socialLogin.SocialLoginType;
 
+import java.io.IOException;
+
 public interface SocialOauth {
-    String getOauthRedirectUrl();
-    String requestAccessToken(String code);
+    String requestAccessToken(String code) throws IOException;
 
     default SocialLoginType type(){
         if(this instanceof KakaoOauth){

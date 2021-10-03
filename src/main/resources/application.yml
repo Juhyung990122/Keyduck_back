@@ -27,6 +27,7 @@ sns:
   kakao:
     url : https://kauth.kakao.com/oauth/authorize
     client_id : d5c1915fd9a1a45bc3a8fa76291045b8
-    redirect_uri: http://localhost:8070/v1/kakao_login
+    redirect_uri: http://localhost:8070/v1/KAKAO/kakao_login
     response_type : code
-
+    grant_type : authorization_code
+    client_secret : 7AlTUg5Ew2Hb0UvDfemmHVOcTw9I2m9h

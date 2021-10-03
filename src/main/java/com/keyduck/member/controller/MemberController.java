@@ -58,11 +58,6 @@ public class MemberController {
 				
 	}
 
-	@RequestMapping("/kakao_login")
-	public String login(@RequestParam("code") String code){
-		System.out.println(code);
-		return "index";
-	}
 
 	@ApiOperation(value = "전체 멤버 조회", notes = "전체 멤버를 조회합니다.")
 	@GetMapping("/members")
