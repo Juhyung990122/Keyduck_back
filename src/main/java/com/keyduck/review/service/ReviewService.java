@@ -63,11 +63,10 @@ public class ReviewService {
     }
 
 
-    public List<ReviewGetDto> getReviews(HashMap<String,Long> request) {
-        String key = request.keySet().iterator().next();
+    public List<ReviewGetDto> getReviews(String key, Long id ) {
         switch (key) {
             case "keyboardId":
-                Long keyboardId = request.get("keyboardId");
+                Long keyboardId = id;
                 Keyboard keyboard = keyboardRepository.getOne(keyboardId);
                 List<Review> modelReviews = reviewRepository.findAllByName(keyboard);
                 List<ReviewGetDto> keyboardReviewsDto = new ArrayList<ReviewGetDto>();
@@ -78,8 +77,8 @@ public class ReviewService {
                 }
                 return keyboardReviewsDto;
 
-            case "memberId":
-                Long memberId = request.get("memberId");
+            case "memId":
+                Long memberId = id;
                 Member member = memberRepository.getOne(memberId);
                 List<Review> memberReviews = reviewRepository.findAllByAuthor(member);
                 List<ReviewGetDto> memberReviewsDto = new ArrayList<ReviewGetDto>();

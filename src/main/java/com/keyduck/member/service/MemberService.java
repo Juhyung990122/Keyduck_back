@@ -3,8 +3,10 @@ package com.keyduck.member.service;
 
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
+import com.keyduck.mapper.LoginMapper;
 import com.keyduck.mapper.MemberMapper;
 import com.keyduck.member.domain.Member;
+import com.keyduck.member.dto.LoginMemberDto;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
@@ -44,6 +46,8 @@ public class MemberService implements UserDetailsService{
 	private final PasswordEncoder passwordEncoder;
 	@Autowired
 	MemberMapper memberMapper;
+	@Autowired
+	LoginMapper loginMapper;
 
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -80,14 +84,14 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public MemberGetDto signin(MemberLoginDto loginMember,JwtTokenProvider jwtTokenProvider){
+	public LoginMemberDto signin(MemberLoginDto loginMember, JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginMember.getEmail())
 					.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginMember.getPassword(), member.getPassword())) {
 				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}
 			String token = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
-			MemberGetDto loginedMemberInfoDto = memberMapper.toDto(member,token);
+			LoginMemberDto loginedMemberInfoDto = loginMapper.toDto(member,token);
 			return loginedMemberInfoDto;
 	}
 

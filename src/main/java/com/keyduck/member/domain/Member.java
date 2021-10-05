@@ -25,7 +25,7 @@ public class Member implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(updatable = false)
-	private Long memberId;
+	private Long memId;
 
 	String nickname;
 	@Email
@@ -59,7 +59,7 @@ public class Member implements UserDetails{
 	
 	@Override
 	public String getUsername() {
-		return this.memberId.toString();
+		return this.memId.toString();
 	}
 
 	

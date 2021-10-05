@@ -1,9 +1,6 @@
 package com.keyduck.member.controller;
 
-import com.keyduck.member.dto.MemberCreateDto;
-import com.keyduck.member.dto.MemberDeleteDto;
-import com.keyduck.member.dto.MemberGetDto;
-import com.keyduck.member.dto.MemberLoginDto;
+import com.keyduck.member.dto.*;
 import com.keyduck.member.service.MemberService;
 import com.keyduck.result.CommonResult;
 import com.keyduck.result.ListResult;
@@ -16,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +46,8 @@ public class MemberController {
 
 	@ApiOperation(value = "로그인", notes = "회원이라면 로그인합니다.")
 	@PostMapping("/login")
-	public ResponseEntity<SingleResult<MemberGetDto>> signin(@RequestBody MemberLoginDto m) throws Exception {
-		MemberGetDto result = memberService.signin(m,jwtTokenProvider);
+	public ResponseEntity<SingleResult<LoginMemberDto>> signin(@RequestBody MemberLoginDto m) throws Exception {
+		LoginMemberDto result = memberService.signin(m,jwtTokenProvider);
 		return ResponseEntity
 				.ok()
 				.body(responseService.getSingleResult(result));

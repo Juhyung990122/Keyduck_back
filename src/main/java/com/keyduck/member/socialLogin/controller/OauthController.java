@@ -20,7 +20,6 @@ import java.io.IOException;
 public class OauthController {
     private final OauthService oauthService;
 
-
     @GetMapping( value = "/{socialLoginType}/kakao_login",
     produces = "application/json; charset=utf-8"
     )

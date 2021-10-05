@@ -11,10 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberGetDto {
+	private Long memId;
 	private String email;
 	private String nickname;
 	private MemberRole role;
-	private MemberType type;
-	private String profile;
-	private String token;
 }

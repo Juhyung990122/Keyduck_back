@@ -80,7 +80,7 @@ public class MemberControllerTest {
     public void getMemberDetail() throws Exception{
         final Member detailMember = Member.MemberBuilder().build();
         memberRepository.save(detailMember);
-        mvc.perform(get("/v1/members/"+detailMember.getMemberId().toString())
+        mvc.perform(get("/v1/members/"+detailMember.getMemId().toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

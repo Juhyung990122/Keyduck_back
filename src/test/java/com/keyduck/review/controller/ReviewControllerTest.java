@@ -71,7 +71,7 @@ public class ReviewControllerTest {
         String successData = "{\n" +
                 "\"name\":"+testKeyboard.getKeyboardId()+",\n"+
                 "\"star\":3.5,\n" +
-                "\"author\":"+testMember.getMemberId()+",\n" +
+                "\"author\":"+testMember.getMemId()+",\n" +
                 "\"content\":\"테스트리뷰입니다.\"\n" +
                 "}";
         MvcResult reviewResult = mvc.perform(post("/v1/review/add")
@@ -94,7 +94,7 @@ public class ReviewControllerTest {
                 .build();
         reviewRepository.save(testReview);
         String successData = "{ \"keyboardId\" :"+ testKeyboard.getKeyboardId() +"}";
-        mvc.perform(get("/v1/review")
+        mvc.perform(get("/v1/review?keyboardId="+ testKeyboard.getKeyboardId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))
                 .andExpect(status().isOk())
@@ -109,7 +109,7 @@ public class ReviewControllerTest {
                 .content("테스트리뷰")
                 .build();
         reviewRepository.save(testReview);
-        String successData = "{ \"memberId\" :"+testMember.getMemberId()+"}";
+        String successData = "{ \"memberId\" :"+testMember.getMemId()+"}";
         mvc.perform(get("/v1/review")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(successData))

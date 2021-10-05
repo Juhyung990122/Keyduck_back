@@ -73,14 +73,14 @@ public class LikeControllerTest {
                 .likes(new ArrayList<Keyboard>())
                 .build();
         memberRepository.save(member);
-        likesService.addLikes(member.getMemberId(),keyboard.getKeyboardId());
+        likesService.addLikes(member.getMemId(),keyboard.getKeyboardId());
 
-        mvc.perform(get("/v1/"+member.getMemberId()+"/likes"))
+        mvc.perform(get("/v1/"+member.getMemId()+"/likes"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":[{\"id\":null,\"thumbnailImg\":null,\"name\":null,\"price\":null,\"star\":null}]}"))
+                .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":[{\"keyboardId\":null,\"thumbnailImg\":null,\"name\":null,\"price\":null,\"star\":null}]}"))
                 .andDo(print());
 
-        likesService.deleteLikes(member.getMemberId(), keyboard.getKeyboardId());
+        likesService.deleteLikes(member.getMemId(), keyboard.getKeyboardId());
         memberRepository.delete(member);
         keyboardRepository.delete(keyboard);
     }
@@ -100,14 +100,14 @@ public class LikeControllerTest {
                 .build();
         memberRepository.save(member);
 
-        mvc.perform(post("/v1/"+member.getMemberId()+"/likes")
+        mvc.perform(post("/v1/"+member.getMemId()+"/likes")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"keyboardId\":"+keyboard.getKeyboardId()+"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 추가 성공했습니다.\"}"))
                 .andDo(print());
 
-        likesService.deleteLikes(member.getMemberId(), keyboard.getKeyboardId());
+        likesService.deleteLikes(member.getMemId(), keyboard.getKeyboardId());
         memberRepository.delete(member);
         keyboardRepository.delete(keyboard);
     }
@@ -127,14 +127,14 @@ public class LikeControllerTest {
                 .build();
         memberRepository.save(member);
 
-        mvc.perform(delete("/v1/"+member.getMemberId()+"/likes")
+        mvc.perform(delete("/v1/"+member.getMemId()+"/likes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"keyboardId\":"+keyboard.getKeyboardId()+"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"success\":true,\"code\":0,\"msg\":\"성공했습니다.\",\"data\":\"좋아요 취소 성공했습니다.\"}"))
                .andDo(print());
 
-        likesService.deleteLikes(member.getMemberId(), keyboard.getKeyboardId());
+        likesService.deleteLikes(member.getMemId(), keyboard.getKeyboardId());
         memberRepository.delete(member);
         keyboardRepository.delete(keyboard);
     }
