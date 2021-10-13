@@ -33,9 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 @Service
@@ -83,16 +81,28 @@ public class MemberService implements UserDetailsService{
 		return memberInfo;
 	}
 
-
 	public LoginMemberDto signin(MemberLoginDto loginMember, JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginMember.getEmail())
 					.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginMember.getPassword(), member.getPassword())) {
 				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}
-			String token = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
-			LoginMemberDto loginedMemberInfoDto = loginMapper.toDto(member,token);
+			String accessToken = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+			String refreshToken = jwtTokenProvider.createRefreshToken(member.getUsername(), member.getRole());
+			member.setAccessToken(accessToken);
+			member.setRefreshToken(refreshToken);
+			memberRepository.save(member);
+			LoginMemberDto loginedMemberInfoDto = loginMapper.toDto(member,accessToken,refreshToken);
 			return loginedMemberInfoDto;
+	}
+
+	public String refreshToken(String refreshToken,JwtTokenProvider jwtTokenProvider){
+		Member member = memberRepository.findByRefreshToken(refreshToken)
+				.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+
+		String accessToken = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+		return accessToken;
+
 	}
 
 

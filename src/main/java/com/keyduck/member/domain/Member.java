@@ -5,9 +5,12 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,6 +45,12 @@ public class Member implements UserDetails{
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Keyboard> likes;
+
+	private String socialId;
+
+	private String accessToken;
+
+	private String refreshToken;
 	
 	public void setProfile(String profile){
 		this.profile = profile;
@@ -89,7 +98,6 @@ public class Member implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-
 
 }
 

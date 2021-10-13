@@ -26,8 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenProvider {
 	@Value("spring.jwt.secret")
 	private String secretKey;
-	//유효시간 
-	private long tokenValidMillisecond = 1000L * 60 * 60;
+	//유효시간 30분
+	private long tokenValidMillisecond = 1000L * 60 * 30;
 	private final MemberService memberService;
 	
 
@@ -52,9 +52,21 @@ public class JwtTokenProvider {
 				.signWith(SignatureAlgorithm.HS256, secretKey)
 				.compact();
 	}
+
+	public String createRefreshToken(String mem_id ,MemberRole role) {
+		Claims claims = Jwts.claims().setSubject(mem_id);
+		claims.put("role",role.toString());
+		Date now = new Date();
+		return Jwts.builder()
+				.setClaims(claims)
+				.setIssuedAt(now)
+				// 5일
+				.setExpiration(new Date(now.getTime()+tokenValidMillisecond * 2 * 24 * 5))
+				.signWith(SignatureAlgorithm.HS256, secretKey)
+				.compact();
+	}
 	
 	public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-		System.out.println(memberService);
 		UserDetails userDetails = memberService.loadUserByUsername(this.getUserPk(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}

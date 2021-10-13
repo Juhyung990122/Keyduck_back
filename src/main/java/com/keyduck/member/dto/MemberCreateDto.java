@@ -9,8 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -19,20 +21,19 @@ public class MemberCreateDto {
 
 	@NotEmpty
 	private String email;
-	private String nickname;
+	private String nickname = null;
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@NotEmpty
-	private String password;
+	@Column(nullable = true)
+	private String password = null;
 	@NotNull
-	private MemberRole role;
+	private MemberRole role = MemberRole.USER;
 	@NotNull
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private MemberType type;
+	private MemberType type = MemberType.Keyduck;
 
 	
 	public void setPassword(String encodedPassword) {
 		this.password =encodedPassword;
-		
 	}
 
 	public Member toEntity() {

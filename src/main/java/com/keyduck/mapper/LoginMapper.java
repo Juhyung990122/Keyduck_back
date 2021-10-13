@@ -7,5 +7,5 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LoginMapper extends GenericMapper<LoginMemberDto, Member> {
-    LoginMemberDto toDto(Member member,String token);
+    LoginMemberDto toDto(Member member,String accessToken,String refreshToken);
 }

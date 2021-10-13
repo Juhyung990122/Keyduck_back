@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 public class LoginMemberDto {
     private Long memId;
-    private String token;
+    private String accessToken;
+    private String refreshToken;
 }

@@ -54,6 +54,14 @@ public class MemberController {
 				
 	}
 
+	@ApiOperation(value = "토큰 재발급", notes = "만료된 어세스토큰을 재발급합니다.")
+	@PostMapping("/refreshToken")
+	public ResponseEntity<SingleResult<String>> refreshToken(@RequestHeader String refreshToken) {
+		String result = memberService.refreshToken(refreshToken, jwtTokenProvider);
+		return ResponseEntity
+				.ok()
+				.body(responseService.getSingleResult(result));
+	}
 
 	@ApiOperation(value = "전체 멤버 조회", notes = "전체 멤버를 조회합니다.")
 	@GetMapping("/members")
