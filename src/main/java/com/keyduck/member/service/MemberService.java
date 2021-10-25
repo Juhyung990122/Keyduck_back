@@ -3,13 +3,13 @@ package com.keyduck.member.service;
 
 import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
-import com.keyduck.mapper.LoginMapper;
 import com.keyduck.mapper.MemberMapper;
+import com.keyduck.mapper.TokenMapper;
 import com.keyduck.member.domain.Member;
-import com.keyduck.member.dto.LoginMemberDto;
 import com.keyduck.member.dto.MemberCreateDto;
 import com.keyduck.member.dto.MemberGetDto;
 import com.keyduck.member.dto.MemberLoginDto;
+import com.keyduck.member.dto.MemberTokenDto;
 import com.keyduck.member.img.FileUploadProperties;
 import com.keyduck.member.repository.MemberRepository;
 import com.keyduck.security.JwtTokenProvider;
@@ -45,7 +45,7 @@ public class MemberService implements UserDetailsService{
 	@Autowired
 	MemberMapper memberMapper;
 	@Autowired
-	LoginMapper loginMapper;
+	TokenMapper loginMapper;
 
 	@Autowired
 	public MemberService(FileUploadProperties prop,PasswordEncoder passwordEncoder,MemberRepository memberRepository) {
@@ -81,7 +81,7 @@ public class MemberService implements UserDetailsService{
 		return memberInfo;
 	}
 
-	public LoginMemberDto signin(MemberLoginDto loginMember, JwtTokenProvider jwtTokenProvider){
+	public MemberTokenDto signin(MemberLoginDto loginMember, JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginMember.getEmail())
 					.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
 			if(! passwordEncoder.matches("{noop}"+loginMember.getPassword(), member.getPassword())) {
@@ -92,8 +92,8 @@ public class MemberService implements UserDetailsService{
 			member.setAccessToken(accessToken);
 			member.setRefreshToken(refreshToken);
 			memberRepository.save(member);
-			LoginMemberDto loginedMemberInfoDto = loginMapper.toDto(member,accessToken,refreshToken);
-			return loginedMemberInfoDto;
+			MemberTokenDto memberTokenDto = loginMapper.toDto(member,accessToken,refreshToken);
+			return memberTokenDto;
 	}
 
 	public String refreshToken(String refreshToken,JwtTokenProvider jwtTokenProvider){

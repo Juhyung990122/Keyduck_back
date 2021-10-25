@@ -1,5 +1,6 @@
 package com.keyduck.socialLogin.controller;
 
+import com.keyduck.member.dto.MemberTokenDto;
 import com.keyduck.result.ResponseService;
 import com.keyduck.result.SingleResult;
 import com.keyduck.socialLogin.dto.SocialToken;
@@ -35,10 +36,10 @@ public class OauthController {
 //    }
 
     @PostMapping( value = "/login/{socialLoginType}")
-    public ResponseEntity<SingleResult<SocialToken>> login(
+    public ResponseEntity<SingleResult<MemberTokenDto>> signin(
             @RequestHeader String accessToken,
             @PathVariable String socialLoginType) throws ParseException {
-        SocialToken result = oauthService.login(accessToken,socialLoginType);
+        MemberTokenDto result = oauthService.login(accessToken,socialLoginType);
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));

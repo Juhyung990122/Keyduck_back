@@ -1,5 +1,6 @@
 package com.keyduck.socialLogin.service;
 
+import com.keyduck.member.dto.MemberTokenDto;
 import com.keyduck.socialLogin.SocialLoginType;
 import com.keyduck.socialLogin.dto.SocialToken;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,10 @@ import java.util.List;
 public class OauthService {
     private final List<SocialOauth> socialOauthList;
 
-//    public String requestAccessToken(SocialLoginType socialLoginType, String code) throws IOException {
-//        SocialOauth socialOauth = this.findSocialOauthByType(socialLoginType);
-//        return socialOauth.requestAccessToken(code);
-//    }
 
-    public SocialToken login(String accessToken,String socialLoginType) throws ParseException {
+    public MemberTokenDto login(String accessToken,String socialLoginType) throws ParseException {
         SocialOauth socialOauth = this.findSocialOauthByType(SocialLoginType.valueOf(socialLoginType));
-        SocialToken socialToken = socialOauth.login(accessToken,socialLoginType);
+        MemberTokenDto socialToken = socialOauth.socialSignin(accessToken,socialLoginType);
         return socialToken;
     }
 

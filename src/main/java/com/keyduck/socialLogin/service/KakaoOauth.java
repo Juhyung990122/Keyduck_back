@@ -4,6 +4,7 @@ package com.keyduck.socialLogin.service;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
 import com.keyduck.member.domain.MemberType;
+import com.keyduck.member.dto.MemberTokenDto;
 import com.keyduck.member.repository.MemberRepository;
 import com.keyduck.security.JwtTokenProvider;
 
@@ -25,45 +26,12 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class KakaoOauth implements SocialOauth {
-//    @Value("${sns.kakao.client_id}")
-//    private String KAKAO_CLIENT_ID;
-//    @Value("${sns.kakao.redirect_uri}")
-//    private String KAKAO_REDIRECT_URI;
-//    @Value("${sns.kakao.client_secret}")
-//    private String KAKAO_SECRET;
 
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-//
-//    @Override
-//    public String requestAccessToken(String code) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-//        final MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-//        params.add("grant_type", "authorization_code");
-//        params.add("client_id", KAKAO_CLIENT_ID);
-//        params.add("redirect_uri", KAKAO_REDIRECT_URI);
-//        params.add("code", code);
-//        params.add("client_secret",KAKAO_SECRET);
-//
-//        HttpEntity<MultiValueMap<String,Object>> request = new HttpEntity<>(params, headers);
-//
-//
-//        ResponseEntity<String> responseEntity =
-//                restTemplate.postForEntity("https://kauth.kakao.com/oauth/token",request,String.class);
-//
-//        if(responseEntity.getStatusCode() == HttpStatus.OK){
-//            return responseEntity.getBody();
-//        }
-//        return "로그인 요청을 실패했습니다";
-//    }
-
     @Override
-    public SocialToken login(String accessToken, String socialLoginType) throws ParseException {
+    public MemberTokenDto socialSignin(String accessToken, String socialLoginType) throws ParseException {
         String socialId = null;
         String email = null;
 
@@ -82,10 +50,6 @@ public class KakaoOauth implements SocialOauth {
             JSONObject convertedUserInfo = (JSONObject) obj;
             System.out.println(convertedUserInfo);
             socialId = String.valueOf(convertedUserInfo.get("id"));
-//            Object s = convertedUserInfo.get("kakao_account");
-//            JSONObject ss = (JSONObject) s;
-//            System.out.println(ss.get("email"));
-//            email = String.valueOf((ss.get("email")));
             email = String.valueOf(((JSONObject)convertedUserInfo.get("kakao_account")).get("email"));
 
             System.out.println(email);
@@ -112,7 +76,7 @@ public class KakaoOauth implements SocialOauth {
             memberRepository.save(member);
         }
 
-        //이메일 검색해서 확인 ir 없으면 이메일도 같이 넣어줌
+        //이메일 검색해서 확인 없으면 이메일도 같이 넣어줌
         //token 생성
         String keyduckAccessToken = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
         String keyduckRefreshToken = jwtTokenProvider.createRefreshToken(member.getUsername(),member.getRole());
@@ -120,7 +84,7 @@ public class KakaoOauth implements SocialOauth {
         member.setRefreshToken(keyduckRefreshToken);
         memberRepository.save(member);
         //kakaoToken에 mem_id랑 토큰들 넣어서 반환.
-        return SocialToken.SocialTokenBuilder()
+        return MemberTokenDto.MemberTokenBuilder()
                 .memId(member.getMemId())
                 .access_token(keyduckAccessToken)
                 .refresh_token(keyduckRefreshToken)
