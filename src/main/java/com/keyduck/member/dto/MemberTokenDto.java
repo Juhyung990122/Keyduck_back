@@ -12,4 +12,5 @@ public class MemberTokenDto {
     private Long memId;
     private String access_token;
     private String refresh_token;
+
 }

@@ -1,6 +1,5 @@
 package com.keyduck.mapper;
 
-
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberTokenDto;
 import org.mapstruct.Mapper;
