@@ -84,6 +84,7 @@ public class MemberService implements UserDetailsService{
 	public MemberTokenDto signin(MemberLoginDto loginMember, JwtTokenProvider jwtTokenProvider){
 			Member member = memberRepository.findByEmail(loginMember.getEmail())
 					.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+
 			if(! passwordEncoder.matches("{noop}"+loginMember.getPassword(), member.getPassword())) {
 				throw new RuntimeException("올바른 패스워드가 아닙니다.");
 			}

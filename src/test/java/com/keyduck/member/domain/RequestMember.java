@@ -4,13 +4,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+
 @Setter
 @Getter
 @NoArgsConstructor
 public class RequestMember {
+    @NotEmpty
     private String email;
-    private String nickname = null;
-    private String password = null;
-    private MemberRole role = MemberRole.USER;
-    private MemberType type = MemberType.Keyduck;
+    @NotNull
+    private String password;
 }
