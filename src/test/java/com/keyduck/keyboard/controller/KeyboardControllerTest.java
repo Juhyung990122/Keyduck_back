@@ -1,7 +1,10 @@
 package com.keyduck.keyboard.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.keyduck.keyboard.Request.RequestKeyboard;
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,13 +12,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Optional;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,57 +41,62 @@ public class KeyboardControllerTest {
     @Autowired
     MockMvc mvc;
     @Autowired
-    private WebApplicationContext ctx;
-    @Autowired
+    private ObjectMapper mapper;
+    @MockBean
     private KeyboardRepository keyboardRepository;
 
-
-    @Before
-    public void setup(){
-        mvc = MockMvcBuilders.webAppContextSetup(ctx)
-                .addFilter(((request, response, chain) -> {
-                    response.setCharacterEncoding("UTF-8");
-                    chain.doFilter(request, response);
-                })).build();
+    @Test
+    public void 키보드_전체조회_성공() throws Exception{
+        //given
+        //when
+        MockHttpServletResponse response = mvc.perform(get("/v1/keyboards/")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .getResponse();
+        //then
+        assertThat(response.getStatus(), is(HttpStatus.OK.value()));
     }
 
     @Test
-    public void Keyboard_전체조회() throws Exception{
-        mvc.perform(get("/v1/keyboards/")
+    public void 키보드_디테일조회_성공() throws Exception{
+        // given
+        Keyboard detailKeyboard = Keyboard.KeyboardBuilder().build();
+        detailKeyboard.setKeyboardId(1L);
+        when(keyboardRepository.findById(any())).thenReturn(Optional.of(detailKeyboard));
+        // when
+        MockHttpServletResponse response = mvc.perform(get("/v1/keyboards/1")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+                .andReturn()
+                .getResponse();
+        //then
+        assertThat(response.getStatus(),is(HttpStatus.OK.value()));
 
-    @Test
-    public void Keyboard_디테일조회() throws Exception{
-        final Keyboard detailKeyboard = Keyboard.KeyboardBuilder().build();
-        keyboardRepository.save(detailKeyboard);
-        System.out.println("/v1/keyboards/"+detailKeyboard.getKeyboardId().toString()+"/");
-        mvc.perform(get("/v1/keyboards/"+detailKeyboard.getKeyboardId().toString())
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
-        keyboardRepository.delete(detailKeyboard);
     }
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void Keyboard_추가() throws Exception {
+    public void 키보드_추가_성공() throws Exception {
         //{"model": "테스트키보드", "brand": "ABKO", "connect": "유선", "switchBrand":"오테뮤", "switchColor":"청축", "hotswap": 0, "price": 12000, "keycap": "이중사출 키캡", "keycapImprint": "한글 정각", "keycapProfile": "default", "led": "레인보우 백라이트", "arrangement": 104,"weight": 1050, "cable": "찰탁식", "photo": "default","keyword":"default"}
-        String successData = "{\"model\": \"테스트키보드\", \"brand\": \"ABKKO\", \"connect\": \"유선\", \"switchBrand\": \"오테뮤\", \"switchColor\": \"청축\", \"hotswap\": 0, \"price\": 12000, \"keycap\": \"이중사출 키캡\", \"keycapImprint\": \"한글 정각\", \"keycapProfile\": \"default\", \"led\": \"레인보우 백라이트\", \"arrangement\": 104, \"weight\": 1050, \"cable\": \"찰탁식\", \"photo\": \"default\",\"keyword\":\"default\"}";
-        mvc.perform(post("/v1/keyboards/add")
+        // given
+        RequestKeyboard requestKeyboard = new RequestKeyboard();
+        requestKeyboard.setName("테스트키보드");
+        Keyboard testKeyboard = new Keyboard();
+        when(keyboardRepository.save(any())).thenReturn(testKeyboard);
+        // when
+        MockHttpServletResponse response = mvc.perform(post("/v1/keyboards/add")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(successData))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .content(mapper.writeValueAsString(requestKeyboard)))
+                .andReturn()
+                .getResponse();
+        // then
+        assertThat(response.getStatus(),is(HttpStatus.OK.value()));
+        verify(keyboardRepository).save(any());
 
     }
 
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
-    public void Keyboard_삭제() throws Exception{
-        Keyboard_추가();
+    public void 키보드_삭제_성공() throws Exception{
 
         String successData = "테스트키보드";
         mvc.perform(delete("/v1/keyboards/delete")
@@ -90,7 +108,7 @@ public class KeyboardControllerTest {
     }
 
     @Test
-    public void Keyboard_검색() throws Exception{
+    public void 키보드_검색_성공() throws Exception{
         String successDataKeyword = "{\"brand\":\"ABKO\"}";
         String  successDataKeywords = "{\"brand\": \"ABKO\", \"connect\": \"유선\"}";
 

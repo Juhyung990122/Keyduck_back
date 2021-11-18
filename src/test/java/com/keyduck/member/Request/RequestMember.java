@@ -1,4 +1,4 @@
-package com.keyduck.member.domain;
+package com.keyduck.member.Request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

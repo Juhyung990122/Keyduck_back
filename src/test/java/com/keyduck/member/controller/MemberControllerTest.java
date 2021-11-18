@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.domain.MemberRole;
 import com.keyduck.member.domain.MemberType;
-import com.keyduck.member.domain.RequestMember;
+import com.keyduck.member.Request.RequestMember;
 import com.keyduck.member.repository.MemberRepository;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,7 +23,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Optional;
 
@@ -40,25 +38,12 @@ public class MemberControllerTest {
     @Autowired
     MockMvc mvc;
     @Autowired
-    private WebApplicationContext ctx;
-//    @Autowired
-//    private MemberRepository memberRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ObjectMapper mapper;
     @MockBean
     private MemberRepository memberRepository;
 
-
-    @Before
-    public void setup(){
-//        mvc = MockMvcBuilders.webAppContextSetup(ctx)
-//                .addFilter(((request, response, chain) -> {
-//            response.setCharacterEncoding("UTF-8");
-//            chain.doFilter(request, response);
-//        })).build();
-    }
 
     @Test
     @WithMockUser(username="admin", roles = "ADMIN")
