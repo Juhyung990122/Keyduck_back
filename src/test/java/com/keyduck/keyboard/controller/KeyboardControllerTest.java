@@ -1,14 +1,18 @@
 package com.keyduck.keyboard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.keyduck.keyboard.Request.RequestDeleteKeyboard;
 import com.keyduck.keyboard.Request.RequestKeyboard;
+import com.keyduck.keyboard.Request.RequestSearchKeyboard;
 import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +21,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.Optional;
 
@@ -97,32 +104,21 @@ public class KeyboardControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     public void 키보드_삭제_성공() throws Exception{
+        //given
+        Keyboard testKeyboard = Keyboard.KeyboardBuilder().build();
+        testKeyboard.setKeyboardId(1L);
+        when(keyboardRepository.findById(any())).thenReturn(Optional.of(testKeyboard));
 
-        String successData = "테스트키보드";
-        mvc.perform(delete("/v1/keyboards/delete")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(successData))
-                .andExpect(status().isOk())
-                .andDo(print());
+        //when
+        MockHttpServletResponse response = mvc.perform(delete("/v1/keyboards/delete/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn()
+                .getResponse();
 
-    }
+        //then
+        assertThat(response.getStatus(), is(HttpStatus.OK.value()));
+        verify(keyboardRepository).delete(any());
 
-    @Test
-    public void 키보드_검색_성공() throws Exception{
-        String successDataKeyword = "{\"brand\":\"ABKO\"}";
-        String  successDataKeywords = "{\"brand\": \"ABKO\", \"connect\": \"유선\"}";
-
-        mvc.perform(post("/v1/keyboards/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(successDataKeyword))
-                .andExpect(status().isOk())
-                .andDo(print());
-
-        mvc.perform(post("/v1/keyboards/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(successDataKeywords))
-                .andExpect(status().isOk())
-                .andDo(print());
     }
 
 }
