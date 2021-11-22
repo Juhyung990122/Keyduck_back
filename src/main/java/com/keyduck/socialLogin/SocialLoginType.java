@@ -7,9 +7,9 @@ import java.util.Map;
 
 @Getter
 public enum SocialLoginType {
-    Google("Google"),
-    Kakao("Kakao"),
-    Naver("Naver");
+    GOOGLE("Google"),
+    KAKAO("Kakao"),
+    NAVER("Naver");
 
     private String type;
     SocialLoginType(String type) {

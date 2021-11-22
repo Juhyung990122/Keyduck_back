@@ -3,13 +3,13 @@ package com.keyduck.socialLogin.controller;
 import com.keyduck.member.dto.MemberTokenDto;
 import com.keyduck.result.ResponseService;
 import com.keyduck.result.SingleResult;
-import com.keyduck.socialLogin.dto.SocialToken;
 import com.keyduck.socialLogin.service.OauthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 
