@@ -22,7 +22,6 @@ public class OauthService {
 
 
     private SocialOauth findSocialOauthByType(SocialLoginType socialLoginType) {
-        System.out.println(socialOauthList.stream());
         return socialOauthList.stream()
                 .filter(x -> x.type() == socialLoginType)
                 .findFirst()

@@ -21,7 +21,8 @@ import java.util.NoSuchElementException;
 public class KakaoOauth implements SocialOauth {
 
     private OauthCheck oauthCheck;
-    public KakaoOauth(OauthCheck oauthCheck){
+
+    public KakaoOauth(OauthCheck oauthCheck) {
         this.oauthCheck = oauthCheck;
     }
 
@@ -32,30 +33,29 @@ public class KakaoOauth implements SocialOauth {
 
         // access토큰으로 사용자 가져오기 -> socialid get
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization",accessToken);
+        headers.add("Authorization", accessToken);
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<MultiValueMap<String,Object>> request = new HttpEntity<>(null,headers);
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(null, headers);
         ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity("https://kapi.kakao.com/v2/user/me",request,String.class);
+                restTemplate.postForEntity("https://kapi.kakao.com/v2/user/me", request, String.class);
 
-        if(responseEntity.getStatusCode() == HttpStatus.OK){
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String userInfo = responseEntity.getBody();
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(userInfo);
             JSONObject convertedUserInfo = (JSONObject) obj;
             socialId = String.valueOf(convertedUserInfo.get("id"));
-            email = String.valueOf(((JSONObject)convertedUserInfo.get("kakao_account")).get("email"));
+            email = String.valueOf(((JSONObject) convertedUserInfo.get("kakao_account")).get("email"));
 
         }
 
-        if(socialId == null){
+        if (socialId == null) {
             throw new NoSuchElementException("사용자가 존재하지 않습니다");
         }
 
-        Member member = oauthCheck.checkMemberExist(socialId,socialLoginType,email);
+        Member member = oauthCheck.checkMemberExist(socialId, socialLoginType, email);
         return oauthCheck.createToken(member);
     }
-
 
 
 }
