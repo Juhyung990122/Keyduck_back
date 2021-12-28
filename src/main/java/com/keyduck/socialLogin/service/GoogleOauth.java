@@ -2,6 +2,7 @@ package com.keyduck.socialLogin.service;
 
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.dto.MemberTokenDto;
+import com.keyduck.utils.JsonConverter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -30,7 +31,7 @@ public class GoogleOauth implements SocialOauth {
         String socialId = null;
         String email = null;
 
-        // 구글에 openID로 유저정보 가져오기(email,openId로)
+        // 구글에 openID로 유저정보 가져오기(email,openId)
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", accessToken);
         RestTemplate restTemplate = new RestTemplate();
@@ -40,9 +41,10 @@ public class GoogleOauth implements SocialOauth {
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String userInfo = responseEntity.getBody();
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(userInfo);
-            JSONObject convertedUserInfo = (JSONObject) obj;
+            JSONObject convertedUserInfo = JsonConverter.convert(userInfo);
+//            JSONParser parser = new JSONParser();
+//            Object obj = parser.parse(userInfo);
+//            JSONObject convertedUserInfo = (JSONObject) obj;
             socialId = String.valueOf(convertedUserInfo.get("id"));
             email = String.valueOf((convertedUserInfo.get("email")));
 

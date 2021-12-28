@@ -23,7 +23,7 @@ public class OauthCheck {
 
     public Member checkMemberExist(String socialId, String socialLoginType, String email){
         Optional<Member> findMember= memberRepository.findBySocialIdAndType(socialId, MemberType.getAuthType(socialLoginType));
-        final Member member;
+        Member member;
         //있으면 사용자 정보 get
         //없으면 필요한 정보 저장(socialId,type,email)
         if(findMember.isPresent()){
