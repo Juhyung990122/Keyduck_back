@@ -74,20 +74,20 @@ public class KeyboardController {
 
     @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "만드는 중")
     @PostMapping("/keyboards/filter")
-    public ResponseEntity<ListResult<List<KeyboardGetDto>>> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
-        List<List<KeyboardGetDto>> result = null;
-        String[] priority = {"arrangement","price","switchColor","brand"};
-        List<String> priorityList =  Arrays.asList(priority);
+    public ResponseEntity<ListResult<SimpleKeyboardDto>> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
+        List<SimpleKeyboardDto> result = null;
+        String[] priority = {"arrangement", "price", "switchColor", "brand"};
+        List<String> priorityList = Arrays.asList(priority);
 
-        while(result == null || priorityList.size() > 0){
-            // 하나라도 비면 안됨. 숫자는 0 문자는  null 로 바꿔줘야함.
-            KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
-                    .arrangement(Integer.parseInt(searchKeywords.get("arrangement")))
-                    .startPrice(Integer.parseInt(searchKeywords.get("startPrice")))
-                    .endPrice(Integer.parseInt(searchKeywords.get("endPrice")))
-                    .switchColor(new String[]{searchKeywords.get("switchColor")})
-                    .brand(searchKeywords.get("brand"))
-                    .build();
+        while(result == null){
+            result = keyboardService.searchWhileResult(searchKeywords);
+            System.out.println(priorityList.get(priorityList.size()-1));
+            //TODO : priorityList에서 검색조건 하나 빼기
+            priorityList.remove(priorityList.size()-1);
+            if(priorityList.size() == 0){
+                result = keyboardService.getAllKeyboards();
+                break;
+            }
         }
 
         return ResponseEntity
