@@ -75,15 +75,15 @@ public class KeyboardController {
     @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "만드는 중")
     @PostMapping("/keyboards/filter")
     public ResponseEntity<ListResult<SimpleKeyboardDto>> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
-        List<SimpleKeyboardDto> result = null;
-        String[] priority = {"arrangement", "price", "switchColor", "brand"};
-        List<String> priorityList = Arrays.asList(priority);
+        List<SimpleKeyboardDto> result = new ArrayList<>();
+        List<String> priorityList = new ArrayList<>(Arrays.asList("arrangement", "price", "switchColor", "brand"));
 
-        while(result == null){
+        while(result.size() == 0){
+
             result = keyboardService.searchWhileResult(searchKeywords);
-            System.out.println(priorityList.get(priorityList.size()-1));
-            //TODO : priorityList에서 검색조건 하나 빼기
+            searchKeywords.remove(priorityList.get(priorityList.size()-1));
             priorityList.remove(priorityList.size()-1);
+
             if(priorityList.size() == 0){
                 result = keyboardService.getAllKeyboards();
                 break;
