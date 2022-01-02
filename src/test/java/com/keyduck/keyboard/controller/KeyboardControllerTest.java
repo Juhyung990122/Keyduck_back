@@ -121,4 +121,18 @@ public class KeyboardControllerTest {
 
     }
 
+    @Test
+    public void 키보드_반복필터_성공() throws Exception{
+        //given
+        //TODO: 키보드 세팅
+        //TODO: 키보드 검색키워드 -> {
+        //	"arrangement" : 104,
+        //	"brand" : "앱코 HACKER",
+        //	"switchColor":"적축",
+        //	"startPrice" : 0,
+        //	"endPrice": 10000(해당조건에 부합하는 값이 없을땐 전체) & 50000(부분필터)
+        //}
+
+    }
+
 }
