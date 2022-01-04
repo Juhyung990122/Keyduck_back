@@ -81,7 +81,14 @@ public class KeyboardController {
         while(result.size() == 0){
 
             result = keyboardService.searchWhileResult(searchKeywords);
-            searchKeywords.remove(priorityList.get(priorityList.size()-1));
+            String now = priorityList.get(priorityList.size() - 1);
+            if(now.equals("price")){
+                searchKeywords.remove("startPrice");
+                searchKeywords.remove("endPrice");
+            }
+            else{
+                searchKeywords.remove(now);
+            }
             priorityList.remove(priorityList.size()-1);
 
             if(priorityList.size() == 0){
