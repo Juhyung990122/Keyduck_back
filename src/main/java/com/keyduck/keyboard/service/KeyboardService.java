@@ -70,9 +70,9 @@ public class KeyboardService {
     public List<SimpleKeyboardDto> searchWhileResult(HashMap<String, String> searchKeywords) {
 
         KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
-                .arrangement(searchKeywords.get("arrangement") != null ? Integer.parseInt(searchKeywords.get("arrangement")):null)
-                .startPrice(searchKeywords.get("startPrice") != null ? Integer.parseInt(searchKeywords.get("startPrice")):null)
-                .endPrice(searchKeywords.get("endPrice") != null ? Integer.parseInt(searchKeywords.get("endPrice")):null)
+                .arrangement(Integer.parseInt(searchKeywords.get("arrangement")))
+                .startPrice(Integer.parseInt(searchKeywords.get("startPrice")))
+                .endPrice(Integer.parseInt(searchKeywords.get("endPrice")))
                 .switchColor(new String[]{searchKeywords.get("switchColor")})
                 .brand(searchKeywords.get("brand"))
                 .build();
