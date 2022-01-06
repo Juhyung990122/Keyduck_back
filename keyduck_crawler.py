@@ -84,7 +84,7 @@ for i in range(1,2):
                 continue
             option[d] = refine(option[d])
             data[d] = refine(data[d])
-            
+            print(refine(data[d]))
             option_dict[option[d]] = data[d]
 
             

@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class KakaoOauth implements SocialOauth {
 
+    @Autowired
     private OauthCheck oauthCheck;
 
     public KakaoOauth(OauthCheck oauthCheck) {
