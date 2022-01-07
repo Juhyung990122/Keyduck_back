@@ -4,11 +4,15 @@ import com.keyduck.keyboard.domain.Keyboard;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 @Getter
 @RequiredArgsConstructor
 public class KeyboardCreateDto {
     private String name;
     private String brand;
+    private String date;
     private String connect;
     private String hotswap;
     private Integer price;
@@ -27,10 +31,12 @@ public class KeyboardCreateDto {
     private String keycapProfile;
     private String keyword;
 
-    public Keyboard toEntity() {
+    public Keyboard toEntity() throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월");
         return Keyboard.KeyboardBuilder()
                 .name(name)
                 .brand(brand)
+                .date(format.parse(date))
                 .connect(connect)
                 .hotswap(hotswap)
                 .price(price)

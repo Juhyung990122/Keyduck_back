@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.*;
 
 @RestController
@@ -45,8 +46,7 @@ public class KeyboardController {
 
     @ApiOperation(value = "키보드 추가", notes = "새로운 키보드를 추가합니다.")
     @PostMapping("/keyboards/add")
-    public ResponseEntity<SingleResult<KeyboardCreateDto>> addKeyboard(@RequestBody KeyboardCreateDto keyboard){
-        System.out.println("post request");
+    public ResponseEntity<SingleResult<KeyboardCreateDto>> addKeyboard(@RequestBody KeyboardCreateDto keyboard) throws ParseException {
         KeyboardCreateDto result = keyboardService.addKeyboard(keyboard);
         return ResponseEntity
                 .ok()

@@ -20,6 +20,7 @@ import org.mockito.verification.VerificationMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +87,7 @@ public class KeyboardServiceTest {
     }
 
     @Test
-    public void addKeyboard() {
+    public void addKeyboard() throws ParseException {
         //given
         KeyboardCreateDto keyboardCreateDto = new KeyboardCreateDto();
 

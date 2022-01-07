@@ -12,6 +12,7 @@ import com.keyduck.mapper.SimpleKeyboardMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,9 +45,10 @@ public class KeyboardService {
         return keyboardMapper.toDto(keyboard);
     }
 
-    public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard) {
+    public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard) throws ParseException {
         Keyboard keyboardInfo = keyboard.toEntity();
         keyboardRepository.save(keyboardInfo);
+        System.out.println(keyboardInfo.getDate());
         return keyboard;
     }
 

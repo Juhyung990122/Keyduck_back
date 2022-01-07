@@ -19,7 +19,7 @@ spring:
     generate-ddl: true
     database : mysql
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
 file :

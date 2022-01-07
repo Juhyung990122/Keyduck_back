@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,6 +26,7 @@ public class Keyboard {
     private String thumbnailImg;
     private String descriptionImg;
     private String name;
+    private Date date;
     private String brand;
     private String connect;
     //boolean

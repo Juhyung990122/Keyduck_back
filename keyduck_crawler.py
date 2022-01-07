@@ -95,6 +95,7 @@ for i in range(1,2):
         request_form = {
                 "name" : refine(model),
                 "thumbnailImg": str(thumbnail),
+                "date" : is_key_exist(option_dict,"등록년월"),
                 "brand" : is_key_exist(option_dict ,"제조회사"),
                 "connect" :is_key_exist(option_dict ,"연결 방식"),
                 "switchBrand" : is_key_exist(option_dict ,"스위치"),
@@ -111,6 +112,7 @@ for i in range(1,2):
                 "photo" :None
             }
         req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        #req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         print(req.status_code)
         print(req.content)
         print("done!")
