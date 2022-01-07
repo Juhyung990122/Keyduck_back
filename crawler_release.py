@@ -96,6 +96,7 @@ for i in range(1,2):
         request_form = {
                 "name" : refine(model),
                 "thumbnailImg": str(thumbnail),
+                "date" : is_key_exist(option_dict,"등록년월"),
                 "brand" : is_key_exist(option_dict ,"제조회사"),
                 "connect" :is_key_exist(option_dict ,"연결 방식"),
                 "switchBrand" : is_key_exist(option_dict ,"스위치"),
