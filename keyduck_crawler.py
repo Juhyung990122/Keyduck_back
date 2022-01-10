@@ -51,10 +51,12 @@ for i in range(1,2):
         model = soup.select(
             '.blog_wrap > #danawa_container >.blog_content > .summary_info > .top_summary > h3'
         )
+
         thumbnail = soup.select(
             '#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.thumb_area > div.photo_w > #imgExtensionAnchorLayer > img'
         )
         thumbnail = str(thumbnail[0]).split("\"")[-2]
+
         # thumbnail = soup.find('div', {'class': 'ly_cont'}).find('div', {"class": "big_area big_img"}).find('img', {'class': 'va_top'})['src']
 
         price = soup.select(
@@ -111,9 +113,9 @@ for i in range(1,2):
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
                 "photo" :None
         }
-        req = requests.post(url = "http://101.101.210.98:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)    
+        #req = requests.post(url = "http://101.101.210.98:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)    
         #req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
-        #req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         
         print(req.status_code)
         print(req.content)

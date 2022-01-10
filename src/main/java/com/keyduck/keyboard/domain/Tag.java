@@ -1,5 +1,6 @@
 package com.keyduck.keyboard.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,4 +17,9 @@ public class Tag {
     private Long tagId;
 
     private String content;
+
+    public Tag(String content){
+        this.content = content;
+    }
 }
+

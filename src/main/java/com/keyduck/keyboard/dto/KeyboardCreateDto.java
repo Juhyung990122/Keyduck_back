@@ -1,11 +1,15 @@
 package com.keyduck.keyboard.dto;
 
 import com.keyduck.keyboard.domain.Keyboard;
+
+import com.keyduck.keyboard.domain.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class KeyboardCreateDto {
 
     public Keyboard toEntity() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월");
+
         return Keyboard.KeyboardBuilder()
                 .name(name)
                 .brand(brand)

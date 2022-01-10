@@ -1,6 +1,7 @@
 package com.keyduck.keyboard.service;
 
 import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.keyboard.domain.Tag;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.KeyboardSearchDto;
@@ -47,8 +48,8 @@ public class KeyboardService {
 
     public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard) throws ParseException {
         Keyboard keyboardInfo = keyboard.toEntity();
+        keyboardInfo.setTags(findTag(keyboardInfo));
         keyboardRepository.save(keyboardInfo);
-        System.out.println(keyboardInfo.getDate());
         return keyboard;
     }
 
@@ -80,5 +81,35 @@ public class KeyboardService {
                 .build();
 
         return searchKeyboard(search);
+    }
+
+    private List<Tag> findTag(Keyboard keyboardInfo){
+        List<Tag> tagList = new ArrayList<>();
+        if(keyboardInfo.getLed() != null && keyboardInfo.getSwitchColor().equals("청축")){
+            tagList.add(new Tag("피지컬이 좋아지는 기분"));
+        }
+        if(keyboardInfo.getLed().equals("레인보우 백라이트") || keyboardInfo.getLed().equals("RGB 백라이트")){
+            tagList.add(new Tag("웅장해지는 조명"));
+        }
+        if(keyboardInfo.getLed().equals("단색 백라이트") || keyboardInfo.getLed() == null){
+            tagList.add(new Tag("화려함의 끝은 순정"));
+        }
+        if(keyboardInfo.getConnect().contains("블루투스")){
+            tagList.add(new Tag("하나로는 부족해.."));
+        }
+        //True일지도..?
+        if(keyboardInfo.getHotswap().equals("true")){
+            tagList.add(new Tag("스위치 유목민"));
+        }
+        if(keyboardInfo.getArrangement() < 87 && keyboardInfo.getWeight() <= 600){
+            tagList.add(new Tag("언제 어디서든"));
+        }
+        if(keyboardInfo.getPrice() <= 60000){
+            tagList.add(new Tag("키보드가 처음이라면"));
+        }
+        if(keyboardInfo.getPrice() <= 190000 || 100000 <= keyboardInfo.getPrice()){
+            tagList.add(new Tag("기왕 살 거 좋은걸로"));
+        }
+        return tagList;
     }
 }

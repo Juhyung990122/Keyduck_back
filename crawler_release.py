@@ -56,6 +56,7 @@ for i in range(1,2):
             '#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.thumb_area > div.photo_w > #imgExtensionAnchorLayer > img'
         )
         thumbnail = str(thumbnail[0]).split("\"")[-2]
+    
         # thumbnail = soup.find('div', {'class': 'ly_cont'}).find('div', {"class": "big_area big_img"}).find('img', {'class': 'va_top'})['src']
 
         price = soup.select(
