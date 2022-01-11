@@ -4,25 +4,20 @@ package com.keyduck.keyboard.service;
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
-import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
-import lombok.NoArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.verification.VerificationMode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,12 +36,14 @@ public class KeyboardServiceTest {
     KeyboardMapper keyboardMapper;
     @Mock
     SimpleKeyboardMapper simpleKeyboardMapper;
+    @Mock
+    TagRepository tagRepository;
     @InjectMocks
     KeyboardService keyboardService;
 
     @Before
     public void setup(){
-        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper);
+        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper, tagRepository);
     }
 
 
