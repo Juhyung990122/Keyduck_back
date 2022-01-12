@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Tag {
     @Id
-    @GeneratedValue
     private Long tagId;
 
     private String content;
@@ -21,5 +23,6 @@ public class Tag {
     public Tag(String content){
         this.content = content;
     }
+
 }
 

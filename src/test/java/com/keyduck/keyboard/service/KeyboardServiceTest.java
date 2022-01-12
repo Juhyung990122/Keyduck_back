@@ -6,6 +6,7 @@ import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.keyboard.repository.KeyboardTagRepository;
 import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
@@ -37,13 +38,15 @@ public class KeyboardServiceTest {
     @Mock
     SimpleKeyboardMapper simpleKeyboardMapper;
     @Mock
+    KeyboardTagRepository keyboardTagRepository;
+    @Mock
     TagRepository tagRepository;
     @InjectMocks
     KeyboardService keyboardService;
 
     @Before
     public void setup(){
-        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper, tagRepository);
+        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper, tagRepository, keyboardTagRepository);
     }
 
 

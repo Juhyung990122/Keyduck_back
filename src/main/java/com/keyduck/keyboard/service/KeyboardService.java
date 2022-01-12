@@ -1,13 +1,15 @@
 package com.keyduck.keyboard.service;
 
 import com.keyduck.keyboard.domain.Keyboard;
-import com.keyduck.keyboard.domain.Tag;
+import com.keyduck.keyboard.domain.KeyboardTags;
 import com.keyduck.keyboard.dto.KeyboardCreateDto;
 import com.keyduck.keyboard.dto.KeyboardGetDto;
 import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.keyboard.repository.KeyboardSpecification;
+import com.keyduck.keyboard.repository.KeyboardTagRepository;
+import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,11 +25,15 @@ public class KeyboardService {
     private final KeyboardRepository keyboardRepository;
     private final KeyboardMapper keyboardMapper;
     private final SimpleKeyboardMapper simpleKeyboardMapper;
+    private final TagRepository tagRepository;
+    private final KeyboardTagRepository keyboardTagRepository;
 
-    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper) {
+    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper, TagRepository tagRepository, KeyboardTagRepository keyboardTagRepository) {
         this.keyboardRepository = keyboardRepository;
         this.keyboardMapper = keyboardMapper;
         this.simpleKeyboardMapper = simpleKeyboardMapper;
+        this.tagRepository = tagRepository;
+        this.keyboardTagRepository = keyboardTagRepository;
     }
 
     public List<SimpleKeyboardDto> getAllKeyboards() {
@@ -48,8 +53,8 @@ public class KeyboardService {
 
     public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard) throws ParseException {
         Keyboard keyboardInfo = keyboard.toEntity();
-        keyboardInfo.setTags(findTag(keyboardInfo));
         keyboardRepository.save(keyboardInfo);
+        findTag(keyboardInfo);
         return keyboard;
     }
 
@@ -83,33 +88,31 @@ public class KeyboardService {
         return searchKeyboard(search);
     }
 
-    private List<Tag> findTag(Keyboard keyboardInfo){
-        List<Tag> tagList = new ArrayList<>();
+    private void findTag(Keyboard keyboardInfo){
         if(keyboardInfo.getLed() != null && keyboardInfo.getSwitchColor().equals("청축")){
-            tagList.add(new Tag("피지컬이 좋아지는 기분"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("피지컬이 좋아지는 기분")));
         }
         if(keyboardInfo.getLed().equals("레인보우 백라이트") || keyboardInfo.getLed().equals("RGB 백라이트")){
-            tagList.add(new Tag("웅장해지는 조명"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("웅장해지는 조명")));
         }
         if(keyboardInfo.getLed().equals("단색 백라이트") || keyboardInfo.getLed() == null){
-            tagList.add(new Tag("화려함의 끝은 순정"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("화려함의 끝은 순정")));
         }
         if(keyboardInfo.getConnect().contains("블루투스")){
-            tagList.add(new Tag("하나로는 부족해.."));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("하나로는 부족해..")));
         }
         //True일지도..?
-        if(keyboardInfo.getHotswap().equals("true")){
-            tagList.add(new Tag("스위치 유목민"));
+        if(keyboardInfo.getHotswap() != null){
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("스위치 유목민")));
         }
         if(keyboardInfo.getArrangement() < 87 && keyboardInfo.getWeight() <= 600){
-            tagList.add(new Tag("언제 어디서든"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("언제 어디서든")));
         }
         if(keyboardInfo.getPrice() <= 60000){
-            tagList.add(new Tag("키보드가 처음이라면"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("키보드가 처음이라면")));
         }
         if(keyboardInfo.getPrice() <= 190000 || 100000 <= keyboardInfo.getPrice()){
-            tagList.add(new Tag("기왕 살 거 좋은걸로"));
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("기왕 살 거 좋은걸로")));
         }
-        return tagList;
     }
 }

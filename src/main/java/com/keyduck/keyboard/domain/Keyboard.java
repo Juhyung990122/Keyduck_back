@@ -43,6 +43,7 @@ public class Keyboard {
     private String keycap;
     private String keycapImprint;
     private String keycapProfile;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tag> tags;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "keyboard")
+    private List<KeyboardTags> tags;
+
 }
