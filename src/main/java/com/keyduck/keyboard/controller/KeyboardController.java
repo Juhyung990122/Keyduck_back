@@ -72,7 +72,7 @@ public class KeyboardController {
     }
 
 
-    @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "만드는 중")
+    @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "조건을 소거해가며 결과가 하나라도 나올때까지 필터링합니다. 하나도 없을 시 전체 키보드를 반환합니다.")
     @PostMapping("/keyboards/filter")
     public ResponseEntity<ListResult<SimpleKeyboardDto>> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
         List<SimpleKeyboardDto> result = new ArrayList<>();
@@ -101,4 +101,14 @@ public class KeyboardController {
                 .ok()
                 .body(responseService.getListResult(result));
     }
+
+    @ApiOperation(value = "최근 등록된 키보드 10개를 불러옵니다.")
+    @GetMapping("/keyboards/recent")
+    public ResponseEntity<List<SimpleKeyboardDto>> getRecentTenKeyboard(){
+        List<SimpleKeyboardDto> result = keyboardService.findRecent();
+        return ResponseEntity
+                .ok()
+                .body(result);
+    }
+
 }

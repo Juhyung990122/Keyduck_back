@@ -115,4 +115,13 @@ public class KeyboardService {
             keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("기왕 살 거 좋은걸로")));
         }
     }
+
+    public List<SimpleKeyboardDto> findRecent() {
+        List<Keyboard> keyboards = keyboardRepository.findTop10ByOrderByDateDesc();
+        List<SimpleKeyboardDto> result = new ArrayList<>();
+        for(Keyboard keyboard : keyboards){
+            result.add(simpleKeyboardMapper.toDto(keyboard));
+        }
+        return result;
+    }
 }
