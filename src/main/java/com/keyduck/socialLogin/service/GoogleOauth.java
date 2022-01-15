@@ -38,7 +38,6 @@ public class GoogleOauth implements SocialOauth {
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(null, headers);
         ResponseEntity<String> responseEntity =
                 restTemplate.postForEntity("https://www.googleapis.com/oauth2/v2/userinfo", request, String.class);
-
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String userInfo = responseEntity.getBody();
             JSONObject convertedUserInfo = JsonConverter.convert(userInfo);
