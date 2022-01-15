@@ -1,0 +1,27 @@
+server:
+  port: 30000
+  servlet:
+    session:
+      tracking-modes: COOKIE
+spring:
+  datasource:
+    database-name: t863regljymogm0m
+    url : jdbc:mysql://exbodcemtop76rnz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/t863regljymogm0m?reconnect=true&useUnicode=true&characterEncoding=utf8
+    username: wvj5te54qifdmhmz
+    password: yhitm6m5jwsmzsqz
+
+  jackson:
+    serialization:
+      fail-on-empty-beans : false
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    database : mysql
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+file :
+  upload-dir : ./uploads
+
+
