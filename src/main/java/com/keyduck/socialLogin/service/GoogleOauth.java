@@ -27,6 +27,7 @@ public class GoogleOauth implements SocialOauth {
     public MemberTokenDto socialSignin(String accessToken, String socialLoginType) throws ParseException {
         String socialId = null;
         String email = null;
+        String nickname = null;
 
         // 구글에 openID로 유저정보 가져오기(email,openId)
         HttpHeaders headers = new HttpHeaders();
@@ -43,6 +44,7 @@ public class GoogleOauth implements SocialOauth {
 //            JSONObject convertedUserInfo = (JSONObject) obj;
             socialId = String.valueOf(convertedUserInfo.get("id"));
             email = String.valueOf((convertedUserInfo.get("email")));
+            nickname = String.valueOf(convertedUserInfo.get("name"));
 
         }
 
@@ -51,7 +53,7 @@ public class GoogleOauth implements SocialOauth {
         }
 
 
-        Member member = oauthCheck.checkMemberExist(socialId, socialLoginType, email);
+        Member member = oauthCheck.checkMemberExist(socialId, socialLoginType, email,nickname);
         return oauthCheck.createToken(member);
 
     }

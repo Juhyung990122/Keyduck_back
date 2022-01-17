@@ -32,6 +32,7 @@ public class KakaoOauth implements SocialOauth {
     public MemberTokenDto socialSignin(String accessToken, String socialLoginType) throws ParseException {
         String socialId = null;
         String email = null;
+        String nickname = null;
 
         // access토큰으로 사용자 가져오기 -> socialid get
         HttpHeaders headers = new HttpHeaders();
@@ -46,8 +47,10 @@ public class KakaoOauth implements SocialOauth {
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(userInfo);
             JSONObject convertedUserInfo = (JSONObject) obj;
+
             socialId = String.valueOf(convertedUserInfo.get("id"));
             email = String.valueOf(((JSONObject) convertedUserInfo.get("kakao_account")).get("email"));
+            nickname = String.valueOf(((JSONObject) convertedUserInfo.get("properties")).get("nickname"));
 
         }
 
@@ -55,7 +58,7 @@ public class KakaoOauth implements SocialOauth {
             throw new NoSuchElementException("사용자가 존재하지 않습니다");
         }
 
-        Member member = oauthCheck.checkMemberExist(socialId, socialLoginType, email);
+        Member member = oauthCheck.checkMemberExist(socialId, socialLoginType, email, nickname);
         return oauthCheck.createToken(member);
     }
 

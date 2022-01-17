@@ -21,7 +21,7 @@ public class OauthCheck {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public Member checkMemberExist(String socialId, String socialLoginType, String email){
+    public Member checkMemberExist(String socialId, String socialLoginType, String email, String nickname){
         Optional<Member> findMember= memberRepository.findBySocialIdAndType(socialId, MemberType.getAuthType(socialLoginType));
         Member member;
         //있으면 사용자 정보 get
@@ -32,6 +32,7 @@ public class OauthCheck {
             member = Member.MemberBuilder()
                     .socialId(socialId)
                     .email(email)
+                    .nickname(nickname)
                     .type(MemberType.getAuthType(socialLoginType))
                     .role(MemberRole.USER)
                     .build();
