@@ -6,10 +6,7 @@ import com.keyduck.utils.JsonConverter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +34,7 @@ public class GoogleOauth implements SocialOauth {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(null, headers);
         ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity("https://www.googleapis.com/oauth2/v2/userinfo", request, String.class);
+                restTemplate.exchange("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", HttpMethod.GET,request,String.class);
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             String userInfo = responseEntity.getBody();
             JSONObject convertedUserInfo = JsonConverter.convert(userInfo);
