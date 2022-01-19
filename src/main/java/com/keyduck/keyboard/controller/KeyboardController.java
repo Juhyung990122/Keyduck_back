@@ -1,9 +1,6 @@
 package com.keyduck.keyboard.controller;
 
-import com.keyduck.keyboard.dto.KeyboardCreateDto;
-import com.keyduck.keyboard.dto.KeyboardGetDto;
-import com.keyduck.keyboard.dto.KeyboardSearchDto;
-import com.keyduck.keyboard.dto.SimpleKeyboardDto;
+import com.keyduck.keyboard.dto.*;
 import com.keyduck.keyboard.service.KeyboardService;
 import com.keyduck.result.ListResult;
 import com.keyduck.result.ResponseService;
@@ -111,4 +108,12 @@ public class KeyboardController {
                 .body(result);
     }
 
+    @ApiOperation(value = "최근 등록된 키보드 10개를 불러옵니다.")
+    @GetMapping("/keyboards/recommend")
+    public ResponseEntity<List<RecommendKeyboardDto>> getRecommandKeyboard(){
+        List<RecommendKeyboardDto> result = keyboardService.getRecommend();
+        return ResponseEntity
+                .ok()
+                .body(result);
+    }
 }

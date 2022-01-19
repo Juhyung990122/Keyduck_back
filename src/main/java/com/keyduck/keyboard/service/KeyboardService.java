@@ -2,10 +2,8 @@ package com.keyduck.keyboard.service;
 
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.domain.KeyboardTags;
-import com.keyduck.keyboard.dto.KeyboardCreateDto;
-import com.keyduck.keyboard.dto.KeyboardGetDto;
-import com.keyduck.keyboard.dto.KeyboardSearchDto;
-import com.keyduck.keyboard.dto.SimpleKeyboardDto;
+import com.keyduck.keyboard.domain.Tag;
+import com.keyduck.keyboard.dto.*;
 import com.keyduck.keyboard.repository.KeyboardRepository;
 import com.keyduck.keyboard.repository.KeyboardSpecification;
 import com.keyduck.keyboard.repository.KeyboardTagRepository;
@@ -19,6 +17,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class KeyboardService {
@@ -123,5 +122,31 @@ public class KeyboardService {
             result.add(simpleKeyboardMapper.toDto(keyboard));
         }
         return result;
+    }
+
+    public List<RecommendKeyboardDto> getRecommend() {
+        List<RecommendKeyboardDto> result = new ArrayList<>();
+        for(int i = 0; i < 2; i++){
+            RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
+            List<KeyboardTags> keyboards = new ArrayList<>();
+            Tag findTag = null;
+            while(keyboards.size() == 0){
+                findTag = pickRandomTag();
+                keyboards = keyboardTagRepository.findFirst10ByTag(findTag);
+            }
+            recommendKeyboardList.setTag(findTag);
+            for(KeyboardTags keyboardTags : keyboards){
+                recommendKeyboardList.addKeyboard(keyboardTags.getKeyboard());
+            }
+            result.add(recommendKeyboardList);
+        }
+        return result;
+    }
+
+    private Tag pickRandomTag(){
+        Random random = new Random();
+        Long randomIndex = Long.valueOf(random.nextInt(8));
+        Tag findTag = tagRepository.findByTagId(randomIndex);
+        return findTag;
     }
 }

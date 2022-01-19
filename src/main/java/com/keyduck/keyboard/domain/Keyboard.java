@@ -1,5 +1,6 @@
 package com.keyduck.keyboard.domain;
 
+import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,6 +37,7 @@ public class Keyboard {
     private Integer arrangement;
     private Integer weight;
     private String cable;
+    private Integer star;
     //스위치
     private String switchBrand;
     private String switchColor;
