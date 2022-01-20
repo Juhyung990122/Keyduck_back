@@ -128,13 +128,7 @@ public class KeyboardService {
         List<RecommendKeyboardDto> result = new ArrayList<>();
         for(int i = 0; i < 2; i++){
             RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
-            List<KeyboardTags> keyboards = new ArrayList<>();
-            Tag findTag = null;
-            while(keyboards.size() == 0){
-                findTag = pickRandomTag();
-                keyboards = keyboardTagRepository.findFirst10ByTag(findTag);
-            }
-            recommendKeyboardList.setTag(findTag);
+            List<KeyboardTags> keyboards = findKeyboardsByTag(recommendKeyboardList);
             for(KeyboardTags keyboardTags : keyboards){
                 recommendKeyboardList.addKeyboard(keyboardTags.getKeyboard());
             }
@@ -148,5 +142,16 @@ public class KeyboardService {
         Long randomIndex = Long.valueOf(random.nextInt(8));
         Tag findTag = tagRepository.findByTagId(randomIndex);
         return findTag;
+    }
+
+    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList){
+        Tag findTag = null;
+        List<KeyboardTags> keyboards = new ArrayList<>();
+        while(keyboards.size() == 0){
+            findTag = pickRandomTag();
+            keyboards = keyboardTagRepository.findFirst10ByTag(findTag);
+        }
+        recommendKeyboardList.setTag(findTag);
+        return keyboards;
     }
 }
