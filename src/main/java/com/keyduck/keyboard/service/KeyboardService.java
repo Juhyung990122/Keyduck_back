@@ -134,6 +134,14 @@ public class KeyboardService {
             }
             result.add(recommendKeyboardList);
         }
+
+        RecommendKeyboardDto recentKeyboardsList = new RecommendKeyboardDto();
+        List<Keyboard> recentKeyboards = keyboardRepository.findTop10ByOrderByDateDesc();
+        for(Keyboard keyboard : recentKeyboards){
+            recentKeyboardsList.addKeyboard(keyboard);
+        }
+        result.add(recentKeyboardsList);
+
         return result;
     }
 
@@ -154,4 +162,5 @@ public class KeyboardService {
         recommendKeyboardList.setTag(findTag);
         return keyboards;
     }
+
 }
