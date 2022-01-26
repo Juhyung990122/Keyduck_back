@@ -136,6 +136,8 @@ public class KeyboardService {
         }
 
         RecommendKeyboardDto recentKeyboardsList = new RecommendKeyboardDto();
+        Tag recentTag = new Tag("최신 등록 키보드");
+        recentKeyboardsList.setTag(recentTag);
         List<Keyboard> recentKeyboards = keyboardRepository.findTop10ByOrderByDateDesc();
         for(Keyboard keyboard : recentKeyboards){
             recentKeyboardsList.addKeyboard(keyboard);
