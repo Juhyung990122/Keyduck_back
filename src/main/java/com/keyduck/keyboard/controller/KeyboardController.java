@@ -118,7 +118,8 @@ public class KeyboardController {
                 .body(result);
     }
 
-    @PostMapping("/keyboards/adtag")
+    @ApiOperation(value = "태그를 추가합니다(헤로쿠 서버에서만 사용)")
+    @PostMapping("/keyboards/addTag")
     public List<Tag> addTag(@RequestBody HashMap<String,String> st){
         List<Tag> result = keyboardService.addTag(st);
         return result;
