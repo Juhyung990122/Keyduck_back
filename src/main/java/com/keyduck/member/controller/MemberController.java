@@ -98,6 +98,15 @@ public class MemberController {
 				.body(responseService.getSuccessResult());
 	}
 
+	@ApiOperation(value = "이메일 추가", notes = "이메일을 수정합니다.")
+	@PutMapping("/members/addEmail")
+	public ResponseEntity<SingleResult<MemberGetDto>> editEmail(@RequestBody EmailDto emailDto){
+		MemberGetDto result = memberService.editEmail(emailDto);
+		return ResponseEntity
+				.ok()
+				.body(responseService.getSingleResult(result));
+	}
+
 	// 이미지 처리 관련 로직
 	@GetMapping("/uploads/{fileName}")
 	public ResponseEntity<Resource> downloadProfile(@PathVariable String fileName, HttpServletRequest request) throws IOException{

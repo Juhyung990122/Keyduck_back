@@ -5,10 +5,7 @@ import com.keyduck.exception.FileDownloadException;
 import com.keyduck.exception.FileUploadException;
 import com.keyduck.mapper.MemberMapper;
 import com.keyduck.member.domain.Member;
-import com.keyduck.member.dto.MemberCreateDto;
-import com.keyduck.member.dto.MemberGetDto;
-import com.keyduck.member.dto.MemberLoginDto;
-import com.keyduck.member.dto.MemberTokenDto;
+import com.keyduck.member.dto.*;
 import com.keyduck.member.img.FileUploadProperties;
 import com.keyduck.member.repository.MemberRepository;
 import com.keyduck.security.JwtTokenProvider;
@@ -159,4 +156,12 @@ public class MemberService implements UserDetailsService{
 			throw new FileDownloadException(fileName+"파일을 찾을 수 없습니다.",e);
 		}
 	}
+
+    public MemberGetDto editEmail(EmailDto emailDto) {
+		Member member = memberRepository.findById(emailDto.getMemId())
+				.orElseThrow(()-> new NoSuchElementException("해당 회원을 찾을 수 없습니다."));
+		member.setEmail(emailDto.getEmail());
+		memberRepository.save(member);
+		return memberMapper.toDto(member);
+    }
 }
