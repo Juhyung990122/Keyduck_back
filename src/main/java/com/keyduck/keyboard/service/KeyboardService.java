@@ -14,10 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class KeyboardService {
@@ -126,9 +123,10 @@ public class KeyboardService {
 
     public List<RecommendKeyboardDto> getRecommend() {
         List<RecommendKeyboardDto> result = new ArrayList<>();
+        List<Integer> indexList = Arrays.asList(1,2,3,4,5,6,7,8);
         for(int i = 0; i < 2; i++){
             RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
-            List<KeyboardTags> keyboards = findKeyboardsByTag(recommendKeyboardList);
+            List<KeyboardTags> keyboards = findKeyboardsByTag(recommendKeyboardList,indexList);
             for(KeyboardTags keyboardTags : keyboards){
                 recommendKeyboardList.addKeyboard(keyboardTags.getKeyboard());
             }
@@ -147,21 +145,22 @@ public class KeyboardService {
         return result;
     }
 
-    private Tag pickRandomTag(){
+    private Tag pickRandomTag(List<Integer> indexList){
         Random random = new Random();
-        Long randomIndex = Long.valueOf(random.nextInt(8));
+        Long randomIndex = Long.valueOf(random.nextInt(indexList.size()));
+        indexList.remove(randomIndex);
         Tag findTag = tagRepository.findByTagId(randomIndex);
         return findTag;
     }
 
-    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList){
-        Tag findTag = null;
+    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList,List<Integer> indexList){
         List<KeyboardTags> keyboards = new ArrayList<>();
+        Tag tag = null;
         while(keyboards.size() == 0){
-            findTag = pickRandomTag();
-            keyboards = keyboardTagRepository.findFirst10ByTag(findTag);
+            tag = pickRandomTag(indexList);
+            keyboards = keyboardTagRepository.findFirst10ByTag(tag);
         }
-        recommendKeyboardList.setTag(findTag);
+        recommendKeyboardList.setTag(tag);
         return keyboards;
     }
 
