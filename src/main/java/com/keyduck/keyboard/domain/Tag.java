@@ -16,6 +16,7 @@ import static java.util.Arrays.asList;
 @AllArgsConstructor
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
     private String content;

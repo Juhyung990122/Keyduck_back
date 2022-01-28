@@ -1,5 +1,6 @@
 package com.keyduck.keyboard.controller;
 
+import com.keyduck.keyboard.domain.Tag;
 import com.keyduck.keyboard.dto.*;
 import com.keyduck.keyboard.service.KeyboardService;
 import com.keyduck.result.ListResult;
@@ -115,5 +116,11 @@ public class KeyboardController {
         return ResponseEntity
                 .ok()
                 .body(result);
+    }
+
+    @PostMapping("/keyboards/adtag")
+    public List<Tag> addTag(@RequestBody HashMap<String,String> st){
+        List<Tag> result = keyboardService.addTag(st);
+        return result;
     }
 }

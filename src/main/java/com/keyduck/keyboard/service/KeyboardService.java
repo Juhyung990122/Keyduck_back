@@ -165,4 +165,9 @@ public class KeyboardService {
         return keyboards;
     }
 
+    public List<Tag> addTag(HashMap<String,String> tag){
+        String content = tag.get("content");
+        tagRepository.save(new Tag(content));
+        return tagRepository.findAll();
+    }
 }
