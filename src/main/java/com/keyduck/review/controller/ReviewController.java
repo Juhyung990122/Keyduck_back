@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class ReviewController {
     // 후기 작성(회원)
     @ApiOperation(value = "리뷰 작성", notes = "리뷰를 작성합니다.")
     @PostMapping("/reviews/add")
-    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestHeader String accessToken, @RequestBody ReviewCreateDto reviewInfo){
-        ReviewCreateDto result = reviewService.addReview(reviewInfo,accessToken);
+    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(HttpServletRequest req, @RequestBody ReviewCreateDto reviewInfo){
+        ReviewCreateDto result = reviewService.addReview(reviewInfo,req.getHeader("X-AUTH-TOKEN"));
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));
