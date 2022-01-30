@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
-    List<Review> findAllByName(Keyboard id);
-    List<Review> findAllByAuthor(Member id);
-    Review findReviewByAuthorAndName(Keyboard name, Member author);
+    List<Review> findAllByKeyboard(Keyboard id);
+    List<Review> findAllByMember(Member id);
+    Review findReviewByMemberAndKeyboard(Keyboard name, Member author);
 }

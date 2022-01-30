@@ -10,6 +10,7 @@ import com.keyduck.keyboard.repository.KeyboardTagRepository;
 import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
+import com.keyduck.review.repository.ReviewRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,13 +41,15 @@ public class KeyboardServiceTest {
     @Mock
     KeyboardTagRepository keyboardTagRepository;
     @Mock
+    ReviewRepository reviewRepository;
+    @Mock
     TagRepository tagRepository;
     @InjectMocks
     KeyboardService keyboardService;
 
     @Before
     public void setup(){
-        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper, tagRepository, keyboardTagRepository);
+        keyboardService = new KeyboardService(keyboardRepository,keyboardMapper,simpleKeyboardMapper, tagRepository, keyboardTagRepository, reviewRepository);
     }
 
 

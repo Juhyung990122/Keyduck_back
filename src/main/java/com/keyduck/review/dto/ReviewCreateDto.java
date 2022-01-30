@@ -11,15 +11,14 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @Getter
 public class ReviewCreateDto {
-    private Long name;
+    private Long keyboardId;
     private Float star;
-    private Long author;
     private String content;
 
     public Review toEntity(Keyboard keyboard, Member member){
         return Review.ReviewBuilder()
-                .name(keyboard)
-                .author(member)
+                .keyboard(keyboard)
+                .member(member)
                 .star(star)
                 .content(content)
                 .build();

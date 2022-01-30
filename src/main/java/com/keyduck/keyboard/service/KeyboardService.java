@@ -10,6 +10,7 @@ import com.keyduck.keyboard.repository.KeyboardTagRepository;
 import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
+import com.keyduck.review.repository.ReviewRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,15 @@ public class KeyboardService {
     private final SimpleKeyboardMapper simpleKeyboardMapper;
     private final TagRepository tagRepository;
     private final KeyboardTagRepository keyboardTagRepository;
+    private final ReviewRepository reviewRepository;
 
-    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper, TagRepository tagRepository, KeyboardTagRepository keyboardTagRepository) {
+    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper, TagRepository tagRepository, KeyboardTagRepository keyboardTagRepository, ReviewRepository reviewRepository) {
         this.keyboardRepository = keyboardRepository;
         this.keyboardMapper = keyboardMapper;
         this.simpleKeyboardMapper = simpleKeyboardMapper;
         this.tagRepository = tagRepository;
         this.keyboardTagRepository = keyboardTagRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<SimpleKeyboardDto> getAllKeyboards() {
@@ -169,4 +172,5 @@ public class KeyboardService {
         tagRepository.save(new Tag(content));
         return tagRepository.findAll();
     }
+    
 }

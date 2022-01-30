@@ -14,8 +14,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ReviewGetDto {
-    private SimpleKeyboardDto name;
+    private SimpleKeyboardDto keyboard;
     private Float star;
-    private MemberGetDto author;
+    private MemberGetDto member;
     private String content;
 }

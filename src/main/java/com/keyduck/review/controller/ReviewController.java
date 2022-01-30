@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "모델별,멤버별 리뷰 조회", notes = "모델별,멤버별로 달린 리뷰를 조회합니다.")
-    @GetMapping("/review")
+    @GetMapping("/reviews")
     public ResponseEntity<ListResult<ReviewGetDto>> getReviews(@RequestParam String key, @RequestParam Long id) {
         List<ReviewGetDto> result = reviewService.getReviews(key,id);
         return ResponseEntity
@@ -41,7 +41,7 @@ public class ReviewController {
 
     //후기 디테일
     @ApiOperation(value = "리뷰 디테일 조회", notes = "선택한 리뷰의 상세정보를 조회합니다.")
-    @GetMapping("/review/{reviewId}")
+    @GetMapping("/reviews/{reviewId}")
     public ResponseEntity<SingleResult<ReviewGetDto>> getReviewDetail(@PathVariable Long reviewId){
         ReviewGetDto result = reviewService.getReviewDetail(reviewId);
         return ResponseEntity
@@ -52,16 +52,16 @@ public class ReviewController {
 
     // 후기 작성(회원)
     @ApiOperation(value = "리뷰 작성", notes = "리뷰를 작성합니다.")
-    @PostMapping("/review/add")
-    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestBody ReviewCreateDto reviewInfo){
-        ReviewCreateDto result = reviewService.addReview(reviewInfo);
+    @PostMapping("/reviews/add")
+    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestHeader String token, @RequestBody ReviewCreateDto reviewInfo){
+        ReviewCreateDto result = reviewService.addReview(reviewInfo,token);
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));
     }
 
     @ApiOperation(value = "리뷰 삭제", notes = "리뷰를 삭제합니다.")
-    @DeleteMapping("/review/delete/{reviewId}")
+    @DeleteMapping("/reviews/delete/{reviewId}")
     public ResponseEntity<SingleResult<String>> deleteReviewDetail(@PathVariable Long reviewId){
         String result = reviewService.deleteReview(reviewId);
         return ResponseEntity

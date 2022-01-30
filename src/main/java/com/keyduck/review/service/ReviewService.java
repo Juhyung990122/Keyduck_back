@@ -33,18 +33,18 @@ public class ReviewService {
 
 
 
-    public List<ReviewGetDto> getReviewsByAuthor(Long id) {
-        Member member = memberRepository.getOne(id);
-        List<Review> reviewList = reviewRepository.findAllByAuthor(member);
-        List<ReviewGetDto> reviewListDto = new ArrayList<ReviewGetDto>();
-
-        for(int i = 0; i < reviewList.size(); i++){
-            Review review = reviewList.get(i);
-            reviewListDto.add(reviewMapper.toDto(review));
-        }
-
-        return reviewListDto;
-    }
+//    public List<ReviewGetDto> getReviewsByAuthor(Long id) {
+//        Member member = memberRepository.getOne(id);
+//        List<Review> reviewList = reviewRepository.findAllByMember(member);
+//        List<ReviewGetDto> reviewListDto = new ArrayList<ReviewGetDto>();
+//
+//        for(int i = 0; i < reviewList.size(); i++){
+//            Review review = reviewList.get(i);
+//            reviewListDto.add(reviewMapper.toDto(review));
+//        }
+//
+//        return reviewListDto;
+//    }
 
     public ReviewGetDto getReviewDetail(Long reviewId) throws NullPointerException{
         Review review = reviewRepository.findById(reviewId)
@@ -53,9 +53,9 @@ public class ReviewService {
         return reviewDto;
     }
 
-    public ReviewCreateDto addReview(ReviewCreateDto reviewInfo){
-        Keyboard keyboard = keyboardRepository.findById(reviewInfo.getName()).orElseThrow(()->new NullPointerException("해당 리뷰를 찾을 수 없습니다."));
-        Member member = memberRepository.findById(reviewInfo.getAuthor()).orElseThrow(()->new NullPointerException("해당 리뷰를 찾을 수 없습니다."));
+    public ReviewCreateDto addReview(ReviewCreateDto reviewInfo, String token){
+        Keyboard keyboard = keyboardRepository.findById(reviewInfo.getKeyboardId()).orElseThrow(()->new NullPointerException("해당 리뷰를 찾을 수 없습니다."));
+        Member member = memberRepository.findByAccessToken(token).orElseThrow(()->new NullPointerException("해당 유저를 찾을 수 없습니다."));
 
         Review review = reviewInfo.toEntity(keyboard,member);
         reviewRepository.save(review);
@@ -68,7 +68,7 @@ public class ReviewService {
             case "keyboardId":
                 Long keyboardId = id;
                 Keyboard keyboard = keyboardRepository.getOne(keyboardId);
-                List<Review> modelReviews = reviewRepository.findAllByName(keyboard);
+                List<Review> modelReviews = reviewRepository.findAllByKeyboard(keyboard);
                 List<ReviewGetDto> keyboardReviewsDto = new ArrayList<ReviewGetDto>();
 
                 for (int i = 0; i < modelReviews.size(); i++) {
@@ -80,7 +80,7 @@ public class ReviewService {
             case "memId":
                 Long memberId = id;
                 Member member = memberRepository.getOne(memberId);
-                List<Review> memberReviews = reviewRepository.findAllByAuthor(member);
+                List<Review> memberReviews = reviewRepository.findAllByMember(member);
                 List<ReviewGetDto> memberReviewsDto = new ArrayList<ReviewGetDto>();
 
                 for (int i = 0; i < memberReviews.size(); i++) {

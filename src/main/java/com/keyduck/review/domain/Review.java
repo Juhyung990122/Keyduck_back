@@ -25,10 +25,10 @@ public class Review {
     private Long reviewId;
 
     @ManyToOne(targetEntity = Keyboard.class)
-    private Keyboard name;
+    private Keyboard keyboard;
     private Float star;
     @ManyToOne(targetEntity = Member.class)
-    private Member author;
+    private Member member;
     private String content;
 
 }
