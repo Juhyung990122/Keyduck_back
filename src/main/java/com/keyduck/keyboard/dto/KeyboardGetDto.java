@@ -20,6 +20,7 @@ public class KeyboardGetDto {
     private Integer arrangement;
     private Integer weight;
     private String cable;
+    private Float star;
     //스위치
     private String switchBrand;
     private String switchColor;

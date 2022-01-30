@@ -16,15 +16,6 @@ public class SimpleKeyboardDto {
     private String thumbnailImg;
     private String name;
     private Integer price;
-    private Integer star;
+    private Float star;
 
-    public SimpleKeyboardDto toDto(Keyboard keyboard) {
-        SimpleKeyboardDto keyboardDto = new SimpleKeyboardDto();
-        keyboardDto.keyboardId = keyboard.getKeyboardId();
-        keyboardDto.thumbnailImg = keyboard.getThumbnailImg();
-        keyboardDto.name = keyboard.getName();
-        keyboardDto.price = keyboard.getPrice();
-        keyboardDto.star = keyboard.getStar();
-        return keyboardDto;
-    }
 }

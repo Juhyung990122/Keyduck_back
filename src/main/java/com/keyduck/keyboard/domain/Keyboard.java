@@ -37,7 +37,7 @@ public class Keyboard {
     private Integer arrangement;
     private Integer weight;
     private String cable;
-    private Integer star;
+    private Float star;
     //스위치
     private String switchBrand;
     private String switchColor;
@@ -48,4 +48,14 @@ public class Keyboard {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "keyboard")
     private List<KeyboardTags> tags;
 
+    public SimpleKeyboardDto toDto() {
+        SimpleKeyboardDto keyboardDto = new SimpleKeyboardDto();
+        keyboardDto.setKeyboardId(keyboardId);
+        keyboardDto.setThumbnailImg(thumbnailImg);
+        keyboardDto.setName(name);
+        keyboardDto.setPrice(price);
+        keyboardDto.setStar(star);
+        return keyboardDto;
+    }
 }
+

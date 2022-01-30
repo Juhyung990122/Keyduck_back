@@ -20,7 +20,7 @@ public class RecommendKeyboardDto {
         this.tag = tag;
     }
     public void addKeyboard(Keyboard keyboard){
-        keyboards.add(new SimpleKeyboardDto().toDto(keyboard));
+        keyboards.add(keyboard.toDto());
     }
 }
 

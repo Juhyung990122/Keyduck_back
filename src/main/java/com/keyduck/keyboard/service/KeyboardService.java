@@ -10,6 +10,7 @@ import com.keyduck.keyboard.repository.KeyboardTagRepository;
 import com.keyduck.keyboard.repository.TagRepository;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
+import com.keyduck.review.domain.Review;
 import com.keyduck.review.repository.ReviewRepository;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,8 @@ public class KeyboardService {
         List<Keyboard> keyboards = keyboardRepository.findAll();
         List<SimpleKeyboardDto> keyboardsDto = new ArrayList<SimpleKeyboardDto>();
         for (int i = 0; i < keyboards.size(); i++) {
-            keyboardsDto.add(simpleKeyboardMapper.toDto(keyboards.get(i)));
+            calculateStarAverage(keyboards.get(i));
+            keyboardsDto.add(keyboards.get(i).toDto());
         }
         return keyboardsDto;
     }
@@ -47,6 +49,7 @@ public class KeyboardService {
     public KeyboardGetDto getKeyboardDetail(Long keyboardId) {
         Keyboard keyboard = keyboardRepository.findById(keyboardId)
                 .orElseThrow(() -> new NullPointerException("해당 모델을 찾을 수 없습니다."));
+        calculateStarAverage(keyboard);
         return keyboardMapper.toDto(keyboard);
     }
 
@@ -171,6 +174,22 @@ public class KeyboardService {
         String content = tag.get("content");
         tagRepository.save(new Tag(content));
         return tagRepository.findAll();
+    }
+
+    public void calculateStarAverage(Keyboard keyboard){
+        if(keyboard.getStar() == null){
+            keyboard.setStar(0f);
+        }
+        else{
+            List<Review> reviewList = reviewRepository.findAllByKeyboard(keyboard);
+            float sumStar = 0;
+            for(Review review : reviewList){
+                sumStar += review.getStar();
+            }
+            sumStar /= reviewList.size();
+            keyboard.setStar(sumStar);
+        }
+        keyboardRepository.save(keyboard);
     }
     
 }
