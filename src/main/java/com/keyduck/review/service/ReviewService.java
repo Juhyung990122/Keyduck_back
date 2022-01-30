@@ -53,9 +53,9 @@ public class ReviewService {
         return reviewDto;
     }
 
-    public ReviewCreateDto addReview(ReviewCreateDto reviewInfo, String token){
+    public ReviewCreateDto addReview(ReviewCreateDto reviewInfo, String accessToken){
         Keyboard keyboard = keyboardRepository.findById(reviewInfo.getKeyboardId()).orElseThrow(()->new NullPointerException("해당 리뷰를 찾을 수 없습니다."));
-        Member member = memberRepository.findByAccessToken(token).orElseThrow(()->new NullPointerException("해당 유저를 찾을 수 없습니다."));
+        Member member = memberRepository.findByAccessToken(accessToken).orElseThrow(()->new NullPointerException("해당 유저를 찾을 수 없습니다."));
 
         Review review = reviewInfo.toEntity(keyboard,member);
         reviewRepository.save(review);

@@ -53,8 +53,8 @@ public class ReviewController {
     // 후기 작성(회원)
     @ApiOperation(value = "리뷰 작성", notes = "리뷰를 작성합니다.")
     @PostMapping("/reviews/add")
-    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestHeader String token, @RequestBody ReviewCreateDto reviewInfo){
-        ReviewCreateDto result = reviewService.addReview(reviewInfo,token);
+    public ResponseEntity<SingleResult<ReviewCreateDto>> addReviewDetail(@RequestHeader String accessToken, @RequestBody ReviewCreateDto reviewInfo){
+        ReviewCreateDto result = reviewService.addReview(reviewInfo,accessToken);
         return ResponseEntity
                 .ok()
                 .body(responseService.getSingleResult(result));
