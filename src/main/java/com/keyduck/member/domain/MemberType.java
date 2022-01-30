@@ -8,8 +8,8 @@ import java.util.Map;
 @Getter
 public enum MemberType {
 	Keyduck("keyduck"),
-	Google("Google"),
-	Kakao("Kakao");
+	Google("GOOGLE"),
+	Kakao("KAKAO");
 
 	private String type;
 	MemberType(String type) {
