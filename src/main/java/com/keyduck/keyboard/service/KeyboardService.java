@@ -177,12 +177,12 @@ public class KeyboardService {
     }
 
     public void calculateStarAverage(Keyboard keyboard){
-        if(keyboard.getStar() == null){
-            keyboard.setStar(0f);
+        if(keyboard.getStar() == null || keyboard.getStar() == 0){
+            keyboard.setStar((float) 0);
         }
         else{
             List<Review> reviewList = reviewRepository.findAllByKeyboard(keyboard);
-            float sumStar = 0;
+            float sumStar = (float)0;
             for(Review review : reviewList){
                 sumStar += review.getStar();
             }
