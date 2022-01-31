@@ -3,12 +3,14 @@ package com.keyduck.review.dto;
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.member.domain.Member;
 import com.keyduck.review.domain.Review;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class ReviewCreateDto {
     private Long keyboardId;
