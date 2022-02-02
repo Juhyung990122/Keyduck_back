@@ -2,6 +2,7 @@ package com.keyduck.keyboard.domain;
 
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import lombok.*;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.sql.Array;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(indexName = "keyboards")
 public class Keyboard {
 
     @Id
