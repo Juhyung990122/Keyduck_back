@@ -1,4 +1,4 @@
-package com.keyduck.utils;
+package com.keyduck.utils.ElasticSearch;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.context.annotation.Bean;

@@ -4,6 +4,8 @@ server:
     session:
       tracking-modes: COOKIE
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     database-name: t863regljymogm0m
     url : jdbc:mysql://exbodcemtop76rnz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/t863regljymogm0m?reconnect=true&useUnicode=true&characterEncoding=utf8

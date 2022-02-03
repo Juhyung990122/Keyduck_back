@@ -49,6 +49,7 @@ public class Keyboard {
     private String keycapProfile;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "keyboard")
     private List<KeyboardTags> tags;
+    private String info;
 
     public SimpleKeyboardDto toDto() {
         SimpleKeyboardDto keyboardDto = new SimpleKeyboardDto();

@@ -34,6 +34,7 @@ public class KeyboardCreateDto {
     private String keycapImprint;
     private String keycapProfile;
     private String keyword;
+    private String info;
 
     public Keyboard toEntity() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월");
@@ -56,6 +57,7 @@ public class KeyboardCreateDto {
                 .keycap(keycap)
                 .keycapImprint(keycapImprint)
                 .keycapProfile(keycapProfile)
+                .info(info)
                 .build();
     }
 

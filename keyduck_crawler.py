@@ -111,11 +111,18 @@ for i in range(1,2):
                 "arrangement" : int(is_key_exist(option_dict ,"키 배열")[:-1]) if is_key_exist(option_dict, "키 배열") else '',
                 "weight" : int(is_key_exist(option_dict ,"무게")[:-1]) if is_key_exist(option_dict, "무게") else '',
                 "cable" : is_key_exist(option_dict ,"직조(패브릭) 케이블"),
-                "photo" :None
+                "photo" :None,
+                "info": 
+                str(is_key_exist(option_dict ,"제조회사") if is_key_exist(option_dict ,"제조회사") else '') 
+                + " " + str(is_key_exist(option_dict ,"스위치") if is_key_exist(option_dict ,"스위치") else '') 
+                + " " + str(refine(model)) + " " + str(is_key_exist(option_dict ,"연결 방식") if is_key_exist(option_dict ,"연결 방식") else '')  
+                + " " + str(is_key_exist(option_dict ,"키 스위치") if is_key_exist(option_dict ,"키 스위치") else '')  
+                + " " + str(int(is_key_exist(option_dict ,"키 배열")[:-1]) if is_key_exist(option_dict, "키 배열") else '')
+                + " " + str(int(is_key_exist(option_dict ,"무게")[:-1]) if is_key_exist(option_dict, "무게") else '')
         }
         #req = requests.post(url = "http://101.101.210.98:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)    
-        req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
-        #req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        #req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         #req = requests.post(url = "http://localhost:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         
         print(req.status_code)
