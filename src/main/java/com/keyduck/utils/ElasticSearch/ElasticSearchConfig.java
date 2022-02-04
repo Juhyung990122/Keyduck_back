@@ -11,6 +11,8 @@ import org.springframework.data.elasticsearch.client.RestClients;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
+import javax.net.ssl.SSLContext;
+
 @EnableElasticsearchRepositories(basePackageClasses = SearchRepository.class)
 @Configuration
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
@@ -20,8 +22,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     @Override
     public RestHighLevelClient elasticsearchClient(){
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("cypress-925704988.us-east-1.bonsaisearch.net:443")
-                .withBasicAuth("sktiakca3l","s855y1zn3n")
+                .connectedTo("192.168.0.17:9200")
                 .build();
         return RestClients.create(clientConfiguration).rest();
 
