@@ -44,7 +44,6 @@ for i in range(1,2):
     for code in urls:
         option_dict = {}
         driver.get('http://prod.danawa.com/info/?pcode='+code+'&cate=1131635#bookmark_product_information')
-        print(code)
         time.sleep(2)
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')

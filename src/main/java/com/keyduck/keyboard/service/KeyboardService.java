@@ -4,14 +4,12 @@ import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.domain.KeyboardTags;
 import com.keyduck.keyboard.domain.Tag;
 import com.keyduck.keyboard.dto.*;
-import com.keyduck.keyboard.repository.KeyboardRepository;
-import com.keyduck.keyboard.repository.KeyboardSpecification;
-import com.keyduck.keyboard.repository.KeyboardTagRepository;
-import com.keyduck.keyboard.repository.TagRepository;
+import com.keyduck.keyboard.repository.*;
 import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
 import com.keyduck.review.domain.Review;
 import com.keyduck.review.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +24,16 @@ public class KeyboardService {
     private final TagRepository tagRepository;
     private final KeyboardTagRepository keyboardTagRepository;
     private final ReviewRepository reviewRepository;
+    private final SearchRepository searchRepository;
 
-    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper, TagRepository tagRepository, KeyboardTagRepository keyboardTagRepository, ReviewRepository reviewRepository) {
+    public KeyboardService(KeyboardRepository keyboardRepository, KeyboardMapper keyboardMapper, SimpleKeyboardMapper simpleKeyboardMapper, TagRepository tagRepository, KeyboardTagRepository keyboardTagRepository, ReviewRepository reviewRepository, SearchRepository searchRepository) {
         this.keyboardRepository = keyboardRepository;
         this.keyboardMapper = keyboardMapper;
         this.simpleKeyboardMapper = simpleKeyboardMapper;
         this.tagRepository = tagRepository;
         this.keyboardTagRepository = keyboardTagRepository;
         this.reviewRepository = reviewRepository;
+        this.searchRepository = searchRepository;
     }
 
     public List<SimpleKeyboardDto> getAllKeyboards() {
@@ -56,6 +56,7 @@ public class KeyboardService {
     public KeyboardCreateDto addKeyboard(KeyboardCreateDto keyboard) throws ParseException {
         Keyboard keyboardInfo = keyboard.toEntity();
         keyboardRepository.save(keyboardInfo);
+        searchRepository.save(keyboardInfo);
         findTag(keyboardInfo);
         return keyboard;
     }
@@ -66,9 +67,9 @@ public class KeyboardService {
         return "success";
     }
 
-    public List<SimpleKeyboardDto> searchKeyboard(KeyboardSearchDto searchKeyboards) {
+    public List<SimpleKeyboardDto> filterKeyboard(KeyboardFilterDto filterKeyboards) {
         List<SimpleKeyboardDto> keyboards = new ArrayList<>();
-        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(searchKeyboards));
+        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(filterKeyboards));
         List<Keyboard> keyboardList = keyboardRepository.findAll(spec);
         for (int i = 0; i < keyboardList.size(); i++) {
             keyboards.add(simpleKeyboardMapper.toDto(keyboardList.get(i)));
@@ -77,9 +78,9 @@ public class KeyboardService {
     }
 
 
-    public List<SimpleKeyboardDto> searchWhileResult(HashMap<String, String> searchKeywords) {
+    public List<SimpleKeyboardDto> filterWhileResult(HashMap<String, String> searchKeywords) {
 
-        KeyboardSearchDto search = KeyboardSearchDto.KeyboardSearchDtoBuilder()
+        KeyboardFilterDto search = KeyboardFilterDto.KeyboardFilterDtoBuilder()
                 .arrangement(Integer.parseInt(searchKeywords.get("arrangement")))
                 .startPrice(Integer.parseInt(searchKeywords.get("startPrice")))
                 .endPrice(Integer.parseInt(searchKeywords.get("endPrice")))
@@ -87,7 +88,7 @@ public class KeyboardService {
                 .brand(searchKeywords.get("brand"))
                 .build();
 
-        return searchKeyboard(search);
+        return filterKeyboard(search);
     }
 
     private void findTag(Keyboard keyboardInfo){
@@ -191,5 +192,13 @@ public class KeyboardService {
         }
         keyboardRepository.save(keyboard);
     }
-    
+
+    public List<SimpleKeyboardDto> searchKeyboard(KeyboardSearchDto searchKeyboards) {
+        Iterable<Keyboard> keyboards = searchRepository.findByInfoContains(searchKeyboards.getSearchKeyword());
+        List<SimpleKeyboardDto> result = new ArrayList<>();
+        for(Keyboard keyboard : keyboards){
+            result.add(keyboard.toDto());
+        }
+        return result;
+    }
 }

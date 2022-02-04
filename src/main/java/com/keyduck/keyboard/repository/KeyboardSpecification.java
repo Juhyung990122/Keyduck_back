@@ -1,6 +1,7 @@
 package com.keyduck.keyboard.repository;
 
 import com.keyduck.keyboard.domain.Keyboard;
+import com.keyduck.keyboard.dto.KeyboardFilterDto;
 import com.keyduck.keyboard.dto.KeyboardSearchDto;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -13,14 +14,14 @@ import java.util.List;
 
 
 public class KeyboardSpecification {
-    public static Specification<Keyboard> equalKey(KeyboardSearchDto params) {
+    public static Specification<Keyboard> equalKey(KeyboardFilterDto params) {
         return (Specification<Keyboard>) (root, query, builder) -> {
             List<Predicate> predicate = getPredicateWithKeywords(params,root,builder);
             return builder.and(predicate.toArray(new Predicate[0]));
         };
     }
 
-    private static List<Predicate> getPredicateWithKeywords(KeyboardSearchDto params, Root<Keyboard> root, CriteriaBuilder builder ){
+    private static List<Predicate> getPredicateWithKeywords(KeyboardFilterDto params, Root<Keyboard> root, CriteriaBuilder builder ){
         List<Predicate> predicate = new ArrayList<>();
         if (params.getBrand() != null && !params.getBrand().equals("")) {
             predicate.add(builder.like(root.get("brand"), "%"+(String)params.getBrand()+"%"));

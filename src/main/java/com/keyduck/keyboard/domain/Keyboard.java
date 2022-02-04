@@ -3,13 +3,15 @@ package com.keyduck.keyboard.domain;
 import com.keyduck.keyboard.dto.SimpleKeyboardDto;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import javax.persistence.Id;
 import javax.persistence.*;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Document(indexName = "keyboards")
 @Entity
 @Table(name = "keyboard")
 @Builder(builderMethodName = "KeyboardBuilder")
@@ -17,10 +19,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "keyboards")
 public class Keyboard {
 
     @Id
+    @org.springframework.data.annotation.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     @JoinColumn(name = "keyboardId")
@@ -49,6 +51,7 @@ public class Keyboard {
     private String keycapProfile;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "keyboard")
     private List<KeyboardTags> tags;
+    @Field(type = FieldType.Text)
     private String info;
 
     public SimpleKeyboardDto toDto() {

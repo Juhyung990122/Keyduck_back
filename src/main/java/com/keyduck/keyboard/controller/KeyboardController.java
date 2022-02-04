@@ -72,20 +72,20 @@ public class KeyboardController {
 
     @ApiOperation(value = "결과 나올때까지 키보드 필터", notes = "조건을 소거해가며 결과가 하나라도 나올때까지 필터링합니다. 하나도 없을 시 전체 키보드를 반환합니다.")
     @PostMapping("/keyboards/filter")
-    public ResponseEntity<ListResult<SimpleKeyboardDto>> searchKeyboardWhileResult(@RequestBody HashMap<String,String> searchKeywords){
+    public ResponseEntity<ListResult<SimpleKeyboardDto>> filterKeyboardWhileResult(@RequestBody HashMap<String,String> filterKeywords){
         List<SimpleKeyboardDto> result = new ArrayList<>();
         List<String> priorityList = new ArrayList<>(Arrays.asList("arrangement", "price", "switchColor", "brand"));
 
         while(result.size() == 0){
 
-            result = keyboardService.searchWhileResult(searchKeywords);
+            result = keyboardService.filterWhileResult(filterKeywords);
             String now = priorityList.get(priorityList.size() - 1);
             if(now.equals("price")){
-                searchKeywords.replace("startPrice","-1");
-                searchKeywords.replace("endPrice","-1");
+                filterKeywords.replace("startPrice","-1");
+                filterKeywords.replace("endPrice","-1");
             }
             else{
-                searchKeywords.remove(now);
+                filterKeywords.remove(now);
             }
             priorityList.remove(priorityList.size()-1);
 
