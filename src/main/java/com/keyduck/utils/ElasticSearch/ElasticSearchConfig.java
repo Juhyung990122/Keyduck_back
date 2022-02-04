@@ -20,7 +20,7 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     @Override
     public RestHighLevelClient elasticsearchClient(){
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("cypress-925704988.us-east-1.bonsaisearch.net:9200")
+                .connectedTo("cypress-925704988.us-east-1.bonsaisearch.net:443")
                 .withBasicAuth("sktiakca3l","s855y1zn3n")
                 .build();
         return RestClients.create(clientConfiguration).rest();
