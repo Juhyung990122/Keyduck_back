@@ -26,5 +26,4 @@ spring:
 file :
   upload-dir : ./uploads
 
-es : https://sktiakca3l:s855y1zn3n@cypress-925704988.us-east-1.bonsaisearch.net/
-
+es : https://sktiakca3l:s855y1zn3n@cypress-925704988.us-east-1.bonsaisearch.net:443
