@@ -22,6 +22,7 @@ spring:
 
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
 
+es : localhost:9200
 
 file :
   upload-dir : ./uploads
