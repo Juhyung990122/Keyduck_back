@@ -14,13 +14,14 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories(basePackageClasses = SearchRepository.class)
 @Configuration
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
-    @Value("${es}")
+    @Value("${spring.elasticsearch.rest.uris}")
     private String portInfo;
 
     @Override
     public RestHighLevelClient elasticsearchClient(){
         ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(portInfo)
+                .connectedTo("cypress-925704988.us-east-1.bonsaisearch.net:443")
+                .withBasicAuth("sktiakca3l","s855y1zn3n")
                 .build();
         return RestClients.create(clientConfiguration).rest();
 

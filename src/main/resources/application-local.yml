@@ -11,7 +11,6 @@ spring:
     url : jdbc:mysql://exbodcemtop76rnz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/t863regljymogm0m?reconnect=true&useUnicode=true&characterEncoding=utf8
     username: wvj5te54qifdmhmz
     password: yhitm6m5jwsmzsqz
-
   jackson:
     serialization:
       fail-on-empty-beans : false
@@ -22,8 +21,11 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
+  data:
+    jest:
+      uri: https:@cypress-925704988.us-east-1.bonsaisearch.net:443
+      username: sktiakca3l
+      password: s855y1zn3n
 file :
   upload-dir : ./uploads
 
-es : https://sktiakca3l:s855y1zn3n@cypress-925704988.us-east-1.bonsaisearch.net:443

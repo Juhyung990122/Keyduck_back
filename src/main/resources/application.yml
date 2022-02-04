@@ -1,8 +1,10 @@
 server:
   port: 8070
 
-
 spring:
+  elasticsearch:
+    rest:
+      uris: https://sktiakca3l:s855y1zn3n@cypress-925704988.us-east-1.bonsaisearch.net:443
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -21,8 +23,6 @@ spring:
       ddl-auto: update
 
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
-es : localhost:9200
 
 file :
   upload-dir : ./uploads

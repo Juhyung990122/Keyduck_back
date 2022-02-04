@@ -4,6 +4,7 @@ import com.keyduck.keyboard.repository.SearchRepository;
 import com.keyduck.member.img.FileUploadProperties;
 import com.keyduck.utils.ElasticSearch.ElasticSearchConfig;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
