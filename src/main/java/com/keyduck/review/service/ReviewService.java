@@ -2,6 +2,7 @@ package com.keyduck.review.service;
 
 import com.keyduck.keyboard.domain.Keyboard;
 import com.keyduck.keyboard.repository.KeyboardRepository;
+import com.keyduck.keyboard.service.KeyboardService;
 import com.keyduck.mapper.ReviewMapper;
 import com.keyduck.member.domain.Member;
 import com.keyduck.member.repository.MemberRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -22,13 +22,15 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final KeyboardRepository keyboardRepository;
     private final MemberRepository memberRepository;
+    private final KeyboardService keyboardService;
     @Autowired
     private ReviewMapper reviewMapper;
 
-    public ReviewService(ReviewRepository reviewRepository, KeyboardRepository keyboardRepository, MemberRepository memberRepository) {
+    public ReviewService(ReviewRepository reviewRepository, KeyboardRepository keyboardRepository, MemberRepository memberRepository, KeyboardService keyboardService) {
         this.reviewRepository = reviewRepository;
         this.keyboardRepository = keyboardRepository;
         this.memberRepository = memberRepository;
+        this.keyboardService = keyboardService;
     }
 
 
@@ -59,6 +61,7 @@ public class ReviewService {
 
         Review review = reviewInfo.toEntity(keyboard,member);
         reviewRepository.save(review);
+        keyboardService.calculateStarAverage(keyboard);
         return reviewInfo;
     }
 

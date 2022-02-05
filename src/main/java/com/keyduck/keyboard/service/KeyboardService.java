@@ -40,7 +40,6 @@ public class KeyboardService {
         List<Keyboard> keyboards = keyboardRepository.findAll();
         List<SimpleKeyboardDto> keyboardsDto = new ArrayList<SimpleKeyboardDto>();
         for (int i = 0; i < keyboards.size(); i++) {
-            calculateStarAverage(keyboards.get(i));
             keyboardsDto.add(keyboards.get(i).toDto());
         }
         return keyboardsDto;
