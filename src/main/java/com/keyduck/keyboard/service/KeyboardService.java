@@ -92,6 +92,9 @@ public class KeyboardService {
     }
 
     private void findTag(Keyboard keyboardInfo){
+        if(keyboardInfo.getArrangement().equals(108) && keyboardInfo.getSwitchColor().equals("적축")){
+            keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("키보드 치는 소리 안나게 해라")));
+        }
         if(keyboardInfo.getLed() != null && keyboardInfo.getSwitchColor().equals("청축")){
             keyboardTagRepository.save(new KeyboardTags(keyboardInfo,tagRepository.findByContent("피지컬이 좋아지는 기분")));
         }
