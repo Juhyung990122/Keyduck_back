@@ -180,7 +180,7 @@ public class KeyboardService {
     }
 
     public void calculateStarAverage(Keyboard keyboard){
-        if(keyboard.getStar() == null || keyboard.getStar() == 0){
+        if(keyboard.getStar() == null){
             keyboard.setStar((float) 0);
         }
         else{
