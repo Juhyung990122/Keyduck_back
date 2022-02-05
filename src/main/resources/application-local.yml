@@ -7,10 +7,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    database-name: t863regljymogm0m
-    url : jdbc:mysql://exbodcemtop76rnz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/t863regljymogm0m?reconnect=true&useUnicode=true&characterEncoding=utf8
-    username: wvj5te54qifdmhmz
-    password: yhitm6m5jwsmzsqz
+    database-name: r8t815o9w6ulfysd
+    url : jdbc:mysql://l6glqt8gsx37y4hs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/r8t815o9w6ulfysd?reconnect=true&useUnicode=true&characterEncoding=utf8
+    username: mvsevbab7tkng5uo
+    password: zflcv87gq1w2bgdc
   jackson:
     serialization:
       fail-on-empty-beans : false
@@ -30,7 +30,7 @@ file :
   upload-dir : ./uploads
 
 es:
-  host: cypress-925704988.us-east-1.bonsaisearch.net
+  host: cedar-78838687.us-east-1.bonsaisearch.net
   port: 443
-  username: 7blt98m7u2
-  password: zdaj66822u
+  username: 9cw7dfi4v1
+  password: gqwtynvdpz
