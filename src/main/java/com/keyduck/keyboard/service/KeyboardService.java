@@ -180,11 +180,11 @@ public class KeyboardService {
     }
 
     public void calculateStarAverage(Keyboard keyboard){
-        if(keyboard.getStar() == null){
+        List<Review> reviewList = reviewRepository.findAllByKeyboard(keyboard);
+        if(keyboard.getStar() == null || reviewList.size() == 0){
             keyboard.setStar((float) 0);
         }
         else{
-            List<Review> reviewList = reviewRepository.findAllByKeyboard(keyboard);
             float sumStar = (float)0;
             for(Review review : reviewList){
                 sumStar += review.getStar();
