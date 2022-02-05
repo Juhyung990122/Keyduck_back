@@ -29,3 +29,8 @@ spring:
 file :
   upload-dir : ./uploads
 
+es:
+  host: cypress-925704988.us-east-1.bonsaisearch.net
+  port: 443
+  username: 7blt98m7u2
+  password: zdaj66822u

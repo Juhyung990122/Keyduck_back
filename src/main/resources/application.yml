@@ -2,9 +2,6 @@ server:
   port: 8070
 
 spring:
-  elasticsearch:
-    rest:
-      uris: https://sktiakca3l:s855y1zn3n@cypress-925704988.us-east-1.bonsaisearch.net:443
   main:
     allow-bean-definition-overriding: true
   datasource:
@@ -35,3 +32,9 @@ sns:
     response_type : code
     grant_type : authorization_code
     client_secret : 7AlTUg5Ew2Hb0UvDfemmHVOcTw9I2m9h
+
+es:
+  host: localhost
+  port: 9200
+  username:
+  password:
