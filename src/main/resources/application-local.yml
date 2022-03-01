@@ -21,11 +21,6 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  data:
-    jest:
-      uri: https:@cypress-925704988.us-east-1.bonsaisearch.net:443
-      username: sktiakca3l
-      password: s855y1zn3n
 file :
   upload-dir : ./uploads
 

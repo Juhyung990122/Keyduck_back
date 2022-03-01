@@ -14,6 +14,10 @@ import java.util.List;
 
 
 public class KeyboardSpecification {
+
+    public static final int FULL_ARRANGEMENT = 1;
+    public static final int MINI_ARRANGEMENT = 0;
+
     public static Specification<Keyboard> equalKey(KeyboardFilterDto params) {
         return (Specification<Keyboard>) (root, query, builder) -> {
             List<Predicate> predicate = getPredicateWithKeywords(params,root,builder);
@@ -57,12 +61,26 @@ public class KeyboardSpecification {
             predicate.add(builder.like(root.get("hotswap"), "%"+(String)params.getHotswap()+"%"));
         }
 
+        if (params.getLed()!= null && !params.getLed().equals("")) {
+            predicate.add(builder.like(root.get("led"), "%"+(String)params.getLed()+"%"));
+        }
+
         if (params.getKeycapProfile() != null && !params.getKeycapProfile().equals("")) {
             predicate.add(builder.like(root.get("keycapProfile"), "%"+(String)params.getKeycapProfile()+"%"));
         }
 
-        if (params.getArrangement() > 0) {
-            predicate.add(builder.equal(root.get("arrangement"), Integer.valueOf(params.getArrangement())));
+        if (params.getArrangement() > -1) {
+            int INF = 10000000;
+            if(params.getArrangement() == FULL_ARRANGEMENT){
+                predicate.add(builder.between(root.get("arrangement"),96, INF));
+            }
+            else if(params.getArrangement() == MINI_ARRANGEMENT){
+                predicate.add(builder.between(root.get("arrangement"),0, 95));
+            }
+        }
+
+        if (params.getWeight() > 0) {
+            predicate.add(builder.between(root.get("weight"),Integer.valueOf(0),Integer.valueOf(params.getWeight())));
         }
 
         if (params.getStartPrice() >= 0 && params.getEndPrice() >= 0) {

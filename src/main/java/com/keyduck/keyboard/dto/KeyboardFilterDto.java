@@ -2,6 +2,8 @@ package com.keyduck.keyboard.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -19,4 +21,6 @@ public class KeyboardFilterDto {
     private String switchBrand;
     private String[] switchColor;
     private String[] tag;
+    private String led;
+    private int weight;
 }

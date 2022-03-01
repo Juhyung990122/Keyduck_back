@@ -74,7 +74,7 @@ public class KeyboardController {
     @PostMapping("/keyboards/filter")
     public ResponseEntity<ListResult<SimpleKeyboardDto>> filterKeyboardWhileResult(@RequestBody HashMap<String,String> filterKeywords){
         List<SimpleKeyboardDto> result = new ArrayList<>();
-        List<String> priorityList = new ArrayList<>(Arrays.asList("arrangement", "price", "switchColor", "brand"));
+        List<String> priorityList = new ArrayList<>(Arrays.asList("switchColor", "connection", "price", "weight", "arrangement", "led"));
 
         while(result.size() == 0){
 
@@ -85,7 +85,7 @@ public class KeyboardController {
                 filterKeywords.replace("endPrice","-1");
             }
             else{
-                filterKeywords.remove(now);
+                filterKeywords.replace(now,"");
             }
             priorityList.remove(priorityList.size()-1);
 

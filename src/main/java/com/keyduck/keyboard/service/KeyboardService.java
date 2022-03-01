@@ -9,7 +9,6 @@ import com.keyduck.mapper.KeyboardMapper;
 import com.keyduck.mapper.SimpleKeyboardMapper;
 import com.keyduck.review.domain.Review;
 import com.keyduck.review.repository.ReviewRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +67,7 @@ public class KeyboardService {
 
     public List<SimpleKeyboardDto> filterKeyboard(KeyboardFilterDto filterKeyboards) {
         List<SimpleKeyboardDto> keyboards = new ArrayList<>();
-        Specification<Keyboard> spec = Specification.where(KeyboardSpecification.equalKey(filterKeyboards));
+        Specification<Keyboard> spec = KeyboardSpecification.equalKey(filterKeyboards);
         List<Keyboard> keyboardList = keyboardRepository.findAll(spec);
         for (int i = 0; i < keyboardList.size(); i++) {
             keyboards.add(simpleKeyboardMapper.toDto(keyboardList.get(i)));
@@ -77,16 +76,25 @@ public class KeyboardService {
     }
 
 
+    private int checkInteger(String inputString){
+        if(inputString.equals("")){
+            return 0;
+        }
+        return Integer.parseInt(inputString);
+    }
+
     public List<SimpleKeyboardDto> filterWhileResult(HashMap<String, String> searchKeywords) {
 
         KeyboardFilterDto search = KeyboardFilterDto.KeyboardFilterDtoBuilder()
-                .arrangement(Integer.parseInt(searchKeywords.get("arrangement")))
-                .startPrice(Integer.parseInt(searchKeywords.get("startPrice")))
-                .endPrice(Integer.parseInt(searchKeywords.get("endPrice")))
-                .switchColor(new String[]{searchKeywords.get("switchColor")})
-                .brand(searchKeywords.get("brand"))
+                .arrangement(checkInteger(searchKeywords.get("arrangement")))
+                .startPrice(0)
+                .endPrice(checkInteger(searchKeywords.get("price")))
+                .switchColor(searchKeywords.get("switchColor").split(","))
+                .led(searchKeywords.get("led"))
+                .connect(searchKeywords.get("connect"))
+                .weight(checkInteger(searchKeywords.get("weight")))
                 .build();
-
+    // 숫자 처리되는거 기본값 지정
         return filterKeyboard(search);
     }
 
@@ -132,16 +140,32 @@ public class KeyboardService {
 
     public List<RecommendKeyboardDto> getRecommend() {
         List<RecommendKeyboardDto> result = new ArrayList<>();
-        List<Integer> indexList = Arrays.asList(1,2,3,4,5,6,7,8);
+        List<Long> indexList = Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l);
+        List<KeyboardTags> keyboards = new ArrayList<>();
+        Tag tag = null;
         for(int i = 0; i < 2; i++){
             RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
-            List<KeyboardTags> keyboards = findKeyboardsByTag(recommendKeyboardList,indexList);
+
+            while(keyboards.size() == 0){
+                Long pickTagIndex = pickRandomTagIndex(indexList);
+                tag = tagRepository.findByTagId(pickTagIndex);
+                keyboards = findKeyboardsByTag(recommendKeyboardList,tag);
+                indexList.remove(pickTagIndex);
+            }
+
             for(KeyboardTags keyboardTags : keyboards){
                 recommendKeyboardList.addKeyboard(keyboardTags.getKeyboard());
             }
+            recommendKeyboardList.setTag(tag);
             result.add(recommendKeyboardList);
         }
 
+        addNewKeyboards(result);
+
+        return result;
+    }
+
+    private void addNewKeyboards(List<RecommendKeyboardDto> result) {
         RecommendKeyboardDto recentKeyboardsList = new RecommendKeyboardDto();
         Tag recentTag = new Tag("따끈따끈 신상");
         recentKeyboardsList.setTag(recentTag);
@@ -150,26 +174,18 @@ public class KeyboardService {
             recentKeyboardsList.addKeyboard(keyboard);
         }
         result.add(recentKeyboardsList);
-
-        return result;
     }
 
-    private Tag pickRandomTag(List<Integer> indexList){
+    private long pickRandomTagIndex(List<Long> indexList){
         Random random = new Random();
-        Long randomIndex = Long.valueOf(random.nextInt(indexList.size()));
-        indexList.remove(randomIndex);
-        Tag findTag = tagRepository.findByTagId(randomIndex);
-        return findTag;
+        return (long) random.nextInt(indexList.size()) + 1;
     }
 
-    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList,List<Integer> indexList){
+    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList,Tag tag){
         List<KeyboardTags> keyboards = new ArrayList<>();
-        Tag tag = null;
         while(keyboards.size() == 0){
-            tag = pickRandomTag(indexList);
             keyboards = keyboardTagRepository.findFirst10ByTag(tag);
         }
-        recommendKeyboardList.setTag(tag);
         return keyboards;
     }
 

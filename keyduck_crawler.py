@@ -120,8 +120,8 @@ for i in range(1,2):
                 + " " + str(int(is_key_exist(option_dict ,"무게")[:-1]) if is_key_exist(option_dict, "무게") else '')
         }
         #req = requests.post(url = "http://101.101.210.98:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)    
-        req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
-        #req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        #req = requests.post(url = "https://keyduck.herokuapp.com/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
+        req = requests.post(url = "http://localhost:8070/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         #req = requests.post(url = "http://localhost:30000/v1/keyboards/add",data = json.dumps(request_form, ensure_ascii=False).encode("utf8"),headers=headers)
         
         print(req.status_code)
