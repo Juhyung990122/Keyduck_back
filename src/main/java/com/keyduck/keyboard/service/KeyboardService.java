@@ -141,17 +141,10 @@ public class KeyboardService {
     public List<RecommendKeyboardDto> getRecommend() {
         List<RecommendKeyboardDto> result = new ArrayList<>();
         List<Tag> tagList = new ArrayList<>(tagRepository.findAll());
-        for(int i = 0; i < 2; i++){
-            List<KeyboardTags> keyboards = new ArrayList<>();
-            Tag tag = null;
+        for (Tag tag : pickRandomTag(tagList)) {
+            Tag pickedTag = tag;
+            List<KeyboardTags> keyboards = keyboardTagRepository.findFirst10ByTag(pickedTag);
             RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
-
-            while(keyboards.size() == 0){
-                Tag randomTag = pickRandomTag(tagList);
-                keyboards = findKeyboardsByTag(randomTag);
-                tag = randomTag;
-                tagList.remove(randomTag);
-            }
 
             for(KeyboardTags keyboardTags : keyboards){
                 recommendKeyboardList.addKeyboard(keyboardTags.getKeyboard());
@@ -176,10 +169,9 @@ public class KeyboardService {
         result.add(recentKeyboardsList);
     }
 
-    private Tag pickRandomTag(List<Tag> tagList){
-        Random random = new Random();
-        int index = random.nextInt(tagList.size());
-        return tagRepository.findByTagId((long) index);
+    private List<Tag> pickRandomTag(List<Tag> tagList){
+        Collections.shuffle(tagList);
+        return tagList.subList(0 , 2);
     }
 
     private List<KeyboardTags> findKeyboardsByTag(Tag tag){
