@@ -7,8 +7,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/keyduck?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
     password: Keyduck2021^^
+    driver-class-name: com.mysql.jdbc.Driver
   jackson:
     serialization:
       fail-on-empty-beans : false

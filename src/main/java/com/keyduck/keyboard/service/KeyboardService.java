@@ -140,17 +140,17 @@ public class KeyboardService {
 
     public List<RecommendKeyboardDto> getRecommend() {
         List<RecommendKeyboardDto> result = new ArrayList<>();
-        List<Long> indexList = Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l);
-        List<KeyboardTags> keyboards = new ArrayList<>();
-        Tag tag = null;
+        List<Tag> tagList = new ArrayList<>(tagRepository.findAll());
         for(int i = 0; i < 2; i++){
+            List<KeyboardTags> keyboards = new ArrayList<>();
+            Tag tag = null;
             RecommendKeyboardDto recommendKeyboardList = new RecommendKeyboardDto();
 
             while(keyboards.size() == 0){
-                Long pickTagIndex = pickRandomTagIndex(indexList);
-                tag = tagRepository.findByTagId(pickTagIndex);
-                keyboards = findKeyboardsByTag(recommendKeyboardList,tag);
-                indexList.remove(pickTagIndex);
+                Tag randomTag = pickRandomTag(tagList);
+                keyboards = findKeyboardsByTag(randomTag);
+                tag = randomTag;
+                tagList.remove(randomTag);
             }
 
             for(KeyboardTags keyboardTags : keyboards){
@@ -176,16 +176,15 @@ public class KeyboardService {
         result.add(recentKeyboardsList);
     }
 
-    private long pickRandomTagIndex(List<Long> indexList){
+    private Tag pickRandomTag(List<Tag> tagList){
         Random random = new Random();
-        return (long) random.nextInt(indexList.size()) + 1;
+        int index = random.nextInt(tagList.size());
+        return tagRepository.findByTagId((long) index);
     }
 
-    private List<KeyboardTags> findKeyboardsByTag(RecommendKeyboardDto recommendKeyboardList,Tag tag){
-        List<KeyboardTags> keyboards = new ArrayList<>();
-        while(keyboards.size() == 0){
-            keyboards = keyboardTagRepository.findFirst10ByTag(tag);
-        }
+    private List<KeyboardTags> findKeyboardsByTag(Tag tag){
+        List<KeyboardTags> keyboards;
+        keyboards = keyboardTagRepository.findFirst10ByTag(tag);
         return keyboards;
     }
 
