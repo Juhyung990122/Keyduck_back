@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Arrays.asList;
 
@@ -25,5 +26,17 @@ public class Tag {
         this.content = content;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return Objects.equals(tagId, tag.tagId) && Objects.equals(content, tag.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tagId, content);
+    }
 }
 
